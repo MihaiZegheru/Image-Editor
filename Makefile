@@ -14,7 +14,7 @@ HEADERS+= $(addprefix -I,$(wildcard $(SRC_DIR)))
 
 .PHONY: build
 build:
-	$(CC) $(CFLAGS) $(SOURCES) $(HEADERS) -o $(BUILD_DIR)/$(EXE)
+	$(CC) $(CFLAGS) $(HEADERS) $(SOURCES) -o $(BUILD_DIR)/$(EXE)
 
 pack:
 	zip -FSr 312CA_ZegheruMihai_Tema3.zip $(SOURCES) $(HEADERS) $(EXTRAS)

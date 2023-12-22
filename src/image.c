@@ -23,9 +23,14 @@ void image_delete(image_t *image)
     free(image);
 }
 
-color_t image_at(size_t i, size_t j, image_t *image)
+color_t image_at(uint16_t i, uint16_t j, image_t *image)
 {
-    return image->pixels[i * image_get_width(image) + j]; 
+    return IMAGE_PIXELS_AT(i, j, image);
+}
+
+void image_set_pixel(uint16_t i, uint16_t j, color_t pixel, image_t *image)
+{
+    IMAGE_PIXELS_AT(i, j, image) = pixel;
 }
 
 size_t image_get_width(image_t *image)

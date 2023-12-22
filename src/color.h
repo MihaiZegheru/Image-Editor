@@ -4,9 +4,9 @@
 #include <stdint.h>
 
 typedef struct {
-    uint8_t r;
-    uint8_t g;
-    uint8_t b;
+    uint16_t r;
+    uint16_t g;
+    uint16_t b;
 } color_t;
 
-#endif
+#endif // COLOR_H__

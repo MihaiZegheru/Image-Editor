@@ -4,8 +4,9 @@
 #include <stdint.h>
 
 typedef struct {
-    size_t width;
-    size_t height;
+    uint16_t width;
+    uint16_t height;
+    uint32_t max_pixel_value;
 } image_data_t;
 
-#endif
+#endif // IMAGE_DATA_H__
