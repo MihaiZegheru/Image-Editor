@@ -64,3 +64,22 @@ res/*
 
 # Resources
 *.ppm
+*.pgm
+
+# Checker
+check_utils/*
+cs/*
+input/*
+output/*
+ref/*
+target/*
+tasks/*
+tests/*
+*.checkpatch-camelcase.git.
+*.lock
+*.toml
+check
+*.sh
+image_check
+*.json
+*.rs
