@@ -60,7 +60,7 @@ out
 
 # Folders
 build/*
-res/*
+# res/*
 
 # Resources
 # *.ppm
