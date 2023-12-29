@@ -12,31 +12,7 @@ error_type_t app_manager_load(image_workspace_t *image_workspace)
 {
     char file_path[100];
     input_handler_read_string(file_path);
-
-    // for (size_t i = 0; i < image_get_height(image); i++) {
-    //     for (size_t j = 0; j < image_get_width(image); j++) {
-    //         vector2_t coords;
-    //         coords.x = i;
-    //         coords.y = j;
-    //         printf("%"SCNu8" ""%"SCNu8" ""%"SCNu8" ", image_get_pixel(coords, image).r, image_get_pixel(coords, image).g,
-    //             image_get_pixel(coords, image).b);
-    //     }
-    //     printf("\n");
-    // }
-
     image_workspace->image = image_loader_load(file_path);
-
-    //     for (size_t i = 0; i < 1; i++) {
-    //     for (size_t j = 0; j < 10; j++) {
-    //         uint8_t value;
-
-    //         vector2_t coords;
-    //         coords.x = i;
-    //         coords.y = j;
-    //         value = image_get_pixel(coords, image_workspace->image).r;
-    //         printf("%d ", value);
-    //     }
-    // }
     app_manager_select_all(image_workspace);
 
     return 0;
@@ -56,10 +32,6 @@ error_type_t app_manager_select(image_workspace_t *image_workspace)
 
         input_handler_read_vector2(&image_workspace->selection_point_b);
     }
-
-    printf("%"SCNd64" %"SCNd64" %"SCNd64" %"SCNd64"\n", image_workspace->selection_point_a.x,
-    image_workspace->selection_point_a.y, image_workspace->selection_point_b.x,
-    image_workspace->selection_point_b.y);
 
     return 0;
 }
@@ -96,9 +68,8 @@ error_type_t app_manager_histogram(image_workspace_t *image_workspace)
             coords.y = j;
 
             uint8_t value =  image_get_pixel(coords, image).r;
-            printf("%d ", value);
 
-            uint8_t bin_index = value % histogram_resolution.y;
+            uint8_t bin_index = value / (256 / histogram_resolution.y);
             histogram[bin_index]++;
         }
     }
@@ -109,7 +80,7 @@ error_type_t app_manager_histogram(image_workspace_t *image_workspace)
     }
 
     for (size_t i = 0; i < histogram_resolution.y; i++) {
-        histogram[i] = histogram[i] / max_frequency * histogram_resolution.x;
+        histogram[i] = (int)(((double)histogram[i] / max_frequency) * histogram_resolution.x);
     }
 
     for (size_t i = 0; i < histogram_resolution.x; i++) {

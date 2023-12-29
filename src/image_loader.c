@@ -100,23 +100,8 @@ void image_loader_set_pixels_p2(image_t *image, FILE *file)
             coords.y = j;
 
             image_set_pixel(coords, color, image);
-            // printf("%d\n", image_get_pixel(coords, image).r);
         }
     }
-    // size_t i = 100;
-    // printf("%d\n", image->pixels[0].r);
-    // for (size_t i = 0; i < 1; i++) {
-        // for (size_t j = 0; j < 10; j++) {
-            // uint8_t value;
-
-            // vector2_t coords;
-            // coords.x = i;
-            // coords.y = j;
-            // value = image_get_pixel(coords, image).r;
-            // printf("%d ", value);
-        // }
-    // }
-    // printf("\n");
 }
 
 // static void image_loader_set_pixels_p3(image_t *image, FILE *file)
@@ -153,34 +138,7 @@ void image_loader_set_pixels(image_t *image, FILE *file)
 {
     switch (image->image_data.format) {
         case IFT_P2:
-        printf("LOADING P2...\n");
             image_loader_set_pixels_p2(image, file);
-
-
-    for (size_t i = 0; i < 1; i++) {
-        for (size_t j = 0; j < 10; j++) {
-            uint8_t value;
-
-            vector2_t coords;
-            coords.x = i;
-            coords.y = j;
-
-            // int64_t a;
-            // a = j;
-            // printf("*%d*", (int64_t)j);
-
-            printf("%zu %zu ", i, j);
-            printf("%zu %zu ", coords.x, coords.y);
-
-            value = image_get_pixel(coords, image).r;
-
-            printf("%d\n", value);
-            // printf("%d ", i * image->image_data.height + j);
-            // printf("%d\n", image->pixels[i * image->image_data.height + j].r);
-        }
-    }
-
-
             break;
         case IFT_P3:
             // image_loader_set_pixels_p3(image, file);
