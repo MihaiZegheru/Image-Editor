@@ -6,6 +6,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-image_t image_loader_load(char *file_path);
+image_t *image_loader_load(char *file_path);
 
 #endif // IMAGE_LOADER_H__

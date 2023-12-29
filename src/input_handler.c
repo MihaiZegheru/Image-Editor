@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <inttypes.h>
 
 command_type_t input_handler_read_command()
 {
@@ -38,7 +37,22 @@ command_type_t input_handler_read_command()
     return command_type;
 }
 
-void input_handler_read_string(char *file_path)
+void input_handler_read_string(char *str)
 {
-    scanf("%s", file_path);
+    scanf("%s", str);
+}
+
+void input_handler_read_vector2(vector2_t *coords)
+{
+    scanf("%u%u", &coords->x, &coords->y);
+}
+
+void input_handler_read_int64(int64_t *int64)
+{
+    scanf("%"SCNd64, int64);
+}
+
+void input_handler_read_size(size_t *size)
+{
+    scanf("%d", size);
 }

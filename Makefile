@@ -3,7 +3,7 @@
 #
 
 CC=gcc
-CFLAGS=-Wall -Wextra -std=c99
+CFLAGS=-Wall -Wextra -std=c99 -pedantic
 
 BUILD_DIR=build
 SRC_DIR=src

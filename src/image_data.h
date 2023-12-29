@@ -6,8 +6,8 @@
 #include <image_format_type.h>
 
 typedef struct {
-    uint16_t width;
-    uint16_t height;
+    size_t width;
+    size_t height;
     uint32_t max_pixel_value;
     image_format_type_t format;
 } image_data_t;
