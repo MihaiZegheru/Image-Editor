@@ -88,7 +88,7 @@ void image_loader_set_pixels_p2(image_t *image, FILE *file)
     for (size_t i = 0; i < image_get_height(image); i++) {
         for (size_t j = 0; j < image_get_width(image); j++) {
             uint8_t value;
-            fscanf(file, "%hhd", &value);
+            fscanf(file, "%"SCNu8, &value);
 
             color_t color;
             color.r = value;
@@ -119,15 +119,15 @@ void image_loader_set_pixels_p2(image_t *image, FILE *file)
     // printf("\n");
 }
 
-static void image_loader_set_pixels_p3(image_t *image, FILE *file)
-{
+// static void image_loader_set_pixels_p3(image_t *image, FILE *file)
+// {
 
-}
+// }
 
-static void image_loader_set_pixels_p5(image_t *image, FILE *file)
-{
+// static void image_loader_set_pixels_p5(image_t *image, FILE *file)
+// {
 
-}
+// }
 
 static void image_loader_set_pixels_p6(image_t *image, FILE *file)
 {
@@ -169,8 +169,8 @@ void image_loader_set_pixels(image_t *image, FILE *file)
             // a = j;
             // printf("*%d*", (int64_t)j);
 
-            printf("%d %d ", i, j);
-            printf("%d %d ", coords.x, coords.y);
+            printf("%zu %zu ", i, j);
+            printf("%zu %zu ", coords.x, coords.y);
 
             value = image_get_pixel(coords, image).r;
 
@@ -183,10 +183,10 @@ void image_loader_set_pixels(image_t *image, FILE *file)
 
             break;
         case IFT_P3:
-            image_loader_set_pixels_p3(image, file);
+            // image_loader_set_pixels_p3(image, file);
             break;
         case IFT_P5:
-            image_loader_set_pixels_p5(image, file);
+            // image_loader_set_pixels_p5(image, file);
             break;
         case IFT_P6:
             image_loader_set_pixels_p6(image, file);

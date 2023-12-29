@@ -44,7 +44,7 @@ void input_handler_read_string(char *str)
 
 void input_handler_read_vector2(vector2_t *coords)
 {
-    scanf("%u%u", &coords->x, &coords->y);
+    scanf("%zu%zu", &coords->x, &coords->y);
 }
 
 void input_handler_read_int64(int64_t *int64)
@@ -54,5 +54,5 @@ void input_handler_read_int64(int64_t *int64)
 
 void input_handler_read_size(size_t *size)
 {
-    scanf("%d", size);
+    scanf("%zu", size);
 }
