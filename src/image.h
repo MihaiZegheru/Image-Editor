@@ -14,10 +14,10 @@ typedef struct {
     image_data_t image_data;
 } image_t;
 
-image_t *image_new(image_data_t image_data);
+image_t image_new(image_data_t image_data);
 void image_delete(image_t *image);
 
-color_t image_at(uint16_t i, uint16_t j, image_t *image);
+color_t image_get_pixel(uint16_t i, uint16_t j, image_t *image);
 void image_set_pixel(uint16_t i, uint16_t j, color_t pixel, image_t *image);
 
 size_t image_get_width(image_t *image);

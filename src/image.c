@@ -3,16 +3,14 @@
 #include <stdlib.h>
 #include <assert.h>
 
-image_t *image_new(image_data_t image_data)
+image_t image_new(image_data_t image_data)
 {
-    image_t *image = malloc(sizeof(image_t *));
-    assert(image != NULL);
+    image_t image;
+    image.image_data = image_data;
 
-    image->image_data = image_data;
-
-    image->pixels = malloc(image_data.width * image_data.height *
-                           sizeof(color_t));
-    assert(image->pixels != NULL);
+    image.pixels = malloc(image_data.width * image_data.height *
+                          sizeof(color_t));
+    assert(image.pixels != NULL);
 
     return image;
 }
@@ -20,10 +18,9 @@ image_t *image_new(image_data_t image_data)
 void image_delete(image_t *image)
 {
     free(image->pixels);
-    free(image);
 }
 
-color_t image_at(uint16_t i, uint16_t j, image_t *image)
+color_t image_get_pixel(uint16_t i, uint16_t j, image_t *image)
 {
     return IMAGE_PIXELS_AT(i, j, image);
 }

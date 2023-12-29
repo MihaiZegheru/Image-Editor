@@ -6,48 +6,153 @@
 #include <string.h>
 #include <assert.h>
 
-image_t *image_loader_load(const char *file_path)
-{
-    FILE *file = fopen(file_path, "rb");
-    assert(file != NULL);
-
-    char format[2];
-    fscanf(file, "%s", format);
-    
-    if (!strcmp(format, "P6")) {
-        char c;
-        c = fgetc(file);
-        return image_loader_get_ppm(file);
-    }
-
-    return NULL;
-}
-
-image_t *image_loader_get_ppm(FILE *file)
+static image_data_t image_loader_get_image_data(FILE *file)
 {
     image_data_t image_data;
 
-    uint16_t width;
-    uint16_t height;
-    uint16_t max_pixel_value;
-    fscanf(file, "%"SCNu16"%"SCNu16"%"SCNu16, &width, &height,
-           &max_pixel_value);
+    image_format_type_t format = IFT_NONE;
+    uint16_t width = 0;
+    uint16_t height = 0;
+    uint16_t max_pixel_value = 0;
 
+    const uint8_t MAX_BUFFER = 255;
+    char line_buffer[MAX_BUFFER];
+
+    fgets(line_buffer, MAX_BUFFER, file);
+    size_t index = 0;
+
+    while (!max_pixel_value) {
+        if (line_buffer[index] == ' ') {
+            index++;
+            continue;
+        }
+
+        if (line_buffer[index] == '\n') {
+            fgets(line_buffer, MAX_BUFFER, file);
+            index = 0;
+            continue;
+        }
+
+        if (!format && line_buffer[index] == 'P') {
+            index++;
+            switch (line_buffer[index]) {
+                case '2':
+                    format = IFT_P2;
+                    break;
+                case '3':
+                    format = IFT_P3;
+                    break;
+                case '5':
+                    format = IFT_P5;
+                    break;
+                case '6':
+                    format = IFT_P6;
+                    break;
+                default:
+                    break;
+            }
+
+            index++;
+            continue;
+        } else {
+            uint16_t value = 0;
+            while (line_buffer[index] != ' ' && line_buffer[index] != '\n') {
+                value *= 10;
+                value += line_buffer[index] - '0';
+                index++;
+            }
+            
+            if (!width) {
+                width = value;
+            } else if (!height) {
+                height = value;
+            } else if (!max_pixel_value) {
+                max_pixel_value = value;
+            }
+        }
+    }
+
+    image_data.format = format;
     image_data.width = width;
     image_data.height = height;
     image_data.max_pixel_value = max_pixel_value;
 
-    image_t *image = image_new(image_data);
+    return image_data;
+}
 
-    for (uint16_t i = 0; i < height; i++) {
-        for (uint16_t j = 0; j < width; j++) {
-            color_t pixel;
-            fscanf(file, "%"SCNu16"%"SCNu16"%"SCNu16, &pixel.r, &pixel.g,
-                   &pixel.b);
+static void image_loader_set_pixels_p2(image_t *image, FILE *file)
+{
+    for (size_t i = 0; i < image_get_height(image); i++) {
+        for (size_t j = 0; j < image_get_width(image); j++) {
+            uint8_t value;
+            fscanf(file, "%c", &value);
 
-            image_set_pixel(i, j, pixel, image);
+            color_t color;
+            color.r = value;
+            color.g = value;
+            color.b = value;
+
+            image_set_pixel(i, j, color, image);
         }
     }
+}
+
+static void image_loader_set_pixels_p3(image_t *image, FILE *file)
+{
+
+}
+
+static void image_loader_set_pixels_p5(image_t *image, FILE *file)
+{
+
+}
+
+static void image_loader_set_pixels_p6(image_t *image, FILE *file)
+{
+    freopen("res/a.pgm", "rb", file);
+	fseek(file, ftell(file) + 1, SEEK_SET);
+
+    for (size_t i = 0; i < image_get_height(image); i++) {
+        for (size_t j = 0; j < image_get_width(image); j++) {
+            color_t color;
+            fread(&color.r, sizeof(color.r), 1, file);
+            fread(&color.g, sizeof(color.g), 1, file);
+            fread(&color.b, sizeof(color.b), 1, file);
+
+            image_set_pixel(i, j, color, image);
+        }
+    }
+}
+
+static void image_loader_set_pixels(image_t *image, FILE *file)
+{
+    switch (image->image_data.format) {
+        case IFT_P2:
+            image_loader_set_pixels_p2(image, file);
+            break;
+        case IFT_P3:
+            image_loader_set_pixels_p3(image, file);
+            break;
+        case IFT_P5:
+            image_loader_set_pixels_p5(image, file);
+            break;
+        case IFT_P6:
+            image_loader_set_pixels_p6(image, file);
+            break;
+        default:
+            break;
+    }
+}
+
+image_t image_loader_load(char *file_path)
+{
+    FILE *file = fopen(file_path, "r");
+    assert(file != NULL);
+
+    image_data_t image_data = image_loader_get_image_data(file);
+
+    image_t image = image_new(image_data);
+    image_loader_set_pixels(&image, file);
 
     return image;
 }
