@@ -8,7 +8,7 @@
 #include <utils.h>
 #include <vector2.h>
 
-static image_data_t image_loader_get_image_data(FILE *file)
+static image_data_t image_loader_load_image_data(FILE *file)
 {
     image_data_t image_data;
 
@@ -82,7 +82,7 @@ static image_data_t image_loader_get_image_data(FILE *file)
     return image_data;
 }
 
-void image_loader_set_pixels_p2(image_t *image, FILE *file)
+void image_loader_load_pixels_p2(image_t *image, FILE *file)
 {
     // size_t i = 100;
     for (size_t i = 0; i < image_get_height(image); i++) {
@@ -114,7 +114,7 @@ void image_loader_set_pixels_p2(image_t *image, FILE *file)
 
 // }
 
-static void image_loader_set_pixels_p6(image_t *image, FILE *file)
+static void image_loader_load_pixels_p6(image_t *image, FILE *file)
 {
     freopen("res/a.pgm", "rb", file);
 	fseek(file, ftell(file) + 1, SEEK_SET);
@@ -134,11 +134,11 @@ static void image_loader_set_pixels_p6(image_t *image, FILE *file)
     }
 }
 
-void image_loader_set_pixels(image_t *image, FILE *file)
+static void image_loader_load_pixels(image_t *image, FILE *file)
 {
     switch (image->image_data.format) {
         case IFT_P2:
-            image_loader_set_pixels_p2(image, file);
+            image_loader_load_pixels_p2(image, file);
             break;
         case IFT_P3:
             // image_loader_set_pixels_p3(image, file);
@@ -147,7 +147,7 @@ void image_loader_set_pixels(image_t *image, FILE *file)
             // image_loader_set_pixels_p5(image, file);
             break;
         case IFT_P6:
-            image_loader_set_pixels_p6(image, file);
+            image_loader_load_pixels_p6(image, file);
             break;
         default:
             break;
@@ -157,12 +157,108 @@ void image_loader_set_pixels(image_t *image, FILE *file)
 image_t *image_loader_load(char *file_path)
 {
     FILE *file = fopen(file_path, "r");
-    assert(file != NULL);
 
-    image_data_t image_data = image_loader_get_image_data(file);
+    image_data_t image_data = image_loader_load_image_data(file);
 
     image_t *image = image_new(image_data);
-    image_loader_set_pixels(image, file);
+    image_loader_load_pixels(image, file);
 
     return image;
+}
+
+void image_loader_save_pixels_p2(image_t *image, FILE *file)
+{
+    for (size_t i = 0; i < image_get_height(image); i++) {
+        for (size_t j = 0; j < image_get_width(image); j++) {
+            vector2_t coords;
+            coords.x = i;
+            coords.y = j;
+
+            uint8_t value = image_get_pixel(coords, image).r;
+            fprintf(file, "%"SCNu8" ", value);
+        }
+        fprintf(file, "\n");
+    }
+}
+
+// static void image_loader_save_pixels_p3(image_t *image, FILE *file)
+// {
+
+// }
+
+// static void image_loader_save_pixels_p5(image_t *image, FILE *file)
+// {
+
+// }
+
+static void image_loader_save_pixels_p6(image_t *image, FILE *file)
+{
+    freopen("res/a.pgm", "wb", file);
+	fseek(file, ftell(file) + 1, SEEK_SET);
+
+    for (size_t i = 0; i < image_get_height(image); i++) {
+        for (size_t j = 0; j < image_get_width(image); j++) {
+            vector2_t coords;
+            coords.x = i;
+            coords.y = j;
+            
+            color_t color = image_get_pixel(coords, image);
+            fprintf(file, "%"SCNu8" ", color.r);
+            fprintf(file, "%"SCNu8" ", color.g);
+            fprintf(file, "%"SCNu8" ", color.b);
+        }
+        fprintf(file, "\n");
+    }
+}
+
+static void image_loader_save_pixels(image_t *image, FILE *file)
+{
+    switch (image->image_data.format) {
+        case IFT_P2:
+            image_loader_save_pixels_p2(image, file);
+            break;
+        case IFT_P3:
+            // image_loader_save_pixels_p3(image, file);
+            break;
+        case IFT_P5:
+            // image_loader_save_pixels_p5(image, file);
+            break;
+        case IFT_P6:
+            image_loader_save_pixels_p6(image, file);
+            break;
+        default:
+            break;
+    }
+}
+
+static void image_loader_save_image_data(image_data_t image_data, FILE *file)
+{
+    switch (image_data.format) {
+        case IFT_P2:
+            fprintf(file, "P2\n");
+            break;
+        case IFT_P3:
+            fprintf(file, "P3\n");
+            break;
+        case IFT_P5:
+            fprintf(file, "P5\n");
+            break;
+        case IFT_P6:
+            fprintf(file, "P6\n");
+            break;
+        default:
+            break;
+    }
+
+    fprintf(file, "%zu %zu\n", image_data.width, image_data.height);
+    fprintf(file, "%"SCNu32"\n", image_data.max_pixel_value);
+}
+
+void image_loader_save(image_t *image, char *file_path)
+{
+    FILE *file = fopen(file_path, "w");
+    // printf("%s", file_path);
+
+    image_loader_save_image_data(image->image_data, file);
+    image_loader_save_pixels(image, file);
 }

@@ -22,15 +22,15 @@ void image_delete(image_t *image)
 
 color_t image_get_pixel(vector2_t coords, image_t *image)
 {
-    // return IMAGE_PIXELS_AT(coords, image);
+    return IMAGE_PIXELS_AT(coords, image);
     // printf("GETTING FOR COORDS %d %d\n", coords.x, coords.y);
-    return image->pixels[coords.x * image->image_data.height + coords.y];
+    // return image->pixels[coords.x * image->image_data.height + coords.y];
 }
 
 void image_set_pixel(vector2_t coords, color_t pixel, image_t *image)
 {
-    // IMAGE_PIXELS_AT(coords, image) = pixel;
-    image->pixels[coords.x * image->image_data.height + coords.y] = pixel;
+    IMAGE_PIXELS_AT(coords, image) = pixel;
+    // image->pixels[coords.x * image->image_data.height + coords.y] = pixel;
 }
 
 size_t image_get_width(image_t *image)

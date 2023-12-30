@@ -5,6 +5,7 @@ typedef enum {
     CT_NONE,
     CT_LOAD,
     CT_SELECT,
+    CT_SELECT_ALL,
     CT_HISTOGRAM, 
     CT_EQUALIZE,
     CT_ROTATE,
