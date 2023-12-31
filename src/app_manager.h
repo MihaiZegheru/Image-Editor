@@ -24,7 +24,11 @@ status_type_t app_manager_rotate(command_data_t command_data,
                                  image_workspace_t *image_workspace);
 status_type_t app_manager_crop(command_data_t command_data,
                                image_workspace_t *image_workspace);
+status_type_t app_manager_apply(command_data_t command_data,
+                               image_workspace_t *image_workspace);
 status_type_t app_manager_save(command_data_t command_data,
+                               image_workspace_t *image_workspace);
+status_type_t app_manager_exit(command_data_t command_data,
                                image_workspace_t *image_workspace);
 
 #endif // APP_MANAGER_H__

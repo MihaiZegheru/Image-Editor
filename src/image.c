@@ -42,3 +42,12 @@ size_t image_get_height(image_t *image)
 {
     return image->image_data.height;
 }
+
+int8_t image_coords_in_bounds(vector2_t coords, image_t *image)
+{
+    if (coords.x < 0 || coords.x >= image->image_data.height ||
+        coords.y < 0 || coords.y >= image->image_data.width) {
+        return 0;
+    }
+    return 1;
+}

@@ -5,7 +5,7 @@ typedef enum {
     IKT_NONE,
     IKT_EDGE,
     IKT_SHARPEN,
-    IKT_BLUR,
+    IKT_BOX_BLUR,
     IKT_GAUSSIAN_BLUR
 } image_kernel_type_t;
 

@@ -8,6 +8,7 @@
 #include <utils.h>
 #include <stdlib.h>
 #include <math.h>
+#include <kernel_utils.h>
 
 status_type_t app_manager_load(command_data_t command_data,
                                image_workspace_t *image_workspace)
@@ -286,11 +287,140 @@ status_type_t app_manager_crop(command_data_t command_data,
     return ST_CROP_DONE;
 }
 
+static void app_manager_apply_kernel(
+        double inverse_modifier, int8_t kernel[3][3],
+        image_workspace_t *image_workspace)
+{
+    image_t *image = image_workspace->image;
+    vector2_t point_a = image_workspace->selection_point_a;
+    vector2_t point_b = image_workspace->selection_point_b;
+
+    image_data_t new_image_data;
+    new_image_data.format = image->image_data.format;
+    new_image_data.height = point_b.x - point_a.x;
+    new_image_data.width = point_b.y - point_a.y;
+    new_image_data.max_pixel_value = image->image_data.max_pixel_value;
+
+    image_t *new_image = image_new(new_image_data);
+
+    size_t curr_i = 0;
+    for (size_t i = point_a.x; i < point_b.x; i++) {
+        size_t curr_j = 0;
+
+        for (size_t j = point_a.y; j < point_b.y; j++) {
+            if (i <= 0 || j <= 0 || i >= image_get_height(image) - 1 ||
+                j >= image_get_width(image) - 1) {
+                continue;
+            }
+            vector2_t coords;
+            coords.x = i;
+            coords.y = j;
+            // printf("%zu %zu\n", i, j);
+            int16_t sum_r = 0;
+            int16_t sum_g = 0;
+            int16_t sum_b = 0;
+            for (int8_t k = -1; k <= 1; k++) {
+                for (int8_t l = -1; l <= 1; l++) {
+                    vector2_t neighbour_coords;
+                    neighbour_coords.x = i + k;
+                    neighbour_coords.y = j + l;
+                    if (!image_coords_in_bounds(neighbour_coords, image)) {
+                        continue;
+                    }
+
+                    color_t neighbour_pixel = image_get_pixel(neighbour_coords,
+                                                              image);
+                    sum_r += kernel[k + 1][l + 1] * neighbour_pixel.r;
+                    sum_g += kernel[k + 1][l + 1] * neighbour_pixel.g;
+                    sum_b += kernel[k + 1][l + 1] * neighbour_pixel.b;
+                }
+            }
+
+            color_t new_pixel;
+            new_pixel.r = utils_clamp((double)sum_r / inverse_modifier, 0, 255);
+            new_pixel.g = utils_clamp((double)sum_g / inverse_modifier, 0, 255);
+            new_pixel.b = utils_clamp((double)sum_b / inverse_modifier, 0, 255);
+
+            vector2_t curr_coords;
+            curr_coords.x = curr_i;
+            curr_coords.y = curr_j;
+            image_set_pixel(curr_coords, new_pixel, new_image);
+            curr_j++;
+        }
+        curr_i++;
+    }
+
+    curr_i = 0;
+    for (size_t i = point_a.x; i < point_b.x; i++) {
+        size_t curr_j = 0;
+
+        for (size_t j = point_a.y; j < point_b.y; j++) {
+            if (i <= 0 || j <= 0 || i >= image_get_height(image) - 1 ||
+                j >= image_get_width(image) - 1) {
+                continue;
+            }
+            // printf("%zu %zu\n", i, j);
+            vector2_t curr_coords;
+            curr_coords.x = curr_i;
+            curr_coords.y = curr_j;
+            color_t new_pixel = image_get_pixel(curr_coords, new_image);
+
+            vector2_t coords;
+            coords.x = i;
+            coords.y = j;
+            image_set_pixel(coords, new_pixel, image);
+
+            curr_j++;
+        }
+        curr_i++;
+    }
+
+    image_delete(new_image);
+}
+
+status_type_t app_manager_apply(command_data_t command_data,
+                               image_workspace_t *image_workspace)
+{
+    int8_t kernel[3][3];
+    double inverse_modifier;
+
+    switch (command_data.apply.image_kernel_type) {
+        case IKT_EDGE:
+            kernel_utils_edge(&inverse_modifier, kernel);
+            app_manager_apply_kernel(inverse_modifier, kernel,
+                                            image_workspace);
+            break;
+        case IKT_SHARPEN:
+            kernel_utils_sharpen(&inverse_modifier, kernel);
+            app_manager_apply_kernel(inverse_modifier, kernel,
+                                            image_workspace);
+            break;
+        case IKT_BOX_BLUR:
+            kernel_utils_box_blur(&inverse_modifier, kernel);
+            app_manager_apply_kernel(inverse_modifier, kernel,
+                                            image_workspace);
+            break;
+        case IKT_GAUSSIAN_BLUR:
+            kernel_utils_gaussian_blur(&inverse_modifier, kernel);
+            app_manager_apply_kernel(inverse_modifier, kernel,
+                                            image_workspace);
+            break;
+        default:
+            break;
+    }
+}
+
 status_type_t app_manager_save(command_data_t command_data,
                                image_workspace_t *image_workspace)
 {
     image_loader_save(image_workspace->image, command_data.save.file_path);
     return ST_SELECT_ALL_DONE;
+}
+
+status_type_t app_manager_exit(command_data_t command_data,
+                               image_workspace_t *image_workspace)
+{
+    image_delete(image_workspace->image);
 }
 
 uint8_t app_manager_tick(image_workspace_t *image_workspace)
@@ -323,11 +453,13 @@ uint8_t app_manager_tick(image_workspace_t *image_workspace)
             return_status = app_manager_crop(command_data, image_workspace);
             break;
         case CT_APPLY:
+            return_status = app_manager_apply(command_data, image_workspace);
             break;
         case CT_SAVE:
             return_status = app_manager_save(command_data, image_workspace);
             break;
         case CT_EXIT:
+            return_status = app_manager_exit(command_data, image_workspace);
             return 1;
             break;
         default:

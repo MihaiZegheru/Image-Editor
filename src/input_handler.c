@@ -145,7 +145,23 @@ command_data_t input_handler_read_crop()
 
 command_data_t input_handler_read_apply()
 {
+    command_data_t command_data;
+    command_data.apply.command_type = CT_APPLY;
+    
+    char input[25];
+    input_handler_read_string(input);
+    
+    if (!strcmp(input, "EDGE")) {
+        command_data.apply.image_kernel_type = IKT_EDGE;
+    } else if (!strcmp(input, "SHARPEN")) {
+        command_data.apply.image_kernel_type = IKT_SHARPEN;
+    } else if (!strcmp(input, "BLUR")) {
+        command_data.apply.image_kernel_type = IKT_BOX_BLUR;
+    } else if (!strcmp(input, "GAUSSIAN_BLUR")) {
+        command_data.apply.image_kernel_type = IKT_GAUSSIAN_BLUR;
+    }
 
+    return command_data;
 }
 
 command_data_t input_handler_read_save()
@@ -159,7 +175,10 @@ command_data_t input_handler_read_save()
 
 command_data_t input_handler_read_exit()
 {
+    command_data_t command_data;
+    command_data.exit.command_type = CT_EXIT;
 
+    return command_data;
 }
 
 void input_handler_read_string(char *str)
