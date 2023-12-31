@@ -95,10 +95,10 @@ command_data_t input_handler_read_select()
     } else {
         command_data.select.command_type = CT_SELECT;
         size_t x1, y1, x2, y2; 
-        x1 = utils_string_to_int64(input);
-        input_handler_read_size(&y1);
-        input_handler_read_size(&x2);
+        y1 = utils_string_to_int64(input);
+        input_handler_read_size(&x1);
         input_handler_read_size(&y2);
+        input_handler_read_size(&x2);
         
         command_data.select.point_a.x = x1;
         command_data.select.point_a.y = y1;
