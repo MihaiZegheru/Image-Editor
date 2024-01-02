@@ -6,6 +6,7 @@
 #include <vector2.h>
 #include <inttypes.h>
 #include <image_kernel_type.h>
+#include <image_format_type.h>
 
 typedef struct {
     command_type_t command_type;
@@ -52,6 +53,7 @@ typedef struct {
 typedef struct {
     command_type_t command_type;
     char file_path[100];
+    uint8_t save_as_ascii;
 } cd_save_t;
 
 typedef struct {

@@ -47,7 +47,7 @@ command_data_t input_handler_read_command_data()
 
 command_type_t input_handler_read_command()
 {
-    const uint8_t MAX_BUFFER = 25;
+    const size_t MAX_BUFFER = 255;
     char command_text[MAX_BUFFER];
     scanf("%s", command_text);
     char c;
@@ -174,6 +174,16 @@ command_data_t input_handler_read_save()
     command_data_t command_data;
     command_data.save.command_type = CT_SAVE;
     input_handler_read_string(command_data.save.file_path);
+
+    char input[25];
+    input_handler_read_string(input);
+    if (!strcmp(input, "ascii")) {
+        command_data.save.save_as_ascii = 1;
+        printf("AA");
+    } else {
+        command_data.save.save_as_ascii = 0;
+        printf("BB");
+    }
 
     return command_data;
 }
