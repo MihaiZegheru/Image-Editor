@@ -60,11 +60,11 @@ out
 
 # Folders
 build/*
-# res/*
+res/*
 
 # Resources
-# *.ppm
-# *.pgm
+*.ppm
+*.pgm
 
 # Checker
 check_utils/*
