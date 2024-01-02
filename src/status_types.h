@@ -17,6 +17,9 @@ typedef enum {
     ST_EQUALIZE_GRAYSCALE_INVALID,
     ST_IMAGE_NOT_LOADED,
     ST_CROP_DONE,
+    ST_APPLY_DONE,
+    ST_EXIT,
+    ST_COMMAND_ERROR,
 
 } status_type_t;
 

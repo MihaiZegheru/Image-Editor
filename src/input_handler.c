@@ -3,9 +3,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <utils.h>
+
 command_data_t input_handler_read_command_data()
 {
     command_type_t command_type = input_handler_read_command();
+    command_data_t command_data;
+    command_data.base.command_type = CT_NONE;
 
     switch (command_type) {
         case CT_LOAD:
@@ -36,6 +40,7 @@ command_data_t input_handler_read_command_data()
             return input_handler_read_exit();
             break;
         default:
+            return command_data;
             break;
     }
 }
@@ -130,7 +135,7 @@ command_data_t input_handler_read_rotate()
 {
     command_data_t command_data;
     command_data.rotate.command_type = CT_ROTATE;
-    input_handler_read_int64(&command_data.rotate.angle);
+    input_handler_read_int64((int64_t *)&command_data.rotate.angle);
 
     return command_data;
 }
