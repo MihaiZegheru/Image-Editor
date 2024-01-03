@@ -61,6 +61,11 @@ static void status_handler_equalize_format_invalid()
     printf("Black and white image needed\n");
 }
 
+static void status_handler_crop_done()
+{
+    printf("Image cropped\n");
+}
+
 void status_handler_forward(command_data_t command, status_type_t status)
 {
     switch (status) {
@@ -96,6 +101,8 @@ void status_handler_forward(command_data_t command, status_type_t status)
             break;
         case ST_EQUALIZE_FORMAT_INVALID:
             status_handler_equalize_format_invalid();
+            break;
+        case ST_CROP_DONE:
             break;
     }
 }

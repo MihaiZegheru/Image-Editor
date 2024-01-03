@@ -590,6 +590,7 @@ uint8_t app_manager_tick(image_workspace_t *image_workspace)
             return_status = app_manager_save(command_data, image_workspace);
             break;
         case CT_EXIT:
+            // TO DO: EXIT bug
             return_status = app_manager_exit(command_data, image_workspace);
             return 1;
             break;
