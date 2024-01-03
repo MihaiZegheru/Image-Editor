@@ -108,13 +108,25 @@ command_data_t input_handler_read_select(char *command_text)
     } else {
         command_data.select.command_type = CT_SELECT;
         int64_t x1, y1, x2, y2; 
-        utils_word_to_int64(&y1, word);
+        if (!utils_word_to_int64(&y1, word)) {
+            command_data.apply.command_type = CT_NONE;
+            return command_data;
+        }
         utils_get_word_by_index(2, word, command_text);
-        utils_word_to_int64(&x1, word);
+        if (!utils_word_to_int64(&x1, word)) {
+            command_data.apply.command_type = CT_NONE;
+            return command_data;
+        }
         utils_get_word_by_index(3, word, command_text);
-        utils_word_to_int64(&y2, word);
+        if (!utils_word_to_int64(&y2, word)) {
+            command_data.apply.command_type = CT_NONE;
+            return command_data;
+        }
         utils_get_word_by_index(4, word, command_text);
-        utils_word_to_int64(&x2, word);
+        if (!utils_word_to_int64(&x2, word)) {
+            command_data.apply.command_type = CT_NONE;
+            return command_data;
+        }
 
         if (x1 > x2) {
             utils_swap_int64(&x1, &x2);
