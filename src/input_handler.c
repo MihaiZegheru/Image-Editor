@@ -103,13 +103,13 @@ command_data_t input_handler_read_select(char *command_text)
     } else {
         command_data.select.command_type = CT_SELECT;
         size_t x1, y1, x2, y2; 
-        utils_word_to_int64(&y1, word);
+        utils_word_to_int64((int64_t *)&y1, word);
         utils_get_word_by_index(2, word, command_text);
-        utils_word_to_int64(&x1, word);
+        utils_word_to_int64((int64_t *)&x1, word);
         utils_get_word_by_index(3, word, command_text);
-        utils_word_to_int64(&y2, word);
+        utils_word_to_int64((int64_t *)&y2, word);
         utils_get_word_by_index(4, word, command_text);
-        utils_word_to_int64(&x2, word);
+        utils_word_to_int64((int64_t *)&x2, word);
         
         command_data.select.point_a.x = x1;
         command_data.select.point_a.y = y1;
@@ -127,9 +127,9 @@ command_data_t input_handler_read_histogram(char *command_text)
 
     char word[25];
     utils_get_word_by_index(1, word, command_text);
-    utils_word_to_int64(&command_data.histogram.resolution.x, word);
+    utils_word_to_int64((int64_t *)&command_data.histogram.resolution.x, word);
     utils_get_word_by_index(2, word, command_text);
-    utils_word_to_int64(&command_data.histogram.resolution.y, word);
+    utils_word_to_int64((int64_t *)&command_data.histogram.resolution.y, word);
 
     return command_data;
 }
@@ -149,7 +149,7 @@ command_data_t input_handler_read_rotate(char *command_text)
     char word[25];
 
     utils_get_word_by_index(1, word, command_text);
-    utils_word_to_int64(&command_data.rotate.angle, word);
+    utils_word_to_int64((int64_t *)&command_data.rotate.angle, word);
 
     return command_data;
 }
