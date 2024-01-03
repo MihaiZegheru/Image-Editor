@@ -83,3 +83,4 @@ check
 image_check
 *.json
 *.rs
+.check.grade
