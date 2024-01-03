@@ -51,6 +51,16 @@ static void status_handler_rotate_angle_invalid()
     printf("Unsupported rotation angle\n");
 }
 
+static void status_handler_equalize_done()
+{
+    printf("Equalization done\n");
+}
+
+static void status_handler_equalize_format_invalid()
+{
+    printf("Black and white image needed\n");
+}
+
 void status_handler_forward(command_data_t command, status_type_t status)
 {
     switch (status) {
@@ -80,6 +90,12 @@ void status_handler_forward(command_data_t command, status_type_t status)
             break;
         case ST_ROTATE_ANGLE_INVALID:
             status_handler_rotate_angle_invalid();
+            break;
+        case ST_EQUALIZE_DONE:
+            status_handler_equalize_done();
+            break;
+        case ST_EQUALIZE_FORMAT_INVALID:
+            status_handler_equalize_format_invalid();
             break;
     }
 }

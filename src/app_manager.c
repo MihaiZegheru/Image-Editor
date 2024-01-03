@@ -138,7 +138,7 @@ status_type_t app_manager_equalize(command_data_t command_data,
 
     if (image_workspace->image->image_data.format != IFT_P2 &&
         image_workspace->image->image_data.format != IFT_P5) {
-        return ST_EQUALIZE_GRAYSCALE_INVALID;
+        return ST_EQUALIZE_FORMAT_INVALID;
     }
     
     const size_t RANGE = UINT8_MAX + 1;
