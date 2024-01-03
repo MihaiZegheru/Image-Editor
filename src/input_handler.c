@@ -174,6 +174,7 @@ command_data_t input_handler_read_save()
     command_data_t command_data;
     command_data.save.command_type = CT_SAVE;
     input_handler_read_string(command_data.save.file_path);
+    printf("%s\n", command_data.save.file_path);
 
     char input[25];
     input_handler_read_string(input);
@@ -198,7 +199,7 @@ command_data_t input_handler_read_exit()
 
 void input_handler_read_string(char *str)
 {
-    scanf("%s", str);
+    scanf("%s[ \n]", str);
 }
 
 void input_handler_read_vector2(vector2_t *coords)

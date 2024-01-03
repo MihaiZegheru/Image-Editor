@@ -178,6 +178,9 @@ static void image_loader_load_pixels(image_t *image, FILE *file)
 image_t *image_loader_load(char *file_path)
 {
     FILE *file = fopen(file_path, "r");
+    if (!file) {
+        return NULL;
+    }
     
     image_data_t image_data = image_loader_load_image_data(file);
     image_t *image = image_new(image_data);

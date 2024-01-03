@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <kernel_utils.h>
+#include <status_handler.h>
 
 status_type_t app_manager_load(command_data_t command_data,
                                image_workspace_t *image_workspace)
@@ -36,13 +37,17 @@ status_type_t app_manager_select(command_data_t command_data,
         return ST_COMMAND_ERROR;
     }
 
+    if (!image_workspace->image) {
+        return ST_IMAGE_NOT_LOADED;
+    }
+
     vector2_t point_a = command_data.select.point_a;
     vector2_t point_b = command_data.select.point_b;
 
     if (point_b.x > image_get_height(image_workspace->image) ||
         point_b.y > image_get_width(image_workspace->image) ||
         point_a.x >= point_b.x || point_a.y >= point_b.y) {
-            return ST_SELECT_CUSTOM_INVALID;
+            return ST_SELECT_CUSTOM_FAILED;
     }
 
     image_workspace->selection_point_a = point_a;
@@ -56,6 +61,10 @@ status_type_t app_manager_select_all(command_data_t command_data,
 {
     if (command_data.select_all.command_type != CT_SELECT_ALL) {
         return ST_COMMAND_ERROR;
+    }
+
+    if (!image_workspace->image) {
+        return ST_IMAGE_NOT_LOADED;
     }
 
     image_workspace->selection_point_a.x = 0;
@@ -273,6 +282,10 @@ static void app_manager_rotate_90_degrees_image(image_workspace_t *image_workspa
     utils_swap_pointers((void **)&image, (void **)&new_image);
     image_delete(new_image);
     image_workspace->image = image;
+
+    command_data_t select_all_command;
+    select_all_command.select_all.command_type = CT_SELECT_ALL;
+    app_manager_select_all(select_all_command, image_workspace);
 }
 
 static void app_manager_rotate_90_degrees(image_workspace_t *image_workspace)
@@ -297,6 +310,10 @@ status_type_t app_manager_rotate(command_data_t command_data,
         return ST_COMMAND_ERROR;
     }
 
+    if (!image_workspace->image) {
+        return ST_IMAGE_NOT_LOADED;
+    }
+
     image_t *image = image_workspace->image;
     vector2_t point_a = image_workspace->selection_point_a;
     vector2_t point_b = image_workspace->selection_point_b;
@@ -310,8 +327,8 @@ status_type_t app_manager_rotate(command_data_t command_data,
         return ST_ROTATE_SELECTION_INVALID;
     }
 
-    if (command_data.rotate.angle % 90 && (command_data.rotate.angle > 360 ||
-        command_data.rotate.angle < -360)) {
+    if (command_data.rotate.angle % 90 || command_data.rotate.angle > 360 ||
+        command_data.rotate.angle < -360) {
         return ST_ROTATE_ANGLE_INVALID;
     }
 
@@ -580,12 +597,15 @@ uint8_t app_manager_tick(image_workspace_t *image_workspace)
             break;
     }
 
+    status_handler_forward(command_data, return_status);
+
     return 0;
 }
 
 uint8_t app_manager_main_loop()
 {
     image_workspace_t image_workspace;
+    image_workspace.image = NULL;
     while (!app_manager_tick(&image_workspace));
 
     return 0;
