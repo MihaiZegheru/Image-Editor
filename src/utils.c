@@ -19,6 +19,12 @@ uint8_t utils_word_to_int64(int64_t *out, char *str)
     *out = 0;
     size_t index = 0;
 
+    uint8_t is_negative = 0;
+    if (str[index] == '-') {
+        is_negative = 1;
+        index++;
+    }
+
     while (str[index] != '\0') {
         if (str[index] > '9' || str[index] < '0') {
             return 0;
@@ -26,7 +32,10 @@ uint8_t utils_word_to_int64(int64_t *out, char *str)
         *out *= 10;
         *out += str[index++] - '0';
     }
-
+    
+    if (is_negative) {
+        *out = -(*out);
+    }
     return 1;
 }
 
@@ -49,6 +58,13 @@ double utils_clamp(double value, double min, double max)
 void utils_swap_pointers(void **a, void **b)
 {
     void *aux = *a;
+    *a = *b;
+    *b = aux;
+}
+
+void utils_swap_int64(int64_t *a, int64_t *b)
+{
+    int64_t aux = *a;
     *a = *b;
     *b = aux;
 }

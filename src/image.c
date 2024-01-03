@@ -18,6 +18,7 @@ image_t *image_new(image_data_t image_data)
 void image_delete(image_t *image)
 {
     free(image->pixels);
+    free(image);
 }
 
 color_t image_get_pixel(vector2_t coords, image_t *image)
@@ -45,8 +46,8 @@ size_t image_get_height(image_t *image)
 
 int8_t image_coords_in_bounds(vector2_t coords, image_t *image)
 {
-    if (coords.x >= image->image_data.height ||
-        coords.y >= image->image_data.width) {
+    if (coords.x >= (int64_t)image->image_data.height ||
+        coords.y >= (int64_t)image->image_data.width) {
         return 0;
     }
     return 1;

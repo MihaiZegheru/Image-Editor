@@ -186,6 +186,8 @@ image_t *image_loader_load(char *file_path)
     image_t *image = image_new(image_data);
     image_loader_load_pixels(image, file);
 
+    fclose(file);
+
     return image;
 }
 
@@ -300,4 +302,6 @@ void image_loader_save(image_t *image, char *file_path)
 
     image_loader_save_image_data(image->image_data, file);
     image_loader_save_pixels(image, file);
+
+    fclose(file);
 }

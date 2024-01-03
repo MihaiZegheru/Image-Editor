@@ -48,8 +48,9 @@ status_type_t app_manager_select(command_data_t command_data,
     vector2_t point_a = command_data.select.point_a;
     vector2_t point_b = command_data.select.point_b;
 
-    if (point_b.x > image_get_height(image_workspace->image) ||
-        point_b.y > image_get_width(image_workspace->image) ||
+    if ((size_t)point_b.x > image_get_height(image_workspace->image) ||
+        (size_t)point_b.y > image_get_width(image_workspace->image) ||
+        point_a.x < 0 || point_a.y < 0 ||
         point_a.x >= point_b.x || point_a.y >= point_b.y) {
             return ST_SELECT_CUSTOM_FAILED;
     }
@@ -112,15 +113,15 @@ status_type_t app_manager_histogram(command_data_t command_data,
     }
 
     size_t max_frequency = 0;
-    for (size_t i = 0; i < histogram_resolution.y; i++) {
+    for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++) {
         max_frequency = utils_max_int64(max_frequency, histogram[i]);
     }
 
-    for (size_t i = 0; i < histogram_resolution.y; i++) {
+    for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++) {
         histogram[i] = (int)(((double)histogram[i] / max_frequency) * histogram_resolution.x);
     }
 
-    for (size_t i = 0; i < histogram_resolution.x; i++) {
+    for (size_t i = 0; i <  (size_t)histogram_resolution.x; i++) {
         printf("%"SCNu64" |\t", histogram[i]);
         for (size_t j = 0; j < histogram[i]; j++) {
             printf("*");
@@ -138,6 +139,10 @@ status_type_t app_manager_equalize(command_data_t command_data,
 {
     if (command_data.equalize.command_type != CT_EQUALIZE) {
         return ST_COMMAND_ERROR;
+    }
+
+    if (!image_workspace->image) {
+        return ST_IMAGE_NOT_LOADED;
     }
 
     if (image_workspace->image->image_data.format != IFT_P2 &&
@@ -208,10 +213,10 @@ static void app_manager_rotate_90_degrees_square(image_workspace_t *image_worksp
     image_t *new_image = image_new(new_image_data);
 
     size_t curr_i = 0;
-    for (size_t i = point_a.x; i < point_b.x; i++) {
+    for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
         size_t curr_j = 0;
 
-        for (size_t j = point_a.y; j < point_b.y; j++) {
+        for (size_t j = point_a.y; j <  (size_t)point_b.y; j++) {
             vector2_t coords;
             coords.x = i;
             coords.y = j;
@@ -228,10 +233,10 @@ static void app_manager_rotate_90_degrees_square(image_workspace_t *image_worksp
     }
 
     curr_i = 0;
-    for (size_t i = point_a.x; i < point_b.x; i++) {
+    for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
         size_t curr_j = 0;
 
-        for (size_t j = point_a.y; j < point_b.y; j++) {
+        for (size_t j = point_a.y; j <  (size_t)point_b.y; j++) {
             vector2_t curr_coords;
             curr_coords.x = curr_i;
             curr_coords.y = curr_j;
@@ -265,10 +270,10 @@ static void app_manager_rotate_90_degrees_image(image_workspace_t *image_workspa
     image_t *new_image = image_new(new_image_data);
 
     size_t curr_i = 0;
-    for (size_t i = point_a.x; i < point_b.x; i++) {
+    for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
         size_t curr_j = 0;
 
-        for (size_t j = point_a.y; j < point_b.y; j++) {
+        for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
             vector2_t coords;
             coords.x = i;
             coords.y = j;
@@ -394,9 +399,9 @@ status_type_t app_manager_crop(command_data_t command_data,
     image_t *new_image = image_new(new_image_data);
 
     size_t curr_i = 0;
-    for (size_t i = point_a.x; i < point_b.x; i++) {
+    for (size_t i = point_a.x; i < (size_t)point_b.x; i++) {
         size_t curr_j = 0;
-        for (size_t j = point_a.y; j < point_b.y; j++) {
+        for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
             vector2_t coords;
             coords.x = i;
             coords.y = j;
@@ -439,10 +444,10 @@ static void app_manager_apply_kernel(
     image_t *new_image = image_new(new_image_data);
 
     size_t curr_i = 0;
-    for (size_t i = point_a.x; i < point_b.x; i++) {
+    for (size_t i = point_a.x; i < (size_t)point_b.x; i++) {
         size_t curr_j = 0;
 
-        for (size_t j = point_a.y; j < point_b.y; j++) {
+        for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
             if (i <= 0 || j <= 0 || i >= image_get_height(image) - 1 ||
                 j >= image_get_width(image) - 1) {
                 continue;
@@ -483,10 +488,10 @@ static void app_manager_apply_kernel(
     }
 
     curr_i = 0;
-    for (size_t i = point_a.x; i < point_b.x; i++) {
+    for (size_t i = point_a.x; i < (size_t)point_b.x; i++) {
         size_t curr_j = 0;
 
-        for (size_t j = point_a.y; j < point_b.y; j++) {
+        for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
             if (i <= 0 || j <= 0 || i >= image_get_height(image) - 1 ||
                 j >= image_get_width(image) - 1) {
                 continue;
@@ -520,7 +525,7 @@ status_type_t app_manager_apply(command_data_t command_data,
         return ST_IMAGE_NOT_LOADED;
     }
 
-    if (image_workspace->image->image_data.format == IFT_P2 &&
+    if (image_workspace->image->image_data.format == IFT_P2 ||
         image_workspace->image->image_data.format == IFT_P5) {
         return ST_APPLY_GRAYSCALE_IMAGE;
     }

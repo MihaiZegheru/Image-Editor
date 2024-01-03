@@ -22,8 +22,8 @@ static void status_handler_select_custom_done(command_data_t command)
 {
     vector2_t point_a = command.select.point_a;
     vector2_t point_b = command.select.point_b;
-    printf("Selected %zu %zu %zu %zu\n", point_a.y, point_a.x, point_b.y,
-           point_b.x);
+    printf("Selected %"SCNd64" %"SCNd64" %"SCNd64" %"SCNd64"\n", 
+           point_a.y, point_a.x, point_b.y, point_b.x);
 }
 
 static void status_handler_select_custom_failed()
@@ -53,7 +53,7 @@ static void status_handler_rotate_angle_invalid()
 
 static void status_handler_equalize_done()
 {
-    printf("Equalization done\n");
+    printf("Equalize done\n");
 }
 
 static void status_handler_equalize_format_invalid()

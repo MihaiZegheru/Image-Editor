@@ -107,14 +107,21 @@ command_data_t input_handler_read_select(char *command_text)
         command_data.select_all.command_type = CT_SELECT_ALL;
     } else {
         command_data.select.command_type = CT_SELECT;
-        size_t x1, y1, x2, y2; 
-        utils_word_to_int64((int64_t *)&y1, word);
+        int64_t x1, y1, x2, y2; 
+        utils_word_to_int64(&y1, word);
         utils_get_word_by_index(2, word, command_text);
-        utils_word_to_int64((int64_t *)&x1, word);
+        utils_word_to_int64(&x1, word);
         utils_get_word_by_index(3, word, command_text);
-        utils_word_to_int64((int64_t *)&y2, word);
+        utils_word_to_int64(&y2, word);
         utils_get_word_by_index(4, word, command_text);
-        utils_word_to_int64((int64_t *)&x2, word);
+        utils_word_to_int64(&x2, word);
+
+        if (x1 > x2) {
+            utils_swap_int64(&x1, &x2);
+        }
+        if (y1 > y2) {
+            utils_swap_int64(&y1, &y2);
+        }
         
         command_data.select.point_a.x = x1;
         command_data.select.point_a.y = y1;
@@ -122,7 +129,8 @@ command_data_t input_handler_read_select(char *command_text)
         command_data.select.point_b.y = y2;
     }
 
-    if (utils_count_words(command_text) != 5) {
+    size_t word_count = utils_count_words(command_text);
+    if (word_count != 2 && word_count != 5) {
         command_data.apply.command_type = CT_NONE;
     }
 
@@ -211,7 +219,8 @@ command_data_t input_handler_read_save(char *command_text)
     command_data_t command_data;
     command_data.save.command_type = CT_SAVE;
 
-    if (utils_count_words(command_text) != 2) {
+    size_t word_count = utils_count_words(command_text);
+    if (word_count != 2 && word_count != 3) {
         command_data.apply.command_type = CT_NONE;
     }
 

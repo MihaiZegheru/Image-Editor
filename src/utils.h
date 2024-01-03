@@ -9,6 +9,7 @@ uint8_t utils_word_to_int64(int64_t *out, char *str);
 int64_t utils_max_int64(uint64_t a, uint64_t b);
 double utils_clamp(double value, double min, double max);
 void utils_swap_pointers(void **a, void **b);
+void utils_swap_int64(int64_t *a, int64_t *b);
 size_t utils_count_words(char *str);
 void utils_get_word_by_index(size_t index, char *word, char *str);
 
