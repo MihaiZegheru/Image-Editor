@@ -108,6 +108,11 @@ static void status_handler_histogram_parameter_invalid()
     printf("Invalid set of parameters\n");
 }
 
+static void status_handler_command_error()
+{
+    printf("Invalid command\n");
+}
+
 void status_handler_forward(command_data_t command, status_type_t status)
 {
     switch (status) {
@@ -164,6 +169,8 @@ void status_handler_forward(command_data_t command, status_type_t status)
         case ST_SAVE_DONE:
             status_handler_save_done(command);
             break;
+        case ST_COMMAND_ERROR:
+            status_handler_command_error();
         default:
             break;
     }

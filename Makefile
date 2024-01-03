@@ -5,7 +5,7 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -std=c99 -g3
 
-BUILD_DIR=build
+BUILD_DIR=.
 SRC_DIR=src
 
 EXE=image_editor

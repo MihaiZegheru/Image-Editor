@@ -18,6 +18,10 @@ status_type_t app_manager_load(command_data_t command_data,
         return ST_COMMAND_ERROR;
     }
 
+    if (image_workspace->image) {
+        image_delete(image_workspace->image);
+    }
+
     image_workspace->image = image_loader_load(command_data.load.file_path);
     if (!image_workspace->image) {
         return ST_LOAD_FAILED;
@@ -411,6 +415,10 @@ status_type_t app_manager_crop(command_data_t command_data,
     image_delete(new_image);
     image_workspace->image = image;
 
+    command_data_t select_all_command;
+    select_all_command.select_all.command_type = CT_SELECT_ALL;
+    app_manager_select_all(select_all_command, image_workspace);
+
     return ST_CROP_DONE;
 }
 
@@ -627,19 +635,20 @@ uint8_t app_manager_tick(image_workspace_t *image_workspace)
             return_status = app_manager_apply(command_data, image_workspace);
             break;
         case CT_SAVE:
-            // TO DO: bug from ASCII check
             return_status = app_manager_save(command_data, image_workspace);
             break;
         case CT_EXIT:
             return_status = app_manager_exit(command_data, image_workspace);
-            return 1;
             break;
         default:
+            return_status = ST_COMMAND_ERROR;
             break;
     }
 
     status_handler_forward(command_data, return_status);
-
+    if (command_data.base.command_type == CT_EXIT) {
+        return 1;
+    }
     return 0;
 }
 
