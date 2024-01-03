@@ -7,34 +7,38 @@
 
 command_data_t input_handler_read_command_data()
 {
-    command_type_t command_type = input_handler_read_command();
+    const size_t MAX_BUFFER = 255;
+    char command_text[MAX_BUFFER];
+    input_handler_read_line(command_text);
+    command_type_t command_type = input_handler_read_command(command_text);
+
     command_data_t command_data;
     command_data.base.command_type = CT_NONE;
 
     switch (command_type) {
         case CT_LOAD:
-            return input_handler_read_load();
+            return input_handler_read_load(command_text);
             break;
         case CT_SELECT:
-            return input_handler_read_select();
+            return input_handler_read_select(command_text);
             break;
         case CT_HISTOGRAM:
-            return input_handler_read_histogram();
+            return input_handler_read_histogram(command_text);
             break;
         case CT_EQUALIZE:
             return input_handler_read_equalize();
             break;
         case CT_ROTATE:
-            return input_handler_read_rotate();
+            return input_handler_read_rotate(command_text);
             break;
         case CT_CROP:
             return input_handler_read_crop();
             break;
         case CT_APPLY:
-            return input_handler_read_apply();
+            return input_handler_read_apply(command_text);
             break;
         case CT_SAVE:
-            return input_handler_read_save();
+            return input_handler_read_save(command_text);
             break;
         case CT_EXIT:
             return input_handler_read_exit();
@@ -45,38 +49,30 @@ command_data_t input_handler_read_command_data()
     }
 }
 
-command_type_t input_handler_read_command()
+command_type_t input_handler_read_command(char *command_text)
 {
     const size_t MAX_BUFFER = 255;
-    char command_text[MAX_BUFFER];
-    scanf("%255[^\n]", command_text);
-    printf("%s\n", command_text);
-
-    char command[MAX_BUFFER];
-    utils_get_word_by_index(0, command, command_text);
-    printf("%s", command);
-    return NULL;
-    // char c;
-    // scanf("%c", &c);
+    char opperation[MAX_BUFFER];
+    utils_get_word_by_index(0, opperation, command_text);
 
     command_type_t command_type;
-    if (!strcmp(command_text, "LOAD")) {
+    if (!strcmp(opperation, "LOAD")) {
         command_type = CT_LOAD;
-    } else if (!strcmp(command_text, "SELECT")) {
+    } else if (!strcmp(opperation, "SELECT")) {
         command_type = CT_SELECT;
-    } else if (!strcmp(command_text, "HISTOGRAM")) {
+    } else if (!strcmp(opperation, "HISTOGRAM")) {
         command_type = CT_HISTOGRAM;
-    } else if (!strcmp(command_text, "EQUALIZE")) {
+    } else if (!strcmp(opperation, "EQUALIZE")) {
         command_type = CT_EQUALIZE;
-    } else if (!strcmp(command_text, "ROTATE")) {
+    } else if (!strcmp(opperation, "ROTATE")) {
         command_type = CT_ROTATE;
-    } else if (!strcmp(command_text, "CROP")) {
+    } else if (!strcmp(opperation, "CROP")) {
         command_type = CT_CROP;
-    } else if (!strcmp(command_text, "APPLY")) {
+    } else if (!strcmp(opperation, "APPLY")) {
         command_type = CT_APPLY;
-    } else if (!strcmp(command_text, "SAVE")) {
+    } else if (!strcmp(opperation, "SAVE")) {
         command_type = CT_SAVE;
-    } else if (!strcmp(command_text, "EXIT")) {
+    } else if (!strcmp(opperation, "EXIT")) {
         command_type = CT_EXIT;
     } else {
         command_type = CT_NONE;
@@ -85,16 +81,15 @@ command_type_t input_handler_read_command()
     return command_type;
 }
 
-command_data_t input_handler_read_load()
+command_data_t input_handler_read_load(char *command_text)
 {
     command_data_t command_data;
     command_data.load.command_type = CT_LOAD;
-    input_handler_read_string(command_data.load.file_path);
-
+    utils_get_word_by_index(1, command_data.load.file_path, command_text);
     return command_data;
 }
 
-command_data_t input_handler_read_select()
+command_data_t input_handler_read_select(char *command_text)
 {
     command_data_t command_data;
 
@@ -120,7 +115,7 @@ command_data_t input_handler_read_select()
     return command_data;
 }
 
-command_data_t input_handler_read_histogram()
+command_data_t input_handler_read_histogram(char *command_text)
 {
     command_data_t command_data;
     command_data.histogram.command_type = CT_HISTOGRAM;
@@ -137,7 +132,7 @@ command_data_t input_handler_read_equalize()
     return command_data;
 }
 
-command_data_t input_handler_read_rotate()
+command_data_t input_handler_read_rotate(char *command_text)
 {
     command_data_t command_data;
     command_data.rotate.command_type = CT_ROTATE;
@@ -154,7 +149,7 @@ command_data_t input_handler_read_crop()
     return command_data;
 }
 
-command_data_t input_handler_read_apply()
+command_data_t input_handler_read_apply(char *command_text)
 {
     command_data_t command_data;
     command_data.apply.command_type = CT_APPLY;
@@ -177,21 +172,18 @@ command_data_t input_handler_read_apply()
     return command_data;
 }
 
-command_data_t input_handler_read_save()
+command_data_t input_handler_read_save(char *command_text)
 {
     command_data_t command_data;
     command_data.save.command_type = CT_SAVE;
-    input_handler_read_string(command_data.save.file_path);
-    printf("%s\n", command_data.save.file_path);
+    utils_get_word_by_index(1, command_data.save.file_path, command_text);
 
-    char input[25];
-    input_handler_read_string(input);
-    if (!strcmp(input, "ascii")) {
+    command_data.save.save_as_ascii = 0;
+
+    char ascii_parameter[25];
+    utils_get_word_by_index(2, ascii_parameter, command_text);
+    if (!strcmp(ascii_parameter, "ascii")) {
         command_data.save.save_as_ascii = 1;
-        printf("AA");
-    } else {
-        command_data.save.save_as_ascii = 0;
-        printf("BB");
     }
 
     return command_data;
@@ -201,7 +193,6 @@ command_data_t input_handler_read_exit()
 {
     command_data_t command_data;
     command_data.exit.command_type = CT_EXIT;
-
     return command_data;
 }
 
@@ -223,4 +214,10 @@ void input_handler_read_int64(int64_t *int64)
 void input_handler_read_size(size_t *size)
 {
     scanf("%zu", size);
+}
+
+void input_handler_read_line(char *str)
+{
+    const size_t MAX_BUFFER = 255;
+    scanf("%255[^\n]%c", str);
 }
