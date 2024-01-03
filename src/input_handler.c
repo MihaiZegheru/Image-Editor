@@ -179,7 +179,6 @@ command_data_t input_handler_read_save(char *command_text)
     utils_get_word_by_index(1, command_data.save.file_path, command_text);
 
     command_data.save.save_as_ascii = 0;
-
     char ascii_parameter[25];
     utils_get_word_by_index(2, ascii_parameter, command_text);
     if (!strcmp(ascii_parameter, "ascii")) {
@@ -218,6 +217,6 @@ void input_handler_read_size(size_t *size)
 
 void input_handler_read_line(char *str)
 {
-    const size_t MAX_BUFFER = 255;
-    scanf("%255[^\n]%c", str);
+    char c;
+    scanf("%[^\n]%c", str, &c);
 }

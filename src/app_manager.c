@@ -591,6 +591,7 @@ status_type_t app_manager_exit(command_data_t command_data,
     }
 
     image_delete(image_workspace->image);
+    return ST_DEFAULT_DONE;
 }
 
 uint8_t app_manager_tick(image_workspace_t *image_workspace)

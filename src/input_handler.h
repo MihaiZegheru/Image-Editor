@@ -24,6 +24,7 @@ void input_handler_read_string(char *str);
 void input_handler_read_vector2(vector2_t *coords);
 void input_handler_read_int64(int64_t *int64);
 void input_handler_read_size(size_t *size);
+void input_handler_read_line(char *str);
 
 
 #endif // INPUT_HANDLER_H__
