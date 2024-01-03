@@ -14,6 +14,22 @@ int64_t utils_string_to_int64(char *str)
     return value;
 }
 
+uint8_t utils_word_to_int64(int64_t *out, char *str)
+{
+    *out = 0;
+    size_t index = 0;
+
+    while (str[index] != '\0') {
+        if (str[index] > '9' || str[index] < '0') {
+            return 0;
+        }
+        *out *= 10;
+        *out += str[index++] - '0';
+    }
+
+    return 1;
+}
+
 int64_t utils_max_int64(uint64_t a, uint64_t b)
 {
     return (a < b) ? b : a;

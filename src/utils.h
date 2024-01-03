@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 int64_t utils_string_to_int64(char *str);
+uint8_t utils_word_to_int64(int64_t *out, char *str);
 int64_t utils_max_int64(uint64_t a, uint64_t b);
 double utils_clamp(double value, double min, double max);
 void utils_swap_pointers(void **a, void **b);

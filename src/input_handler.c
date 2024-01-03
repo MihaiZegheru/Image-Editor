@@ -86,6 +86,7 @@ command_data_t input_handler_read_load(char *command_text)
     command_data_t command_data;
     command_data.load.command_type = CT_LOAD;
     utils_get_word_by_index(1, command_data.load.file_path, command_text);
+
     return command_data;
 }
 
@@ -93,18 +94,22 @@ command_data_t input_handler_read_select(char *command_text)
 {
     command_data_t command_data;
 
-    char input[100];
-    input_handler_read_string(input);
+    // TO DO: Add a word object as struct and migrate methods
+    char word[25];
+    utils_get_word_by_index(1, word, command_text);
 
-    if (!strcmp(input, "ALL")) {
+    if (!strcmp(word, "ALL")) {
         command_data.select_all.command_type = CT_SELECT_ALL;
     } else {
         command_data.select.command_type = CT_SELECT;
         size_t x1, y1, x2, y2; 
-        y1 = utils_string_to_int64(input);
-        input_handler_read_size(&x1);
-        input_handler_read_size(&y2);
-        input_handler_read_size(&x2);
+        utils_word_to_int64(&y1, word);
+        utils_get_word_by_index(2, word, command_text);
+        utils_word_to_int64(&x1, word);
+        utils_get_word_by_index(3, word, command_text);
+        utils_word_to_int64(&y2, word);
+        utils_get_word_by_index(4, word, command_text);
+        utils_word_to_int64(&x2, word);
         
         command_data.select.point_a.x = x1;
         command_data.select.point_a.y = y1;
@@ -119,7 +124,12 @@ command_data_t input_handler_read_histogram(char *command_text)
 {
     command_data_t command_data;
     command_data.histogram.command_type = CT_HISTOGRAM;
-    input_handler_read_vector2(&command_data.histogram.resolution);
+
+    char word[25];
+    utils_get_word_by_index(1, word, command_text);
+    utils_word_to_int64(&command_data.histogram.resolution.x, word);
+    utils_get_word_by_index(2, word, command_text);
+    utils_word_to_int64(&command_data.histogram.resolution.y, word);
 
     return command_data;
 }
@@ -128,7 +138,7 @@ command_data_t input_handler_read_equalize()
 {
     command_data_t command_data;
     command_data.equalize.command_type = CT_EQUALIZE;
-    
+
     return command_data;
 }
 
@@ -136,7 +146,10 @@ command_data_t input_handler_read_rotate(char *command_text)
 {
     command_data_t command_data;
     command_data.rotate.command_type = CT_ROTATE;
-    input_handler_read_int64((int64_t *)&command_data.rotate.angle);
+    char word[25];
+
+    utils_get_word_by_index(1, word, command_text);
+    utils_word_to_int64(&command_data.rotate.angle, word);
 
     return command_data;
 }
@@ -154,16 +167,17 @@ command_data_t input_handler_read_apply(char *command_text)
     command_data_t command_data;
     command_data.apply.command_type = CT_APPLY;
     
-    char input[25];
-    input_handler_read_string(input);
     
-    if (!strcmp(input, "EDGE")) {
+    char word[25];
+    utils_get_word_by_index(1, word, command_text);
+    
+    if (!strcmp(word, "EDGE")) {
         command_data.apply.image_kernel_type = IKT_EDGE;
-    } else if (!strcmp(input, "SHARPEN")) {
+    } else if (!strcmp(word, "SHARPEN")) {
         command_data.apply.image_kernel_type = IKT_SHARPEN;
-    } else if (!strcmp(input, "BLUR")) {
+    } else if (!strcmp(word, "BLUR")) {
         command_data.apply.image_kernel_type = IKT_BOX_BLUR;
-    } else if (!strcmp(input, "GAUSSIAN_BLUR")) {
+    } else if (!strcmp(word, "GAUSSIAN_BLUR")) {
         command_data.apply.image_kernel_type = IKT_GAUSSIAN_BLUR;
     } else {
         command_data.apply.image_kernel_type = IKT_NONE;
@@ -179,9 +193,9 @@ command_data_t input_handler_read_save(char *command_text)
     utils_get_word_by_index(1, command_data.save.file_path, command_text);
 
     command_data.save.save_as_ascii = 0;
-    char ascii_parameter[25];
-    utils_get_word_by_index(2, ascii_parameter, command_text);
-    if (!strcmp(ascii_parameter, "ascii")) {
+    char word[25];
+    utils_get_word_by_index(2, word, command_text);
+    if (!strcmp(word, "ascii")) {
         command_data.save.save_as_ascii = 1;
     }
 
@@ -192,6 +206,7 @@ command_data_t input_handler_read_exit()
 {
     command_data_t command_data;
     command_data.exit.command_type = CT_EXIT;
+
     return command_data;
 }
 
