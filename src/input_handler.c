@@ -85,6 +85,11 @@ command_data_t input_handler_read_load(char *command_text)
 {
     command_data_t command_data;
     command_data.load.command_type = CT_LOAD;
+
+    if (utils_count_words(command_text) < 2) {
+        command_data.apply.command_type = CT_NONE;
+    }
+
     utils_get_word_by_index(1, command_data.load.file_path, command_text);
 
     return command_data;
@@ -117,6 +122,10 @@ command_data_t input_handler_read_select(char *command_text)
         command_data.select.point_b.y = y2;
     }
 
+    if (utils_count_words(command_text) < 5) {
+        command_data.apply.command_type = CT_NONE;
+    }
+
     return command_data;
 }
 
@@ -124,6 +133,10 @@ command_data_t input_handler_read_histogram(char *command_text)
 {
     command_data_t command_data;
     command_data.histogram.command_type = CT_HISTOGRAM;
+
+    if (utils_count_words(command_text) < 3) {
+        command_data.apply.command_type = CT_NONE;
+    }
 
     char word[25];
     utils_get_word_by_index(1, word, command_text);
@@ -146,8 +159,12 @@ command_data_t input_handler_read_rotate(char *command_text)
 {
     command_data_t command_data;
     command_data.rotate.command_type = CT_ROTATE;
-    char word[25];
 
+    if (utils_count_words(command_text) < 2) {
+        command_data.apply.command_type = CT_NONE;
+    }
+
+    char word[25];
     utils_get_word_by_index(1, word, command_text);
     utils_word_to_int64((int64_t *)&command_data.rotate.angle, word);
 
@@ -166,7 +183,10 @@ command_data_t input_handler_read_apply(char *command_text)
 {
     command_data_t command_data;
     command_data.apply.command_type = CT_APPLY;
-    
+
+    if (utils_count_words(command_text) < 2) {
+        command_data.apply.command_type = CT_NONE;
+    }
     
     char word[25];
     utils_get_word_by_index(1, word, command_text);
@@ -190,6 +210,11 @@ command_data_t input_handler_read_save(char *command_text)
 {
     command_data_t command_data;
     command_data.save.command_type = CT_SAVE;
+
+    if (utils_count_words(command_text) < 2) {
+        command_data.apply.command_type = CT_NONE;
+    }
+
     utils_get_word_by_index(1, command_data.save.file_path, command_text);
 
     command_data.save.save_as_ascii = 0;
