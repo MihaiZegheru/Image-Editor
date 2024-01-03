@@ -36,3 +36,17 @@ void utils_swap_pointers(void **a, void **b)
     *a = *b;
     *b = aux;
 }
+
+size_t utils_count_words(char *str)
+{
+    size_t count = 0;
+    size_t index = 0;
+    while (str[index] != '\n') {
+        if (str[index] != ' ' && (str[index - 1] == ' ' || index == 0)) {
+            count++;
+        }
+        index++;
+    }
+
+    return count;
+}
