@@ -9,5 +9,6 @@ int64_t utils_max_int64(uint64_t a, uint64_t b);
 double utils_clamp(double value, double min, double max);
 void utils_swap_pointers(void **a, void **b);
 size_t utils_count_words(char *str);
+void utils_get_word_by_index(size_t index, char *word, char *str)
 
 #endif // UTILS_H__

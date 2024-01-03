@@ -50,3 +50,22 @@ size_t utils_count_words(char *str)
 
     return count;
 }
+
+void utils_get_word_by_index(size_t index, char *word, char *str)
+{
+    size_t count = 0;
+    size_t str_index = 0;
+    size_t word_index = 0;
+    while (str[str_index] != '\n') {
+        if (str[str_index] != ' ' && (str[str_index - 1] == ' ' ||
+            str_index == 0)) {
+            count++;
+        }
+
+        if (str[str_index] != ' ' && count == index) {
+            word[word_index++] = str[str_index];
+        }
+
+        str_index++;
+    }
+}

@@ -49,9 +49,15 @@ command_type_t input_handler_read_command()
 {
     const size_t MAX_BUFFER = 255;
     char command_text[MAX_BUFFER];
-    scanf("%s", command_text);
-    char c;
-    scanf("%c", &c);
+    scanf("%255[^\n]", command_text);
+    printf("%s\n", command_text);
+
+    char command[MAX_BUFFER];
+    utils_get_word_by_index(0, command, command_text);
+    printf("%s", command)
+    return NULL;
+    // char c;
+    // scanf("%c", &c);
 
     command_type_t command_type;
     if (!strcmp(command_text, "LOAD")) {
