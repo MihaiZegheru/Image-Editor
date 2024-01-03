@@ -54,7 +54,7 @@ command_type_t input_handler_read_command()
 
     char command[MAX_BUFFER];
     utils_get_word_by_index(0, command, command_text);
-    printf("%s", command)
+    printf("%s", command);
     return NULL;
     // char c;
     // scanf("%c", &c);
