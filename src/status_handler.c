@@ -103,6 +103,7 @@ void status_handler_forward(command_data_t command, status_type_t status)
             status_handler_equalize_format_invalid();
             break;
         case ST_CROP_DONE:
+            status_handler_crop_done();
             break;
     }
 }
