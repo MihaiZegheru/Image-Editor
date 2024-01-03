@@ -164,6 +164,8 @@ command_data_t input_handler_read_apply()
         command_data.apply.image_kernel_type = IKT_BOX_BLUR;
     } else if (!strcmp(input, "GAUSSIAN_BLUR")) {
         command_data.apply.image_kernel_type = IKT_GAUSSIAN_BLUR;
+    } else {
+        command_data.apply.image_kernel_type = IKT_NONE;
     }
 
     return command_data;

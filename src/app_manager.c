@@ -372,7 +372,11 @@ status_type_t app_manager_crop(command_data_t command_data,
     if (command_data.crop.command_type != CT_CROP) {
         return ST_COMMAND_ERROR;
     }
-    
+
+    if (!image_workspace->image) {
+        return ST_IMAGE_NOT_LOADED;
+    }
+
     image_t *image = image_workspace->image;
     vector2_t point_a = image_workspace->selection_point_a;
     vector2_t point_b = image_workspace->selection_point_b;
@@ -503,6 +507,16 @@ status_type_t app_manager_apply(command_data_t command_data,
     if (command_data.apply.command_type != CT_APPLY) {
         return ST_COMMAND_ERROR;
     }
+
+    if (!image_workspace->image) {
+        return ST_IMAGE_NOT_LOADED;
+    }
+
+    if (image_workspace->image->image_data.format == IFT_P2 &&
+        image_workspace->image->image_data.format == IFT_P5) {
+        ST_APPLY_GRAYSCALE_IMAGE;
+    }
+
     int8_t kernel[3][3];
     double inverse_modifier;
 
@@ -528,6 +542,7 @@ status_type_t app_manager_apply(command_data_t command_data,
                                             image_workspace);
             break;
         default:
+            return ST_APPLY_PARAMETER_INVALID;
             break;
     }
 
@@ -540,6 +555,11 @@ status_type_t app_manager_save(command_data_t command_data,
     if (command_data.save.command_type != CT_SAVE) {
         return ST_COMMAND_ERROR;
     }
+
+    if (!image_workspace->image) {
+        return ST_IMAGE_NOT_LOADED;
+    }
+
     image_loader_save(image_workspace->image, command_data.save.file_path);
     return ST_SELECT_ALL_DONE;
 }

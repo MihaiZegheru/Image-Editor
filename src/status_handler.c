@@ -66,6 +66,38 @@ static void status_handler_crop_done()
     printf("Image cropped\n");
 }
 
+static void status_handler_apply_done(command_data_t command)
+{
+    // TO DO: Add a function that returns coresponding names for IKT
+    switch (command.apply.image_kernel_type) {
+        case IKT_EDGE:
+            printf("APPLY EDGE done\n");
+            break;
+        case IKT_SHARPEN:
+            printf("APPLY SHARPEN done\n");
+            break;
+        case IKT_BOX_BLUR:
+            printf("APPLY BLUR done\n");
+            break;
+        case IKT_GAUSSIAN_BLUR:
+            printf("APPLY GAUSSIAN_BLUR done\n");
+            break;
+        default:
+            break;
+    }
+    
+}
+
+static void status_handler_apply_grayscale_image()
+{
+    printf("Easy, Charlie Chaplin\n");
+}
+
+static void status_handler_apply_parameter_invalid()
+{
+    printf("APPLY parameter invalid\n");
+}
+
 void status_handler_forward(command_data_t command, status_type_t status)
 {
     switch (status) {
@@ -104,6 +136,15 @@ void status_handler_forward(command_data_t command, status_type_t status)
             break;
         case ST_CROP_DONE:
             status_handler_crop_done();
+            break;
+        case ST_APPLY_DONE:
+            status_handler_apply_done(command);
+            break;
+        case ST_APPLY_GRAYSCALE_IMAGE:
+            status_handler_apply_grayscale_image();
+            break;
+        case ST_APPLY_PARAMETER_INVALID:
+            status_handler_apply_parameter_invalid();
             break;
     }
 }
