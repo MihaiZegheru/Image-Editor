@@ -103,17 +103,27 @@ static void status_handler_save_done(command_data_t command)
     printf("Saved %s\n", command.save.file_path);
 }
 
+static void status_handler_histogram_parameter_invalid()
+{
+    printf("Invalid set of parameters\n");
+}
+
 void status_handler_forward(command_data_t command, status_type_t status)
 {
     switch (status) {
+        case ST_DEFAULT_DONE:
+            break;
+        case ST_IMAGE_NOT_LOADED:
+            status_handler_image_not_loaded();
+            break;
+        case ST_IMAGE_NOT_GRAYSCALE:
+            status_handler_equalize_format_invalid();
+            break;
         case ST_LOAD_DONE:
             status_handler_load_done(command);
             break;
         case ST_LOAD_FAILED:
             status_handler_load_failed(command);
-            break;
-        case ST_IMAGE_NOT_LOADED:
-            status_handler_image_not_loaded();
             break;
         case ST_SELECT_CUSTOM_DONE:
             status_handler_select_custom_done(command);
@@ -136,9 +146,6 @@ void status_handler_forward(command_data_t command, status_type_t status)
         case ST_EQUALIZE_DONE:
             status_handler_equalize_done();
             break;
-        case ST_EQUALIZE_FORMAT_INVALID:
-            status_handler_equalize_format_invalid();
-            break;
         case ST_CROP_DONE:
             status_handler_crop_done();
             break;
@@ -151,8 +158,13 @@ void status_handler_forward(command_data_t command, status_type_t status)
         case ST_APPLY_PARAMETER_INVALID:
             status_handler_apply_parameter_invalid();
             break;
+        case ST_HISTOGRAM_PARAMETER_INVALID:
+            status_handler_histogram_parameter_invalid();
+            break;
         case ST_SAVE_DONE:
             status_handler_save_done(command);
+            break;
+        default:
             break;
     }
 }

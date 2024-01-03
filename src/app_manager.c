@@ -88,7 +88,7 @@ status_type_t app_manager_histogram(command_data_t command_data,
 
     if (image_workspace->image->image_data.format != IFT_P2 &&
         image_workspace->image->image_data.format != IFT_P5) {
-        return ST_HISTOGRAM_GRAYSCALE_INVALID;
+        return ST_IMAGE_NOT_GRAYSCALE;
     }
 
     size_t *histogram = calloc(histogram_resolution.y, sizeof(size_t));
@@ -126,7 +126,7 @@ status_type_t app_manager_histogram(command_data_t command_data,
 
     free(histogram);
 
-    return ST_HISTOGRAM_DONE;
+    return ST_DEFAULT_DONE;
 }
 
 status_type_t app_manager_equalize(command_data_t command_data,
@@ -138,7 +138,7 @@ status_type_t app_manager_equalize(command_data_t command_data,
 
     if (image_workspace->image->image_data.format != IFT_P2 &&
         image_workspace->image->image_data.format != IFT_P5) {
-        return ST_EQUALIZE_FORMAT_INVALID;
+        return ST_IMAGE_NOT_GRAYSCALE;
     }
     
     const size_t RANGE = UINT8_MAX + 1;
@@ -570,8 +570,12 @@ status_type_t app_manager_exit(command_data_t command_data,
     if (command_data.exit.command_type != CT_EXIT) {
         return ST_COMMAND_ERROR;
     }
+
+    if (!image_workspace->image) {
+        return ST_IMAGE_NOT_LOADED;
+    }
+
     image_delete(image_workspace->image);
-    return ST_EXIT;
 }
 
 uint8_t app_manager_tick(image_workspace_t *image_workspace)
@@ -607,10 +611,10 @@ uint8_t app_manager_tick(image_workspace_t *image_workspace)
             return_status = app_manager_apply(command_data, image_workspace);
             break;
         case CT_SAVE:
+            // TO DO: bug from ASCII check
             return_status = app_manager_save(command_data, image_workspace);
             break;
         case CT_EXIT:
-            // TO DO: EXIT bug from ASCII check
             return_status = app_manager_exit(command_data, image_workspace);
             return 1;
             break;
