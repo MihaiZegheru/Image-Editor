@@ -514,7 +514,7 @@ status_type_t app_manager_apply(command_data_t command_data,
 
     if (image_workspace->image->image_data.format == IFT_P2 &&
         image_workspace->image->image_data.format == IFT_P5) {
-        ST_APPLY_GRAYSCALE_IMAGE;
+        return ST_APPLY_GRAYSCALE_IMAGE;
     }
 
     int8_t kernel[3][3];
@@ -561,7 +561,7 @@ status_type_t app_manager_save(command_data_t command_data,
     }
 
     image_loader_save(image_workspace->image, command_data.save.file_path);
-    return ST_SELECT_ALL_DONE;
+    return ST_SAVE_DONE;
 }
 
 status_type_t app_manager_exit(command_data_t command_data,
@@ -610,7 +610,7 @@ uint8_t app_manager_tick(image_workspace_t *image_workspace)
             return_status = app_manager_save(command_data, image_workspace);
             break;
         case CT_EXIT:
-            // TO DO: EXIT bug
+            // TO DO: EXIT bug from ASCII check
             return_status = app_manager_exit(command_data, image_workspace);
             return 1;
             break;

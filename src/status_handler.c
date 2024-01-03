@@ -98,6 +98,11 @@ static void status_handler_apply_parameter_invalid()
     printf("APPLY parameter invalid\n");
 }
 
+static void status_handler_save_done(command_data_t command)
+{
+    printf("Saved %s\n", command.save.file_path);
+}
+
 void status_handler_forward(command_data_t command, status_type_t status)
 {
     switch (status) {
@@ -145,6 +150,9 @@ void status_handler_forward(command_data_t command, status_type_t status)
             break;
         case ST_APPLY_PARAMETER_INVALID:
             status_handler_apply_parameter_invalid();
+            break;
+        case ST_SAVE_DONE:
+            status_handler_save_done(command);
             break;
     }
 }
