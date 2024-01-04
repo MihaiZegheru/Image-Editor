@@ -41,6 +41,8 @@ static void app_manager_rotate_90_degrees_square
 		(image_workspace_t *image_workspace);
 static void app_manager_rotate_90_degrees_image
 		(image_workspace_t *image_workspace);
+static void app_manager_rotate_90_compute_rotated
+		(vector2_t point_a, vector2_t point_b, image_t *out, image_t *image);
 static void app_manager_apply_kernel
 		(double inverse_modifier, __s8 kernel[3][3],
 		 image_workspace_t *image_workspace);
@@ -299,7 +301,29 @@ static status_type_t app_manager_equalize(command_data_t command_data,
 	return ST_EQUALIZE_DONE;
 }
 
-// TO DO: ADD separate function for selection rotation
+static void app_manager_rotate_90_compute_rotated
+		(vector2_t point_a, vector2_t point_b, image_t *out, image_t *image)
+{
+	size_t curr_i = 0;
+	for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
+		size_t curr_j = 0;
+
+		for (size_t j = point_a.y; j <  (size_t)point_b.y; j++) {
+			vector2_t coords;
+			coords.x = i;
+			coords.y = j;
+			color_t pixel = image_get_pixel(coords, image);
+
+			vector2_t curr_coords;
+			curr_coords.x = curr_j;
+			curr_coords.y = image_get_width(out) - curr_i - 1;
+			image_set_pixel(curr_coords, pixel, out);
+
+			curr_j++;
+		}
+		curr_i++;
+	}
+}
 
 static void app_manager_rotate_90_degrees_square
 		(image_workspace_t *image_workspace)
@@ -315,28 +339,9 @@ static void app_manager_rotate_90_degrees_square
 	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
 
 	image_t *new_image = image_new(new_image_data);
+	app_manager_rotate_90_compute_rotated(point_a, point_b, new_image, image);
 
 	size_t curr_i = 0;
-	for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
-		size_t curr_j = 0;
-
-		for (size_t j = point_a.y; j <  (size_t)point_b.y; j++) {
-			vector2_t coords;
-			coords.x = i;
-			coords.y = j;
-			color_t pixel = image_get_pixel(coords, image);
-
-			vector2_t curr_coords;
-			curr_coords.x = curr_j;
-			curr_coords.y = new_image_data.width - curr_i - 1;
-			image_set_pixel(curr_coords, pixel, new_image);
-
-			curr_j++;
-		}
-		curr_i++;
-	}
-
-	curr_i = 0;
 	for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
 		size_t curr_j = 0;
 
@@ -373,26 +378,8 @@ static void app_manager_rotate_90_degrees_image
 	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
 
 	image_t *new_image = image_new(new_image_data);
+	app_manager_rotate_90_compute_rotated(point_a, point_b, new_image, image);
 
-	size_t curr_i = 0;
-	for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
-		size_t curr_j = 0;
-
-		for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
-			vector2_t coords;
-			coords.x = i;
-			coords.y = j;
-			color_t pixel = image_get_pixel(coords, image);
-
-			vector2_t curr_coords;
-			curr_coords.x = curr_j;
-			curr_coords.y = new_image_data.width - curr_i - 1;
-			image_set_pixel(curr_coords, pixel, new_image);
-
-			curr_j++;
-		}
-		curr_i++;
-	}
 	utils_swap_pointers((void **)&image, (void **)&new_image);
 	image_delete(new_image);
 	image_workspace->image = image;
