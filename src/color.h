@@ -1,12 +1,12 @@
 #ifndef COLOR_H__
 #define COLOR_H__
 
-#include <stdint.h>
+#include <linux/types.h>
 
 typedef struct {
-	uint8_t r;
-	uint8_t g;
-	uint8_t b;
+	__u8 r;
+	__u8 g;
+	__u8 b;
 } color_t;
 
 #endif // COLOR_H__

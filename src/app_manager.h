@@ -7,8 +7,8 @@
 #include <status_types.h>
 #include <command_data.h>
 
-uint8_t app_manager_main_loop();
-uint8_t app_manager_tick();
+uint8_t app_manager_main_loop(void);
+uint8_t app_manager_tick(image_workspace_t *image_workspace);
 
 status_type_t app_manager_load(command_data_t command_data,
 							   image_workspace_t *image_workspace);
@@ -25,7 +25,7 @@ status_type_t app_manager_rotate(command_data_t command_data,
 status_type_t app_manager_crop(command_data_t command_data,
 							   image_workspace_t *image_workspace);
 status_type_t app_manager_apply(command_data_t command_data,
-							   image_workspace_t *image_workspace);
+								image_workspace_t *image_workspace);
 status_type_t app_manager_save(command_data_t command_data,
 							   image_workspace_t *image_workspace);
 status_type_t app_manager_exit(command_data_t command_data,

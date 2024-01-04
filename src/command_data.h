@@ -7,6 +7,7 @@
 #include <inttypes.h>
 #include <image_kernel_type.h>
 #include <image_format_type.h>
+#include <linux/types.h>
 
 typedef struct {
 	command_type_t command_type;
@@ -38,7 +39,7 @@ typedef struct {
 
 typedef struct {
 	command_type_t command_type;
-	int16_t angle;
+	__s16 angle;
 } cd_rotate_t;
 
 typedef struct {
@@ -53,7 +54,7 @@ typedef struct {
 typedef struct {
 	command_type_t command_type;
 	char file_path[100];
-	uint8_t save_as_ascii;
+	__u8 save_as_ascii;
 } cd_save_t;
 
 typedef struct {

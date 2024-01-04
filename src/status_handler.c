@@ -1,7 +1,6 @@
 #include <status_handler.h>
 
 #include <stdio.h>
-#include <inttypes.h>
 
 static void status_handler_load_done(command_data_t command)
 {
@@ -22,7 +21,7 @@ static void status_handler_select_custom_done(command_data_t command)
 {
 	vector2_t point_a = command.select.point_a;
 	vector2_t point_b = command.select.point_b;
-	printf("Selected %" SCNd64 " %" SCNd64 " %" SCNd64 " %" SCNd64 "\n",
+	printf("Selected %lld %lld %lld %lld\n",
 		   point_a.y, point_a.x, point_b.y, point_b.x);
 }
 
@@ -38,7 +37,7 @@ static void status_handler_select_all_done(void)
 
 static void status_handler_rotate_done(command_data_t command)
 {
-	printf("Rotated %" SCNd16 "\n", command.rotate.angle);
+	printf("Rotated %d\n", command.rotate.angle);
 }
 
 static void status_handler_rotate_selection_invalid(void)

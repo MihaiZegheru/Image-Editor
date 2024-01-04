@@ -1,7 +1,7 @@
 #include <app_manager.h>
 
 #include <image_loader.h>
-#include <inttypes.h>
+#include <linux/types.h>
 #include <input_handler.h>
 #include <image_workspace.h>
 #include <string.h>
@@ -14,18 +14,15 @@
 status_type_t app_manager_load(command_data_t command_data,
 							   image_workspace_t *image_workspace)
 {
-	if (command_data.load.command_type != CT_LOAD) {
+	if (command_data.load.command_type != CT_LOAD)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (image_workspace->image) {
+	if (image_workspace->image)
 		image_delete(image_workspace->image);
-	}
 
 	image_workspace->image = image_loader_load(command_data.load.file_path);
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_LOAD_FAILED;
-	}
 
 	command_data_t select_all_command;
 	select_all_command.select_all.command_type = CT_SELECT_ALL;
@@ -37,13 +34,11 @@ status_type_t app_manager_load(command_data_t command_data,
 status_type_t app_manager_select(command_data_t command_data,
 								 image_workspace_t *image_workspace)
 {
-	if (command_data.select.command_type != CT_SELECT) {
+	if (command_data.select.command_type != CT_SELECT)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	}
 
 	vector2_t point_a = command_data.select.point_a;
 	vector2_t point_b = command_data.select.point_b;
@@ -51,9 +46,8 @@ status_type_t app_manager_select(command_data_t command_data,
 	if ((size_t)point_b.x > image_get_height(image_workspace->image) ||
 		(size_t)point_b.y > image_get_width(image_workspace->image) ||
 		point_a.x < 0 || point_a.y < 0 ||
-		point_a.x >= point_b.x || point_a.y >= point_b.y) {
-			return ST_SELECT_CUSTOM_FAILED;
-	}
+		point_a.x >= point_b.x || point_a.y >= point_b.y)
+		return ST_SELECT_CUSTOM_FAILED;
 
 	image_workspace->selection_point_a = point_a;
 	image_workspace->selection_point_b = point_b;
@@ -64,13 +58,11 @@ status_type_t app_manager_select(command_data_t command_data,
 status_type_t app_manager_select_all(command_data_t command_data,
 									 image_workspace_t *image_workspace)
 {
-	if (command_data.select_all.command_type != CT_SELECT_ALL) {
+	if (command_data.select_all.command_type != CT_SELECT_ALL)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	}
 
 	image_workspace->selection_point_a.x = 0;
 	image_workspace->selection_point_a.y = 0;
@@ -85,25 +77,20 @@ status_type_t app_manager_select_all(command_data_t command_data,
 status_type_t app_manager_histogram(command_data_t command_data,
 									image_workspace_t *image_workspace)
 {
-	if (command_data.histogram.command_type != CT_HISTOGRAM) {
+	if (command_data.histogram.command_type != CT_HISTOGRAM)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	}
 
 	vector2_t histogram_resolution = command_data.histogram.resolution;
 	if (histogram_resolution.y % 2 || histogram_resolution.y < 2 ||
-		histogram_resolution.y > 256) {
+		histogram_resolution.y > 256)
 		return ST_COMMAND_ERROR;
-	}
-
 
 	if (image_workspace->image->image_data.format != IFT_P2 &&
-		image_workspace->image->image_data.format != IFT_P5) {
+		image_workspace->image->image_data.format != IFT_P5)
 		return ST_IMAGE_NOT_GRAYSCALE;
-	}
 
 	size_t *histogram = calloc(histogram_resolution.y, sizeof(size_t));
 	image_t *image = image_workspace->image;
@@ -114,28 +101,26 @@ status_type_t app_manager_histogram(command_data_t command_data,
 			coords.x = i;
 			coords.y = j;
 
-			uint8_t value =  image_get_pixel(coords, image).r;
+			__u8 value =  image_get_pixel(coords, image).r;
 
-			uint8_t bin_index = value / (256 / histogram_resolution.y);
+			__u8 bin_index = value / (256 / histogram_resolution.y);
 			histogram[bin_index]++;
 		}
 	}
 
 	size_t max_frequency = 0;
-	for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++) {
+	for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++)
 		max_frequency = utils_max_int64(max_frequency, histogram[i]);
-	}
 
-	for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++) {
+	for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++)
 		histogram[i] = (int)(((double)histogram[i] / max_frequency) *
 						histogram_resolution.x);
-	}
 
 	for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++) {
-		printf("%"SCNu64"\t|\t", histogram[i]);
-		for (size_t j = 0; j < histogram[i]; j++) {
+		printf("%lu\t|\t", histogram[i]);
+		for (size_t j = 0; j < histogram[i]; j++)
 			printf("*");
-		}
+
 		printf("\n");
 	}
 
@@ -147,18 +132,15 @@ status_type_t app_manager_histogram(command_data_t command_data,
 status_type_t app_manager_equalize(command_data_t command_data,
 								   image_workspace_t *image_workspace)
 {
-	if (command_data.equalize.command_type != CT_EQUALIZE) {
+	if (command_data.equalize.command_type != CT_EQUALIZE)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	}
 
 	if (image_workspace->image->image_data.format != IFT_P2 &&
-		image_workspace->image->image_data.format != IFT_P5) {
+		image_workspace->image->image_data.format != IFT_P5)
 		return ST_IMAGE_NOT_GRAYSCALE;
-	}
 
 	const size_t RANGE = UINT8_MAX + 1;
 	size_t histogram[RANGE];
@@ -172,18 +154,19 @@ status_type_t app_manager_equalize(command_data_t command_data,
 			coords.x = i;
 			coords.y = j;
 
-			uint8_t value =  image_get_pixel(coords, image).r;
+			__u8 value =  image_get_pixel(coords, image).r;
 			histogram[value]++;
 		}
 	}
 
 	size_t area = image_get_height(image) * image_get_width(image);
-	uint8_t equalized_values_link[RANGE];
-	uint32_t frv_sum = 0;
+	__u8 equalized_values_link[RANGE];
+	__u32 frv_sum = 0;
 
 	for (size_t i = 0; i < RANGE; i++) {
 		frv_sum += histogram[i];
-		equalized_values_link[i] = utils_clamp(round(255 * ((double)frv_sum / area)), 0, 255);
+		equalized_values_link[i] =
+				utils_clamp(round(255 * ((double)frv_sum / area)), 0, 255);
 	}
 
 	for (size_t i = 0; i < image_get_height(image); i++) {
@@ -192,8 +175,8 @@ status_type_t app_manager_equalize(command_data_t command_data,
 			coords.x = i;
 			coords.y = j;
 
-			uint8_t value =  image_get_pixel(coords, image).r;
-			uint8_t new_value = equalized_values_link[value];
+			__u8 value =  image_get_pixel(coords, image).r;
+			__u8 new_value = equalized_values_link[value];
 
 			color_t new_color;
 			new_color.r = new_value;
@@ -208,7 +191,8 @@ status_type_t app_manager_equalize(command_data_t command_data,
 
 // TO DO: ADD separate function for selection rotation
 
-static void app_manager_rotate_90_degrees_square(image_workspace_t *image_workspace)
+static void app_manager_rotate_90_degrees_square
+		(image_workspace_t *image_workspace)
 {
 	image_t *image = image_workspace->image;
 	vector2_t point_a = image_workspace->selection_point_a;
@@ -265,7 +249,8 @@ static void app_manager_rotate_90_degrees_square(image_workspace_t *image_worksp
 	image_delete(new_image);
 }
 
-static void app_manager_rotate_90_degrees_image(image_workspace_t *image_workspace)
+static void app_manager_rotate_90_degrees_image
+		(image_workspace_t *image_workspace)
 {
 	image_t *image = image_workspace->image;
 	vector2_t point_a = image_workspace->selection_point_a;
@@ -291,7 +276,7 @@ static void app_manager_rotate_90_degrees_image(image_workspace_t *image_workspa
 
 			vector2_t curr_coords;
 			curr_coords.x = curr_j;
-			curr_coords.y = new_image_data.width- curr_i - 1;
+			curr_coords.y = new_image_data.width - curr_i - 1;
 			image_set_pixel(curr_coords, pixel, new_image);
 
 			curr_j++;
@@ -315,23 +300,20 @@ static void app_manager_rotate_90_degrees(image_workspace_t *image_workspace)
 	size_t selection_height = point_b.x - point_a.x;
 	size_t selection_width = point_b.y - point_a.y;
 
-	if (selection_height == selection_width) {
+	if (selection_height == selection_width)
 		app_manager_rotate_90_degrees_square(image_workspace);
-	} else {
+	else
 		app_manager_rotate_90_degrees_image(image_workspace);
-	}
 }
 
 status_type_t app_manager_rotate(command_data_t command_data,
 								 image_workspace_t *image_workspace)
 {
-	if (command_data.rotate.command_type != CT_ROTATE) {
+	if (command_data.rotate.command_type != CT_ROTATE)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	}
 
 	image_t *image = image_workspace->image;
 	vector2_t point_a = image_workspace->selection_point_a;
@@ -341,45 +323,43 @@ status_type_t app_manager_rotate(command_data_t command_data,
 	size_t selection_width = point_b.y - point_a.y;
 
 	if ((selection_height != image_get_height(image) &&
-		selection_width != image_get_width(image)) &&
-		selection_height != selection_width) {
+		 selection_width != image_get_width(image)) &&
+		selection_height != selection_width)
 		return ST_ROTATE_SELECTION_INVALID;
-	}
 
 	if (command_data.rotate.angle % 90 || command_data.rotate.angle > 360 ||
-		command_data.rotate.angle < -360) {
+		command_data.rotate.angle < -360)
 		return ST_ROTATE_ANGLE_INVALID;
-	}
 
 	switch (command_data.rotate.angle) {
-		case 360:
-			break;
-		case -360:
-			break;
-		case 270:
-			app_manager_rotate_90_degrees(image_workspace);
-			app_manager_rotate_90_degrees(image_workspace);
-			app_manager_rotate_90_degrees(image_workspace);
-			break;
-		case -270:
-			app_manager_rotate_90_degrees(image_workspace);
-			break;
-		case 180:
-			app_manager_rotate_90_degrees(image_workspace);
-			app_manager_rotate_90_degrees(image_workspace);
-			break;
-		case -180:
-			app_manager_rotate_90_degrees(image_workspace);
-			app_manager_rotate_90_degrees(image_workspace);
-			break;
-		case 90:
-			app_manager_rotate_90_degrees(image_workspace);
-			break;
-		case -90:
-			app_manager_rotate_90_degrees(image_workspace);
-			app_manager_rotate_90_degrees(image_workspace);
-			app_manager_rotate_90_degrees(image_workspace);
-			break;
+	case 360:
+		break;
+	case -360:
+		break;
+	case 270:
+		app_manager_rotate_90_degrees(image_workspace);
+		app_manager_rotate_90_degrees(image_workspace);
+		app_manager_rotate_90_degrees(image_workspace);
+		break;
+	case -270:
+		app_manager_rotate_90_degrees(image_workspace);
+		break;
+	case 180:
+		app_manager_rotate_90_degrees(image_workspace);
+		app_manager_rotate_90_degrees(image_workspace);
+		break;
+	case -180:
+		app_manager_rotate_90_degrees(image_workspace);
+		app_manager_rotate_90_degrees(image_workspace);
+		break;
+	case 90:
+		app_manager_rotate_90_degrees(image_workspace);
+		break;
+	case -90:
+		app_manager_rotate_90_degrees(image_workspace);
+		app_manager_rotate_90_degrees(image_workspace);
+		app_manager_rotate_90_degrees(image_workspace);
+		break;
 	}
 
 	return ST_ROTATE_DONE;
@@ -388,13 +368,11 @@ status_type_t app_manager_rotate(command_data_t command_data,
 status_type_t app_manager_crop(command_data_t command_data,
 							   image_workspace_t *image_workspace)
 {
-	if (command_data.crop.command_type != CT_CROP) {
+	if (command_data.crop.command_type != CT_CROP)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	}
 
 	image_t *image = image_workspace->image;
 	vector2_t point_a = image_workspace->selection_point_a;
@@ -437,9 +415,8 @@ status_type_t app_manager_crop(command_data_t command_data,
 	return ST_CROP_DONE;
 }
 
-static void app_manager_apply_kernel(
-		double inverse_modifier, int8_t kernel[3][3],
-		image_workspace_t *image_workspace)
+static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
+									 image_workspace_t *image_workspace)
 {
 	image_t *image = image_workspace->image;
 	vector2_t point_a = image_workspace->selection_point_a;
@@ -456,24 +433,21 @@ static void app_manager_apply_kernel(
 	size_t curr_i = 0;
 	for (size_t i = point_a.x; i < (size_t)point_b.x; i++) {
 		size_t curr_j = 0;
-
 		for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
 			if (i <= 0 || j <= 0 || i >= image_get_height(image) - 1 ||
-				j >= image_get_width(image) - 1) {
+				j >= image_get_width(image) - 1)
 				continue;
-			}
 
-			int16_t sum_r = 0;
-			int16_t sum_g = 0;
-			int16_t sum_b = 0;
-			for (int8_t k = -1; k <= 1; k++) {
-				for (int8_t l = -1; l <= 1; l++) {
+			__s16 sum_r = 0;
+			__s16 sum_g = 0;
+			__s16 sum_b = 0;
+			for (__s8 k = -1; k <= 1; k++) {
+				for (__s8 l = -1; l <= 1; l++) {
 					vector2_t neighbour_coords;
 					neighbour_coords.x = i + k;
 					neighbour_coords.y = j + l;
-					if (!image_coords_in_bounds(neighbour_coords, image)) {
+					if (!image_coords_in_bounds(neighbour_coords, image))
 						continue;
-					}
 
 					color_t neighbour_pixel = image_get_pixel(neighbour_coords,
 															  image);
@@ -500,12 +474,11 @@ static void app_manager_apply_kernel(
 	curr_i = 0;
 	for (size_t i = point_a.x; i < (size_t)point_b.x; i++) {
 		size_t curr_j = 0;
-
 		for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
 			if (i <= 0 || j <= 0 || i >= image_get_height(image) - 1 ||
-				j >= image_get_width(image) - 1) {
+				j >= image_get_width(image) - 1)
 				continue;
-			}
+
 			vector2_t curr_coords;
 			curr_coords.x = curr_i;
 			curr_coords.y = curr_j;
@@ -525,48 +498,40 @@ static void app_manager_apply_kernel(
 }
 
 status_type_t app_manager_apply(command_data_t command_data,
-							   image_workspace_t *image_workspace)
+								image_workspace_t *image_workspace)
 {
-	if (command_data.apply.command_type != CT_APPLY) {
+	if (command_data.apply.command_type != CT_APPLY)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	}
 
 	if (image_workspace->image->image_data.format == IFT_P2 ||
-		image_workspace->image->image_data.format == IFT_P5) {
+		image_workspace->image->image_data.format == IFT_P5)
 		return ST_APPLY_GRAYSCALE_IMAGE;
-	}
 
-	int8_t kernel[3][3];
+	__s8 kernel[3][3];
 	double inverse_modifier;
 
 	switch (command_data.apply.image_kernel_type) {
-		case IKT_EDGE:
-			kernel_utils_edge(&inverse_modifier, kernel);
-			app_manager_apply_kernel(inverse_modifier, kernel,
-											image_workspace);
-			break;
-		case IKT_SHARPEN:
-			kernel_utils_sharpen(&inverse_modifier, kernel);
-			app_manager_apply_kernel(inverse_modifier, kernel,
-											image_workspace);
-			break;
-		case IKT_BOX_BLUR:
-			kernel_utils_box_blur(&inverse_modifier, kernel);
-			app_manager_apply_kernel(inverse_modifier, kernel,
-											image_workspace);
-			break;
-		case IKT_GAUSSIAN_BLUR:
-			kernel_utils_gaussian_blur(&inverse_modifier, kernel);
-			app_manager_apply_kernel(inverse_modifier, kernel,
-											image_workspace);
-			break;
-		default:
-			return ST_APPLY_PARAMETER_INVALID;
-			break;
+	case IKT_EDGE:
+		kernel_utils_edge(&inverse_modifier, kernel);
+		app_manager_apply_kernel(inverse_modifier, kernel, image_workspace);
+		break;
+	case IKT_SHARPEN:
+		kernel_utils_sharpen(&inverse_modifier, kernel);
+		app_manager_apply_kernel(inverse_modifier, kernel, image_workspace);
+		break;
+	case IKT_BOX_BLUR:
+		kernel_utils_box_blur(&inverse_modifier, kernel);
+		app_manager_apply_kernel(inverse_modifier, kernel, image_workspace);
+		break;
+	case IKT_GAUSSIAN_BLUR:
+		kernel_utils_gaussian_blur(&inverse_modifier, kernel);
+		app_manager_apply_kernel(inverse_modifier, kernel, image_workspace);
+		break;
+	default:
+		return ST_APPLY_PARAMETER_INVALID;
 	}
 
 	return ST_APPLY_DONE;
@@ -575,27 +540,23 @@ status_type_t app_manager_apply(command_data_t command_data,
 status_type_t app_manager_save(command_data_t command_data,
 							   image_workspace_t *image_workspace)
 {
-	if (command_data.save.command_type != CT_SAVE) {
+	if (command_data.save.command_type != CT_SAVE)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	}
 
-	image_data_t *image_data = &(image_workspace->image->image_data);
+	image_data_t *image_data = &image_workspace->image->image_data;
 	if (command_data.save.save_as_ascii) {
-		if (image_data->format == IFT_P5) {
+		if (image_data->format == IFT_P5)
 			image_data->format = IFT_P2;
-		} else if (image_data->format == IFT_P6) {
+		else if (image_data->format == IFT_P6)
 			image_data->format = IFT_P3;
-		}
 	} else {
-		if (image_data->format == IFT_P2) {
+		if (image_data->format == IFT_P2)
 			image_data->format = IFT_P5;
-		} else if (image_data->format == IFT_P3) {
+		else if (image_data->format == IFT_P3)
 			image_data->format = IFT_P6;
-		}
 	}
 
 	image_loader_save(image_workspace->image, command_data.save.file_path);
@@ -605,13 +566,11 @@ status_type_t app_manager_save(command_data_t command_data,
 status_type_t app_manager_exit(command_data_t command_data,
 							   image_workspace_t *image_workspace)
 {
-	if (command_data.exit.command_type != CT_EXIT) {
+	if (command_data.exit.command_type != CT_EXIT)
 		return ST_COMMAND_ERROR;
-	}
 
-	if (!image_workspace->image) {
+	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	}
 
 	image_delete(image_workspace->image);
 	return ST_DEFAULT_DONE;
@@ -623,55 +582,56 @@ uint8_t app_manager_tick(image_workspace_t *image_workspace)
 
 	status_type_t return_status;
 	switch (command_data.base.command_type) {
-		case CT_LOAD:
-			return_status = app_manager_load(command_data, image_workspace);
-			break;
-		case CT_SELECT:
-			return_status = app_manager_select(command_data, image_workspace);
-			break;
-		case CT_SELECT_ALL:
-			return_status = app_manager_select_all(command_data,
-												   image_workspace);
-			break;
-		case CT_HISTOGRAM:
-			return_status = app_manager_histogram(command_data,
-												  image_workspace);
-			break;
-		case CT_EQUALIZE:
-			return_status = app_manager_equalize(command_data, image_workspace);
-			break;
-		case CT_ROTATE:
-			return_status = app_manager_rotate(command_data, image_workspace);
-			break;
-		case CT_CROP:
-			return_status = app_manager_crop(command_data, image_workspace);
-			break;
-		case CT_APPLY:
-			return_status = app_manager_apply(command_data, image_workspace);
-			break;
-		case CT_SAVE:
-			return_status = app_manager_save(command_data, image_workspace);
-			break;
-		case CT_EXIT:
-			return_status = app_manager_exit(command_data, image_workspace);
-			break;
-		default:
-			return_status = ST_COMMAND_ERROR;
-			break;
+	case CT_LOAD:
+		return_status = app_manager_load(command_data, image_workspace);
+		break;
+	case CT_SELECT:
+		return_status = app_manager_select(command_data, image_workspace);
+		break;
+	case CT_SELECT_ALL:
+		return_status = app_manager_select_all(command_data, image_workspace);
+		break;
+	case CT_HISTOGRAM:
+		return_status = app_manager_histogram(command_data, image_workspace);
+		break;
+	case CT_EQUALIZE:
+		return_status = app_manager_equalize(command_data, image_workspace);
+		break;
+	case CT_ROTATE:
+		return_status = app_manager_rotate(command_data, image_workspace);
+		break;
+	case CT_CROP:
+		return_status = app_manager_crop(command_data, image_workspace);
+		break;
+	case CT_APPLY:
+		return_status = app_manager_apply(command_data, image_workspace);
+		break;
+	case CT_SAVE:
+		return_status = app_manager_save(command_data, image_workspace);
+		break;
+	case CT_EXIT:
+		return_status = app_manager_exit(command_data, image_workspace);
+		break;
+	default:
+		return_status = ST_COMMAND_ERROR;
+		break;
 	}
 
 	status_handler_forward(command_data, return_status);
-	if (command_data.base.command_type == CT_EXIT) {
-		return 1;
-	}
-	return 0;
+	if (command_data.base.command_type == CT_EXIT)
+		return 0;
+
+	return 1;
 }
 
-uint8_t app_manager_main_loop()
+uint8_t app_manager_main_loop(void)
 {
 	image_workspace_t image_workspace;
 	image_workspace.image = NULL;
-	while (!app_manager_tick(&image_workspace));
+
+	__u8 is_running = app_manager_tick(&image_workspace);
+	while (is_running)
+		is_running = app_manager_tick(&image_workspace);
 
 	return 0;
 }

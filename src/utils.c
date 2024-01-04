@@ -1,8 +1,8 @@
 #include <utils.h>
 
-int64_t utils_string_to_int64(char *str)
+__s64 utils_string_to_int64(char *str)
 {
-	int64_t value = 0;
+	__s64 value = 0;
 	size_t index = 0;
 
 	while (str[index] != ' ' && str[index] != '\n' && str[index] != '\0') {
@@ -14,12 +14,12 @@ int64_t utils_string_to_int64(char *str)
 	return value;
 }
 
-uint8_t utils_word_to_int64(int64_t *out, char *str)
+__s8 utils_word_to_int64(__s64 *out, char *str)
 {
 	*out = 0;
 	size_t index = 0;
 
-	uint8_t is_negative = 0;
+	__s8 is_negative = 0;
 	if (str[index] == '-') {
 		is_negative = 1;
 		index++;
@@ -39,7 +39,7 @@ uint8_t utils_word_to_int64(int64_t *out, char *str)
 	return 1;
 }
 
-int64_t utils_max_int64(uint64_t a, uint64_t b)
+__s64 utils_max_int64(__s64 a, __s64 b)
 {
 	return (a < b) ? b : a;
 }
@@ -62,9 +62,9 @@ void utils_swap_pointers(void **a, void **b)
 	*b = aux;
 }
 
-void utils_swap_int64(int64_t *a, int64_t *b)
+void utils_swap_int64(__s64 *a, __s64 *b)
 {
-	int64_t aux = *a;
+	__s64 aux = *a;
 	*a = *b;
 	*b = aux;
 }
@@ -90,7 +90,7 @@ void utils_get_word_by_index(size_t index, char *word, char *str)
 	size_t word_index = 0;
 	while (str[str_index] != '\0') {
 		if (str[str_index] != ' ' && (str[str_index - 1] == ' ' ||
-			str_index == 0)) {
+									  str_index == 0)) {
 			count++;
 		}
 
