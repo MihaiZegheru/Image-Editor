@@ -41,7 +41,7 @@ void image_loader_save(s_image_t *image, char *file_path)
 {
 	FILE *file = fopen(file_path, "w");
 
-	image_loader_save_image_data(image->image_data, file);
+	image_loader_save_image_data(image->m_image_data, file);
 	image_loader_save_pixels(image, file);
 
 	fclose(file);
@@ -196,7 +196,7 @@ static void image_loader_load_pixels_p6(s_image_t *image, FILE *file)
 
 static void image_loader_load_pixels(s_image_t *image, FILE *file)
 {
-	switch (image->image_data.format) {
+	switch (image->m_image_data.format) {
 	case IFT_P2:
 		image_loader_load_pixels_p2(image, file);
 		break;
@@ -301,7 +301,7 @@ static void image_loader_save_pixels_p6(s_image_t *image, FILE *file)
 
 static void image_loader_save_pixels(s_image_t *image, FILE *file)
 {
-	switch (image->image_data.format) {
+	switch (image->m_image_data.format) {
 	case IFT_P2:
 		image_loader_save_pixels_p2(image, file);
 		break;

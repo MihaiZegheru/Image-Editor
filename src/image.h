@@ -9,8 +9,8 @@
 #include <vector2.h>
 
 typedef struct {
-	s_color_t *pixels;
-	s_image_data_t image_data;
+	s_color_t *m_pixels;
+	s_image_data_t m_image_data;
 } s_image_t;
 
 s_image_t *image_new(s_image_data_t image_data);

@@ -197,8 +197,8 @@ static e_operation_status_t app_manager_histogram(u_command_data_t command_data,
 		histogram_resolution.m_y > 256)
 		return OS_COMMAND_ERROR;
 
-	if (image_workspace->image->image_data.format != IFT_P2 &&
-		image_workspace->image->image_data.format != IFT_P5)
+	if (image_workspace->image->m_image_data.format != IFT_P2 &&
+		image_workspace->image->m_image_data.format != IFT_P5)
 		return OS_IMAGE_NOT_GRAYSCALE;
 
 	size_t *histogram = calloc(histogram_resolution.m_y, sizeof(size_t));
@@ -250,8 +250,8 @@ static e_operation_status_t app_manager_equalize(u_command_data_t command_data,
 	if (command_data.equalize.command_status == CST_INVALID)
 		return OS_COMMAND_ERROR;
 
-	if (image_workspace->image->image_data.format != IFT_P2 &&
-		image_workspace->image->image_data.format != IFT_P5)
+	if (image_workspace->image->m_image_data.format != IFT_P2 &&
+		image_workspace->image->m_image_data.format != IFT_P5)
 		return OS_IMAGE_NOT_GRAYSCALE;
 
 	const size_t RANGE = 256;
@@ -333,10 +333,10 @@ static void app_manager_rotate_90_degrees_square
 	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	s_image_data_t new_image_data;
-	new_image_data.format = image->image_data.format;
+	new_image_data.format = image->m_image_data.format;
 	new_image_data.height = point_b.m_y - point_a.m_y;
 	new_image_data.width = point_b.m_x - point_a.m_x;
-	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
+	new_image_data.max_pixel_value = image->m_image_data.max_pixel_value;
 
 	s_image_t *new_image = image_new(new_image_data);
 	app_manager_rotate_90_compute_rotated(point_a, point_b, new_image, image);
@@ -372,10 +372,10 @@ static void app_manager_rotate_90_degrees_image
 	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	s_image_data_t new_image_data;
-	new_image_data.format = image->image_data.format;
+	new_image_data.format = image->m_image_data.format;
 	new_image_data.height = point_b.m_y - point_a.m_y;
 	new_image_data.width = point_b.m_x - point_a.m_x;
-	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
+	new_image_data.max_pixel_value = image->m_image_data.max_pixel_value;
 
 	s_image_t *new_image = image_new(new_image_data);
 	app_manager_rotate_90_compute_rotated(point_a, point_b, new_image, image);
@@ -483,10 +483,10 @@ static e_operation_status_t app_manager_crop(u_command_data_t command_data,
 	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	s_image_data_t new_image_data;
-	new_image_data.format = image->image_data.format;
+	new_image_data.format = image->m_image_data.format;
 	new_image_data.height = point_b.m_x - point_a.m_x;
 	new_image_data.width = point_b.m_y - point_a.m_y;
-	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
+	new_image_data.max_pixel_value = image->m_image_data.max_pixel_value;
 
 	s_image_t *new_image = image_new(new_image_data);
 
@@ -528,10 +528,10 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	s_image_data_t new_image_data;
-	new_image_data.format = image->image_data.format;
+	new_image_data.format = image->m_image_data.format;
 	new_image_data.height = point_b.m_x - point_a.m_x;
 	new_image_data.width = point_b.m_y - point_a.m_y;
-	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
+	new_image_data.max_pixel_value = image->m_image_data.max_pixel_value;
 
 	s_image_t *new_image = image_new(new_image_data);
 
@@ -617,8 +617,8 @@ static e_operation_status_t app_manager_apply(u_command_data_t command_data,
 	if (command_data.apply.image_kernel_type == IKT_NONE)
 		return OS_APPLY_PARAMETER_INVALID;
 
-	if (image_workspace->image->image_data.format == IFT_P2 ||
-		image_workspace->image->image_data.format == IFT_P5)
+	if (image_workspace->image->m_image_data.format == IFT_P2 ||
+		image_workspace->image->m_image_data.format == IFT_P5)
 		return OS_APPLY_GRAYSCALE_IMAGE;
 
 	__s8 kernel[3][3];
@@ -660,17 +660,17 @@ static e_operation_status_t app_manager_save(u_command_data_t command_data,
 	if (command_data.save.command_status == CST_INVALID)
 		return OS_COMMAND_ERROR;
 
-	s_image_data_t *image_data = &image_workspace->image->image_data;
+	s_image_data_t *m_image_data = &image_workspace->image->m_image_data;
 	if (command_data.save.save_as_ascii) {
-		if (image_data->format == IFT_P5)
-			image_data->format = IFT_P2;
-		else if (image_data->format == IFT_P6)
-			image_data->format = IFT_P3;
+		if (m_image_data->format == IFT_P5)
+			m_image_data->format = IFT_P2;
+		else if (m_image_data->format == IFT_P6)
+			m_image_data->format = IFT_P3;
 	} else {
-		if (image_data->format == IFT_P2)
-			image_data->format = IFT_P5;
-		else if (image_data->format == IFT_P3)
-			image_data->format = IFT_P6;
+		if (m_image_data->format == IFT_P2)
+			m_image_data->format = IFT_P5;
+		else if (m_image_data->format == IFT_P3)
+			m_image_data->format = IFT_P6;
 	}
 
 	image_loader_save(image_workspace->image, command_data.save.file_path);
