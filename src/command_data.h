@@ -5,72 +5,72 @@
 #include <linux/types.h>
 
 #include <command_type.h>
-#include <command_status_type.h>
+#include <command_status.h>
 #include <image_kernel_type.h>
 #include <image_format_type.h>
 #include <vector2.h>
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 } cd_default_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 	char file_path[100];
 } cd_load_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 	s_vector2_t point_a;
 	s_vector2_t point_b;
 } cd_select_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 } cd_select_all_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 	s_vector2_t resolution;
 } cd_histogram_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 } cd_equalize_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 	__s16 angle;
 } cd_rotate_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 } cd_crop_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 	image_kernel_type_t image_kernel_type;
 } cd_apply_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 	char file_path[100];
 	__u8 save_as_ascii;
 } cd_save_t;
 
 typedef struct {
 	command_type_t command_type;
-	command_status_type_t command_status;
+	e_command_status_t command_status;
 } cd_exit_t;
 
 typedef union {
