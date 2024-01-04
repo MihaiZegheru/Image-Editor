@@ -5,8 +5,8 @@
 #include <inttypes.h>
 
 typedef struct {
-    int64_t x;
-    int64_t y;
+	int64_t x;
+	int64_t y;
 } vector2_t;
 
 #endif // VECTOR2_H__

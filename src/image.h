@@ -7,13 +7,9 @@
 #include <image_data.h>
 #include <vector2.h>
 
-#define IMAGE_PIXELS_AT(coords_d, image_d) (image_d)->pixels[(coords_d).x *\
-                                         (image_d)->image_data.width +\
-                                         (coords_d).y]
-
 typedef struct {
-    color_t *pixels;
-    image_data_t image_data;
+	color_t *pixels;
+	image_data_t image_data;
 } image_t;
 
 image_t *image_new(image_data_t image_data);

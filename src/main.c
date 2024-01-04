@@ -7,7 +7,7 @@
 
 int main(void)
 {
-    app_manager_main_loop();
+	app_manager_main_loop();
 
-    return 0;
+	return 0;
 }
