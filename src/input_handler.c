@@ -25,17 +25,17 @@ command_data_t input_handler_read_command_data(void)
 	case CT_HISTOGRAM:
 		return input_handler_read_histogram(command_text);
 	case CT_EQUALIZE:
-		return input_handler_read_equalize();
+		return input_handler_read_equalize(command_text);
 	case CT_ROTATE:
 		return input_handler_read_rotate(command_text);
 	case CT_CROP:
-		return input_handler_read_crop();
+		return input_handler_read_crop(command_text);
 	case CT_APPLY:
 		return input_handler_read_apply(command_text);
 	case CT_SAVE:
 		return input_handler_read_save(command_text);
 	case CT_EXIT:
-		return input_handler_read_exit();
+		return input_handler_read_exit(command_text);
 	default:
 		return command_data;
 	}
@@ -80,7 +80,7 @@ command_data_t input_handler_read_load(char *command_text)
 	command_data.apply.command_status = CST_INVALID;
 	if (utils_count_words(command_text) == 2)
 		command_data.apply.command_status = CST_VALID;
-		
+
 	utils_get_word_by_index(1, command_data.load.file_path, command_text);
 
 	return command_data;
@@ -155,7 +155,7 @@ command_data_t input_handler_read_histogram(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_equalize(void)
+command_data_t input_handler_read_equalize(char *command_text)
 {
 	command_data_t command_data;
 	command_data.equalize.command_type = CT_EQUALIZE;
@@ -183,7 +183,7 @@ command_data_t input_handler_read_rotate(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_crop(void)
+command_data_t input_handler_read_crop(char *command_text)
 {
 	command_data_t command_data;
 	command_data.crop.command_type = CT_CROP;
@@ -243,7 +243,7 @@ command_data_t input_handler_read_save(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_exit(void)
+command_data_t input_handler_read_exit(char *command_text)
 {
 	command_data_t command_data;
 	command_data.exit.command_type = CT_EXIT;

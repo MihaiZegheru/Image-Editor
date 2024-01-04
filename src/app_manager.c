@@ -575,7 +575,7 @@ status_type_t app_manager_save(command_data_t command_data,
 
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
-	
+
 	if (command_data.save.command_status == CST_INVALID)
 		return ST_COMMAND_ERROR;
 
