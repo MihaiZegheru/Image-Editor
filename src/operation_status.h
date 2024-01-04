@@ -1,5 +1,5 @@
-#ifndef STATUS_TYPE_H__
-#define STATUS_TYPE_H__
+#ifndef OPERATION_STATUS_H__
+#define OPERATION_STATUS_H__
 
 typedef enum {
 	ST_NONE,
@@ -22,6 +22,6 @@ typedef enum {
 	ST_HISTOGRAM_PARAMETER_INVALID,
 	ST_SAVE_DONE,
 	ST_COMMAND_ERROR,
-} status_type_t;
+} e_operation_status_t;
 
-#endif // STATUS_TYPE_H__
+#endif // OPERATION_STATUS_H__

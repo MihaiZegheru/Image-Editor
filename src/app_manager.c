@@ -14,25 +14,25 @@
 
 static __u8 app_manager_tick(image_workspace_t *image_workspace);
 
-static status_type_t app_manager_load
+static e_operation_status_t app_manager_load
 		(command_data_t command_data, image_workspace_t *image_workspace);
-static status_type_t app_manager_select
+static e_operation_status_t app_manager_select
 		(command_data_t command_data, image_workspace_t *image_workspace);
-static status_type_t app_manager_select_all
+static e_operation_status_t app_manager_select_all
 		(command_data_t command_data, image_workspace_t *image_workspace);
-static status_type_t app_manager_histogram
+static e_operation_status_t app_manager_histogram
 		(command_data_t command_data, image_workspace_t *image_workspace);
-static status_type_t app_manager_equalize
+static e_operation_status_t app_manager_equalize
 		(command_data_t command_data, image_workspace_t *image_workspace);
-static status_type_t app_manager_rotate
+static e_operation_status_t app_manager_rotate
 		(command_data_t command_data, image_workspace_t *image_workspace);
-static status_type_t app_manager_crop
+static e_operation_status_t app_manager_crop
 		(command_data_t command_data, image_workspace_t *image_workspace);
-static status_type_t app_manager_apply
+static e_operation_status_t app_manager_apply
 		(command_data_t command_data,  image_workspace_t *image_workspace);
-static status_type_t app_manager_save
+static e_operation_status_t app_manager_save
 		(command_data_t command_data, image_workspace_t *image_workspace);
-static status_type_t app_manager_exit
+static e_operation_status_t app_manager_exit
 		(command_data_t command_data, image_workspace_t *image_workspace);
 
 static void app_manager_rotate_90_degrees
@@ -42,7 +42,7 @@ static void app_manager_rotate_90_degrees_square
 static void app_manager_rotate_90_degrees_image
 		(image_workspace_t *image_workspace);
 static void app_manager_rotate_90_compute_rotated
-		(vector2_t point_a, vector2_t point_b, image_t *out, image_t *image);
+		(s_vector2_t point_a, s_vector2_t point_b, image_t *out, image_t *image);
 static void app_manager_apply_kernel
 		(double inverse_modifier, __s8 kernel[3][3],
 		 image_workspace_t *image_workspace);
@@ -63,7 +63,7 @@ static __u8 app_manager_tick(image_workspace_t *image_workspace)
 {
 	command_data_t command_data = input_handler_read_command_data();
 
-	status_type_t return_status;
+	e_operation_status_t return_status;
 	switch (command_data.base.command_type) {
 	case CT_LOAD:
 		return_status = app_manager_load(command_data, image_workspace);
@@ -107,7 +107,7 @@ static __u8 app_manager_tick(image_workspace_t *image_workspace)
 	return 1;
 }
 
-static status_type_t app_manager_load(command_data_t command_data,
+static e_operation_status_t app_manager_load(command_data_t command_data,
 									  image_workspace_t *image_workspace)
 {
 	if (command_data.load.command_type != CT_LOAD)
@@ -131,7 +131,7 @@ static status_type_t app_manager_load(command_data_t command_data,
 	return ST_LOAD_DONE;
 }
 
-static status_type_t app_manager_select(command_data_t command_data,
+static e_operation_status_t app_manager_select(command_data_t command_data,
 										image_workspace_t *image_workspace)
 {
 	if (command_data.select.command_type != CT_SELECT)
@@ -143,8 +143,8 @@ static status_type_t app_manager_select(command_data_t command_data,
 	if (command_data.select.command_status == CST_INVALID)
 		return ST_COMMAND_ERROR;
 
-	vector2_t point_a = command_data.select.point_a;
-	vector2_t point_b = command_data.select.point_b;
+	s_vector2_t point_a = command_data.select.point_a;
+	s_vector2_t point_b = command_data.select.point_b;
 
 	if ((size_t)point_b.x > image_get_height(image_workspace->image) ||
 		(size_t)point_b.y > image_get_width(image_workspace->image) ||
@@ -158,7 +158,7 @@ static status_type_t app_manager_select(command_data_t command_data,
 	return ST_SELECT_CUSTOM_DONE;
 }
 
-static status_type_t app_manager_select_all(command_data_t command_data,
+static e_operation_status_t app_manager_select_all(command_data_t command_data,
 											image_workspace_t *image_workspace)
 {
 	if (command_data.select_all.command_type != CT_SELECT_ALL)
@@ -180,7 +180,7 @@ static status_type_t app_manager_select_all(command_data_t command_data,
 	return ST_SELECT_ALL_DONE;
 }
 
-static status_type_t app_manager_histogram(command_data_t command_data,
+static e_operation_status_t app_manager_histogram(command_data_t command_data,
 										   image_workspace_t *image_workspace)
 {
 	if (command_data.histogram.command_type != CT_HISTOGRAM)
@@ -192,7 +192,7 @@ static status_type_t app_manager_histogram(command_data_t command_data,
 	if (command_data.histogram.command_status == CST_INVALID)
 		return ST_COMMAND_ERROR;
 
-	vector2_t histogram_resolution = command_data.histogram.resolution;
+	s_vector2_t histogram_resolution = command_data.histogram.resolution;
 	if (histogram_resolution.y % 2 || histogram_resolution.y < 2 ||
 		histogram_resolution.y > 256)
 		return ST_COMMAND_ERROR;
@@ -206,7 +206,7 @@ static status_type_t app_manager_histogram(command_data_t command_data,
 
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 
@@ -238,7 +238,7 @@ static status_type_t app_manager_histogram(command_data_t command_data,
 	return ST_DEFAULT_DONE;
 }
 
-static status_type_t app_manager_equalize(command_data_t command_data,
+static e_operation_status_t app_manager_equalize(command_data_t command_data,
 										  image_workspace_t *image_workspace)
 {
 	if (command_data.equalize.command_type != CT_EQUALIZE)
@@ -262,7 +262,7 @@ static status_type_t app_manager_equalize(command_data_t command_data,
 
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 
@@ -283,7 +283,7 @@ static status_type_t app_manager_equalize(command_data_t command_data,
 
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 
@@ -302,19 +302,19 @@ static status_type_t app_manager_equalize(command_data_t command_data,
 }
 
 static void app_manager_rotate_90_compute_rotated
-		(vector2_t point_a, vector2_t point_b, image_t *out, image_t *image)
+		(s_vector2_t point_a, s_vector2_t point_b, image_t *out, image_t *image)
 {
 	size_t curr_i = 0;
 	for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
 		size_t curr_j = 0;
 
 		for (size_t j = point_a.y; j <  (size_t)point_b.y; j++) {
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 			color_t pixel = image_get_pixel(coords, image);
 
-			vector2_t curr_coords;
+			s_vector2_t curr_coords;
 			curr_coords.x = curr_j;
 			curr_coords.y = image_get_width(out) - curr_i - 1;
 			image_set_pixel(curr_coords, pixel, out);
@@ -329,8 +329,8 @@ static void app_manager_rotate_90_degrees_square
 		(image_workspace_t *image_workspace)
 {
 	image_t *image = image_workspace->image;
-	vector2_t point_a = image_workspace->selection_point_a;
-	vector2_t point_b = image_workspace->selection_point_b;
+	s_vector2_t point_a = image_workspace->selection_point_a;
+	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	image_data_t new_image_data;
 	new_image_data.format = image->image_data.format;
@@ -346,12 +346,12 @@ static void app_manager_rotate_90_degrees_square
 		size_t curr_j = 0;
 
 		for (size_t j = point_a.y; j <  (size_t)point_b.y; j++) {
-			vector2_t curr_coords;
+			s_vector2_t curr_coords;
 			curr_coords.x = curr_i;
 			curr_coords.y = curr_j;
 			color_t pixel = image_get_pixel(curr_coords, new_image);
 
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 			image_set_pixel(coords, pixel, image);
@@ -368,8 +368,8 @@ static void app_manager_rotate_90_degrees_image
 		(image_workspace_t *image_workspace)
 {
 	image_t *image = image_workspace->image;
-	vector2_t point_a = image_workspace->selection_point_a;
-	vector2_t point_b = image_workspace->selection_point_b;
+	s_vector2_t point_a = image_workspace->selection_point_a;
+	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	image_data_t new_image_data;
 	new_image_data.format = image->image_data.format;
@@ -392,8 +392,8 @@ static void app_manager_rotate_90_degrees_image
 
 static void app_manager_rotate_90_degrees(image_workspace_t *image_workspace)
 {
-	vector2_t point_a = image_workspace->selection_point_a;
-	vector2_t point_b = image_workspace->selection_point_b;
+	s_vector2_t point_a = image_workspace->selection_point_a;
+	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	size_t selection_height = point_b.x - point_a.x;
 	size_t selection_width = point_b.y - point_a.y;
@@ -404,7 +404,7 @@ static void app_manager_rotate_90_degrees(image_workspace_t *image_workspace)
 		app_manager_rotate_90_degrees_image(image_workspace);
 }
 
-static status_type_t app_manager_rotate(command_data_t command_data,
+static e_operation_status_t app_manager_rotate(command_data_t command_data,
 										image_workspace_t *image_workspace)
 {
 	if (command_data.rotate.command_type != CT_ROTATE)
@@ -417,8 +417,8 @@ static status_type_t app_manager_rotate(command_data_t command_data,
 		return ST_COMMAND_ERROR;
 
 	image_t *image = image_workspace->image;
-	vector2_t point_a = image_workspace->selection_point_a;
-	vector2_t point_b = image_workspace->selection_point_b;
+	s_vector2_t point_a = image_workspace->selection_point_a;
+	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	size_t selection_height = point_b.x - point_a.x;
 	size_t selection_width = point_b.y - point_a.y;
@@ -466,7 +466,7 @@ static status_type_t app_manager_rotate(command_data_t command_data,
 	return ST_ROTATE_DONE;
 }
 
-static status_type_t app_manager_crop(command_data_t command_data,
+static e_operation_status_t app_manager_crop(command_data_t command_data,
 									  image_workspace_t *image_workspace)
 {
 	if (command_data.crop.command_type != CT_CROP)
@@ -479,8 +479,8 @@ static status_type_t app_manager_crop(command_data_t command_data,
 		return ST_COMMAND_ERROR;
 
 	image_t *image = image_workspace->image;
-	vector2_t point_a = image_workspace->selection_point_a;
-	vector2_t point_b = image_workspace->selection_point_b;
+	s_vector2_t point_a = image_workspace->selection_point_a;
+	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	image_data_t new_image_data;
 	new_image_data.format = image->image_data.format;
@@ -494,12 +494,12 @@ static status_type_t app_manager_crop(command_data_t command_data,
 	for (size_t i = point_a.x; i < (size_t)point_b.x; i++) {
 		size_t curr_j = 0;
 		for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 			color_t pixel = image_get_pixel(coords, image);
 
-			vector2_t curr_coords;
+			s_vector2_t curr_coords;
 			curr_coords.x = curr_i;
 			curr_coords.y = curr_j;
 			image_set_pixel(curr_coords, pixel, new_image);
@@ -524,8 +524,8 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 									 image_workspace_t *image_workspace)
 {
 	image_t *image = image_workspace->image;
-	vector2_t point_a = image_workspace->selection_point_a;
-	vector2_t point_b = image_workspace->selection_point_b;
+	s_vector2_t point_a = image_workspace->selection_point_a;
+	s_vector2_t point_b = image_workspace->selection_point_b;
 
 	image_data_t new_image_data;
 	new_image_data.format = image->image_data.format;
@@ -548,7 +548,7 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 			__s16 sum_b = 0;
 			for (__s8 k = -1; k <= 1; k++) {
 				for (__s8 l = -1; l <= 1; l++) {
-					vector2_t neighbour_coords;
+					s_vector2_t neighbour_coords;
 					neighbour_coords.x = i + k;
 					neighbour_coords.y = j + l;
 					if (!image_coords_in_bounds(neighbour_coords, image))
@@ -567,7 +567,7 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 			new_pixel.g = utils_clamp((double)sum_g / inverse_modifier, 0, 255);
 			new_pixel.b = utils_clamp((double)sum_b / inverse_modifier, 0, 255);
 
-			vector2_t curr_coords;
+			s_vector2_t curr_coords;
 			curr_coords.x = curr_i;
 			curr_coords.y = curr_j;
 			image_set_pixel(curr_coords, new_pixel, new_image);
@@ -584,12 +584,12 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 				j >= image_get_width(image) - 1)
 				continue;
 
-			vector2_t curr_coords;
+			s_vector2_t curr_coords;
 			curr_coords.x = curr_i;
 			curr_coords.y = curr_j;
 			color_t new_pixel = image_get_pixel(curr_coords, new_image);
 
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 			image_set_pixel(coords, new_pixel, image);
@@ -602,7 +602,7 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 	image_delete(new_image);
 }
 
-static status_type_t app_manager_apply(command_data_t command_data,
+static e_operation_status_t app_manager_apply(command_data_t command_data,
 									   image_workspace_t *image_workspace)
 {
 	if (command_data.apply.command_type != CT_APPLY)
@@ -648,7 +648,7 @@ static status_type_t app_manager_apply(command_data_t command_data,
 	return ST_APPLY_DONE;
 }
 
-static status_type_t app_manager_save(command_data_t command_data,
+static e_operation_status_t app_manager_save(command_data_t command_data,
 									  image_workspace_t *image_workspace)
 {
 	if (command_data.save.command_type != CT_SAVE)
@@ -677,7 +677,7 @@ static status_type_t app_manager_save(command_data_t command_data,
 	return ST_SAVE_DONE;
 }
 
-static status_type_t app_manager_exit(command_data_t command_data,
+static e_operation_status_t app_manager_exit(command_data_t command_data,
 									  image_workspace_t *image_workspace)
 {
 	if (command_data.exit.command_type != CT_EXIT)

@@ -132,7 +132,7 @@ static void image_loader_load_pixels_p2(image_t *image, FILE *file)
 			color.g = value;
 			color.b = value;
 
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 			image_set_pixel(coords, color, image);
@@ -149,7 +149,7 @@ static void image_loader_load_pixels_p3(image_t *image, FILE *file)
 			fscanf(file, "%hhu", &color.g);
 			fscanf(file, "%hhu", &color.b);
 
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 			image_set_pixel(coords, color, image);
@@ -169,7 +169,7 @@ static void image_loader_load_pixels_p5(image_t *image, FILE *file)
 			color.g = value;
 			color.b = value;
 
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 			image_set_pixel(coords, color, image);
@@ -186,7 +186,7 @@ static void image_loader_load_pixels_p6(image_t *image, FILE *file)
 			fscanf(file, "%c", &color.g);
 			fscanf(file, "%c", &color.b);
 
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 			image_set_pixel(coords, color, image);
@@ -241,7 +241,7 @@ static void image_loader_save_pixels_p2(image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 
@@ -256,7 +256,7 @@ static void image_loader_save_pixels_p3(image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 
@@ -273,7 +273,7 @@ static void image_loader_save_pixels_p5(image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 
@@ -287,7 +287,7 @@ static void image_loader_save_pixels_p6(image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
-			vector2_t coords;
+			s_vector2_t coords;
 			coords.x = i;
 			coords.y = j;
 

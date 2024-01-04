@@ -16,12 +16,12 @@ typedef struct {
 image_t *image_new(image_data_t image_data);
 void image_delete(image_t *image);
 
-color_t image_get_pixel(vector2_t coords, image_t *image);
-void image_set_pixel(vector2_t coords, color_t pixel, image_t *image);
+color_t image_get_pixel(s_vector2_t coords, image_t *image);
+void image_set_pixel(s_vector2_t coords, color_t pixel, image_t *image);
 
 size_t image_get_width(image_t *image);
 size_t image_get_height(image_t *image);
 
-__s8 image_coords_in_bounds(vector2_t coords, image_t *image);
+__s8 image_coords_in_bounds(s_vector2_t coords, image_t *image);
 
 #endif // IMAGE_H__

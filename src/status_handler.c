@@ -19,8 +19,8 @@ static void status_handler_image_not_loaded(void)
 
 static void status_handler_select_custom_done(command_data_t command)
 {
-	vector2_t point_a = command.select.point_a;
-	vector2_t point_b = command.select.point_b;
+	s_vector2_t point_a = command.select.point_a;
+	s_vector2_t point_b = command.select.point_b;
 	printf("Selected %lld %lld %lld %lld\n",
 		   point_a.y, point_a.x, point_b.y, point_b.x);
 }
@@ -115,7 +115,7 @@ static void status_handler_command_error(void)
 	printf("Invalid command\n");
 }
 
-void status_handler_forward(command_data_t command, status_type_t status)
+void status_handler_forward(command_data_t command, e_operation_status_t status)
 {
 	switch (status) {
 	case ST_DEFAULT_DONE:

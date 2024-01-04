@@ -6,6 +6,6 @@
 typedef struct {
 	__s64 x;
 	__s64 y;
-} vector2_t;
+} s_vector2_t;
 
 #endif // VECTOR2_H__

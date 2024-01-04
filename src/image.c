@@ -21,12 +21,12 @@ void image_delete(image_t *image)
 	free(image);
 }
 
-color_t image_get_pixel(vector2_t coords, image_t *image)
+color_t image_get_pixel(s_vector2_t coords, image_t *image)
 {
 	return image->pixels[coords.x * image->image_data.width + coords.y];
 }
 
-void image_set_pixel(vector2_t coords, color_t pixel, image_t *image)
+void image_set_pixel(s_vector2_t coords, color_t pixel, image_t *image)
 {
 	image->pixels[coords.x * image->image_data.width + coords.y] = pixel;
 }
@@ -41,7 +41,7 @@ size_t image_get_height(image_t *image)
 	return image->image_data.height;
 }
 
-__s8 image_coords_in_bounds(vector2_t coords, image_t *image)
+__s8 image_coords_in_bounds(s_vector2_t coords, image_t *image)
 {
 	if (coords.x >= (__s64)image->image_data.height ||
 		coords.y >= (__s64)image->image_data.width)

@@ -24,8 +24,8 @@ typedef struct {
 typedef struct {
 	command_type_t command_type;
 	command_status_type_t command_status;
-	vector2_t point_a;
-	vector2_t point_b;
+	s_vector2_t point_a;
+	s_vector2_t point_b;
 } cd_select_t;
 
 typedef struct {
@@ -36,7 +36,7 @@ typedef struct {
 typedef struct {
 	command_type_t command_type;
 	command_status_type_t command_status;
-	vector2_t resolution;
+	s_vector2_t resolution;
 } cd_histogram_t;
 
 typedef struct {

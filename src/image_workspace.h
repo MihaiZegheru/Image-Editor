@@ -6,8 +6,8 @@
 
 typedef struct {
 	image_t *image;
-	vector2_t selection_point_a;
-	vector2_t selection_point_b;
+	s_vector2_t selection_point_a;
+	s_vector2_t selection_point_b;
 } image_workspace_t;
 
 #endif // IMAGE_WORKSPACE_H__
