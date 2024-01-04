@@ -8,7 +8,7 @@
 #include <vector2.h>
 #include <utils.h>
 
-static image_data_t image_loader_load_image_data(FILE *file);
+static image_data_t image_loader_load_image_data(FILE * file);
 static void image_loader_load_pixels_p2(image_t *image, FILE *file);
 static void image_loader_load_pixels_p3(image_t *image, FILE *file);
 static void image_loader_load_pixels_p5(image_t *image, FILE *file);

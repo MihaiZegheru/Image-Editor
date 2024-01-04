@@ -13,7 +13,7 @@ command_data_t input_handler_read_command_data(void);
 /**
  * @brief Read a line from stdin
  * @note Performs no checks for overflow
- * @param str 
+ * @param str
  */
 void input_handler_read_line(char *str);
 

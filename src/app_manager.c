@@ -17,7 +17,7 @@ static __u8 app_manager_tick(image_workspace_t *image_workspace);
 static status_type_t app_manager_load
 		(command_data_t command_data, image_workspace_t *image_workspace);
 static status_type_t app_manager_select
-		(command_data_t command_data,image_workspace_t *image_workspace);
+		(command_data_t command_data, image_workspace_t *image_workspace);
 static status_type_t app_manager_select_all
 		(command_data_t command_data, image_workspace_t *image_workspace);
 static status_type_t app_manager_histogram
@@ -108,7 +108,7 @@ static __u8 app_manager_tick(image_workspace_t *image_workspace)
 }
 
 static status_type_t app_manager_load(command_data_t command_data,
-							   		  image_workspace_t *image_workspace)
+									  image_workspace_t *image_workspace)
 {
 	if (command_data.load.command_type != CT_LOAD)
 		return ST_COMMAND_ERROR;
@@ -159,7 +159,7 @@ static status_type_t app_manager_select(command_data_t command_data,
 }
 
 static status_type_t app_manager_select_all(command_data_t command_data,
-									 		image_workspace_t *image_workspace)
+											image_workspace_t *image_workspace)
 {
 	if (command_data.select_all.command_type != CT_SELECT_ALL)
 		return ST_COMMAND_ERROR;
@@ -239,7 +239,7 @@ static status_type_t app_manager_histogram(command_data_t command_data,
 }
 
 static status_type_t app_manager_equalize(command_data_t command_data,
-								   		  image_workspace_t *image_workspace)
+										  image_workspace_t *image_workspace)
 {
 	if (command_data.equalize.command_type != CT_EQUALIZE)
 		return ST_COMMAND_ERROR;
@@ -467,7 +467,7 @@ static status_type_t app_manager_rotate(command_data_t command_data,
 }
 
 static status_type_t app_manager_crop(command_data_t command_data,
-							   		  image_workspace_t *image_workspace)
+									  image_workspace_t *image_workspace)
 {
 	if (command_data.crop.command_type != CT_CROP)
 		return ST_COMMAND_ERROR;
@@ -649,7 +649,7 @@ static status_type_t app_manager_apply(command_data_t command_data,
 }
 
 static status_type_t app_manager_save(command_data_t command_data,
-							   		  image_workspace_t *image_workspace)
+									  image_workspace_t *image_workspace)
 {
 	if (command_data.save.command_type != CT_SAVE)
 		return ST_COMMAND_ERROR;
@@ -678,7 +678,7 @@ static status_type_t app_manager_save(command_data_t command_data,
 }
 
 static status_type_t app_manager_exit(command_data_t command_data,
-							   		  image_workspace_t *image_workspace)
+									  image_workspace_t *image_workspace)
 {
 	if (command_data.exit.command_type != CT_EXIT)
 		return ST_COMMAND_ERROR;
