@@ -7,7 +7,7 @@
 
 // TO DO: Add a word object as struct and migrate methods
 
-static command_type_t input_handler_read_command(char *command_text);
+static e_command_type_t input_handler_read_command(char *command_text);
 
 static u_command_data_t input_handler_read_load(char *command_text);
 static u_command_data_t input_handler_read_select(char *command_text);
@@ -24,7 +24,7 @@ u_command_data_t input_handler_read_command_data(void)
 	const size_t MAX_BUFFER = 255;
 	char command_text[MAX_BUFFER];
 	input_handler_read_line(command_text);
-	command_type_t command_type = input_handler_read_command(command_text);
+	e_command_type_t command_type = input_handler_read_command(command_text);
 
 	u_command_data_t command_data;
 	command_data.base.command_type = CT_NONE;
@@ -53,13 +53,13 @@ u_command_data_t input_handler_read_command_data(void)
 	}
 }
 
-static command_type_t input_handler_read_command(char *command_text)
+static e_command_type_t input_handler_read_command(char *command_text)
 {
 	const size_t MAX_BUFFER = 255;
 	char opperation[MAX_BUFFER];
 	utils_get_word_by_index(0, opperation, command_text);
 
-	command_type_t command_type;
+	e_command_type_t command_type;
 	if (!strcmp(opperation, "LOAD"))
 		command_type = CT_LOAD;
 	else if (!strcmp(opperation, "SELECT"))

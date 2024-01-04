@@ -5,9 +5,9 @@
 #include <vector2.h>
 
 typedef struct {
-	image_t *image;
+	s_image_t *image;
 	s_vector2_t selection_point_a;
 	s_vector2_t selection_point_b;
-} image_workspace_t;
+} s_image_workspace_t;
 
 #endif // IMAGE_WORKSPACE_H__

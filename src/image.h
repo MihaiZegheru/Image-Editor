@@ -9,19 +9,19 @@
 #include <vector2.h>
 
 typedef struct {
-	color_t *pixels;
-	image_data_t image_data;
-} image_t;
+	s_color_t *pixels;
+	s_image_data_t image_data;
+} s_image_t;
 
-image_t *image_new(image_data_t image_data);
-void image_delete(image_t *image);
+s_image_t *image_new(s_image_data_t image_data);
+void image_delete(s_image_t *image);
 
-color_t image_get_pixel(s_vector2_t coords, image_t *image);
-void image_set_pixel(s_vector2_t coords, color_t pixel, image_t *image);
+s_color_t image_get_pixel(s_vector2_t coords, s_image_t *image);
+void image_set_pixel(s_vector2_t coords, s_color_t pixel, s_image_t *image);
 
-size_t image_get_width(image_t *image);
-size_t image_get_height(image_t *image);
+size_t image_get_width(s_image_t *image);
+size_t image_get_height(s_image_t *image);
 
-__s8 image_coords_in_bounds(s_vector2_t coords, image_t *image);
+__s8 image_coords_in_bounds(s_vector2_t coords, s_image_t *image);
 
 #endif // IMAGE_H__

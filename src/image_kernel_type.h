@@ -8,9 +8,9 @@ typedef enum {
 	IKT_SHARPEN,
 	IKT_BOX_BLUR,
 	IKT_GAUSSIAN_BLUR,
-} image_kernel_type_t;
+} e_image_kernel_type_t;
 
 void image_kernel_type_get_name(char *name,
-								image_kernel_type_t image_kernel_type);
+								e_image_kernel_type_t image_kernel_type);
 
 #endif // IMAGE_KERNEL_TYPE_H__

@@ -150,7 +150,7 @@ static void operation_status_handler_crop_done(void)
 
 static void operation_status_handler_apply_done(u_command_data_t command)
 {
-	image_kernel_type_t image_kernel_type = command.apply.image_kernel_type;
+	e_image_kernel_type_t image_kernel_type = command.apply.image_kernel_type;
 
 	char image_kernel_type_name[25];
 	image_kernel_type_get_name(image_kernel_type_name, image_kernel_type);

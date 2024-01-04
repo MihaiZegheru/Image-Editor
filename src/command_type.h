@@ -13,6 +13,6 @@ typedef enum {
 	CT_APPLY,
 	CT_SAVE,
 	CT_EXIT,
-} command_type_t;
+} e_command_type_t;
 
 #endif // COMMAND_TYPE_H__

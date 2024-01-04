@@ -3,7 +3,7 @@
 
 #include <image.h>
 
-image_t *image_loader_load(char *file_path);
-void image_loader_save(image_t *image, char *file_path);
+s_image_t *image_loader_load(char *file_path);
+void image_loader_save(s_image_t *image, char *file_path);
 
 #endif // IMAGE_LOADER_H__

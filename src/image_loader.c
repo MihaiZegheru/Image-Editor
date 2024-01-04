@@ -8,28 +8,28 @@
 #include <vector2.h>
 #include <utils.h>
 
-static image_data_t image_loader_load_image_data(FILE * file);
-static void image_loader_load_pixels_p2(image_t *image, FILE *file);
-static void image_loader_load_pixels_p3(image_t *image, FILE *file);
-static void image_loader_load_pixels_p5(image_t *image, FILE *file);
-static void image_loader_load_pixels_p6(image_t *image, FILE *file);
-static void image_loader_load_pixels(image_t *image, FILE *file);
+static s_image_data_t image_loader_load_image_data(FILE * file);
+static void image_loader_load_pixels_p2(s_image_t *image, FILE *file);
+static void image_loader_load_pixels_p3(s_image_t *image, FILE *file);
+static void image_loader_load_pixels_p5(s_image_t *image, FILE *file);
+static void image_loader_load_pixels_p6(s_image_t *image, FILE *file);
+static void image_loader_load_pixels(s_image_t *image, FILE *file);
 
-static void image_loader_save_image_data(image_data_t image_data, FILE *file);
-static void image_loader_save_pixels_p2(image_t *image, FILE *file);
-static void image_loader_save_pixels_p3(image_t *image, FILE *file);
-static void image_loader_save_pixels_p5(image_t *image, FILE *file);
-static void image_loader_save_pixels_p6(image_t *image, FILE *file);
-static void image_loader_save_pixels(image_t *image, FILE *file);
+static void image_loader_save_image_data(s_image_data_t image_data, FILE *file);
+static void image_loader_save_pixels_p2(s_image_t *image, FILE *file);
+static void image_loader_save_pixels_p3(s_image_t *image, FILE *file);
+static void image_loader_save_pixels_p5(s_image_t *image, FILE *file);
+static void image_loader_save_pixels_p6(s_image_t *image, FILE *file);
+static void image_loader_save_pixels(s_image_t *image, FILE *file);
 
-image_t *image_loader_load(char *file_path)
+s_image_t *image_loader_load(char *file_path)
 {
 	FILE *file = fopen(file_path, "r");
 	if (!file)
 		return NULL;
 
-	image_data_t image_data = image_loader_load_image_data(file);
-	image_t *image = image_new(image_data);
+	s_image_data_t image_data = image_loader_load_image_data(file);
+	s_image_t *image = image_new(image_data);
 	image_loader_load_pixels(image, file);
 
 	fclose(file);
@@ -37,7 +37,7 @@ image_t *image_loader_load(char *file_path)
 	return image;
 }
 
-void image_loader_save(image_t *image, char *file_path)
+void image_loader_save(s_image_t *image, char *file_path)
 {
 	FILE *file = fopen(file_path, "w");
 
@@ -47,11 +47,11 @@ void image_loader_save(image_t *image, char *file_path)
 	fclose(file);
 }
 
-static image_data_t image_loader_load_image_data(FILE *file)
+static s_image_data_t image_loader_load_image_data(FILE *file)
 {
-	image_data_t image_data;
+	s_image_data_t image_data;
 
-	image_format_type_t format = IFT_NONE;
+	e_image_format_type_t format = IFT_NONE;
 	__u16 width = 0;
 	__u16 height = 0;
 	__u16 max_pixel_value = 0;
@@ -120,14 +120,14 @@ static image_data_t image_loader_load_image_data(FILE *file)
 	return image_data;
 }
 
-static void image_loader_load_pixels_p2(image_t *image, FILE *file)
+static void image_loader_load_pixels_p2(s_image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
 			__u8 value;
 			fscanf(file, "%hhu", &value);
 
-			color_t color;
+			s_color_t color;
 			color.r = value;
 			color.g = value;
 			color.b = value;
@@ -140,11 +140,11 @@ static void image_loader_load_pixels_p2(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_load_pixels_p3(image_t *image, FILE *file)
+static void image_loader_load_pixels_p3(s_image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
-			color_t color;
+			s_color_t color;
 			fscanf(file, "%hhu", &color.r);
 			fscanf(file, "%hhu", &color.g);
 			fscanf(file, "%hhu", &color.b);
@@ -157,14 +157,14 @@ static void image_loader_load_pixels_p3(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_load_pixels_p5(image_t *image, FILE *file)
+static void image_loader_load_pixels_p5(s_image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
 			__u8 value;
 			fscanf(file, "%c", &value);
 
-			color_t color;
+			s_color_t color;
 			color.r = value;
 			color.g = value;
 			color.b = value;
@@ -177,11 +177,11 @@ static void image_loader_load_pixels_p5(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_load_pixels_p6(image_t *image, FILE *file)
+static void image_loader_load_pixels_p6(s_image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
-			color_t color;
+			s_color_t color;
 			fscanf(file, "%c", &color.r);
 			fscanf(file, "%c", &color.g);
 			fscanf(file, "%c", &color.b);
@@ -194,7 +194,7 @@ static void image_loader_load_pixels_p6(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_load_pixels(image_t *image, FILE *file)
+static void image_loader_load_pixels(s_image_t *image, FILE *file)
 {
 	switch (image->image_data.format) {
 	case IFT_P2:
@@ -214,7 +214,7 @@ static void image_loader_load_pixels(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_save_image_data(image_data_t image_data, FILE *file)
+static void image_loader_save_image_data(s_image_data_t image_data, FILE *file)
 {
 	switch (image_data.format) {
 	case IFT_P2:
@@ -237,7 +237,7 @@ static void image_loader_save_image_data(image_data_t image_data, FILE *file)
 	fprintf(file, "%u\n", image_data.max_pixel_value);
 }
 
-static void image_loader_save_pixels_p2(image_t *image, FILE *file)
+static void image_loader_save_pixels_p2(s_image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
@@ -252,7 +252,7 @@ static void image_loader_save_pixels_p2(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_save_pixels_p3(image_t *image, FILE *file)
+static void image_loader_save_pixels_p3(s_image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
@@ -260,7 +260,7 @@ static void image_loader_save_pixels_p3(image_t *image, FILE *file)
 			coords.x = i;
 			coords.y = j;
 
-			color_t color = image_get_pixel(coords, image);
+			s_color_t color = image_get_pixel(coords, image);
 			fprintf(file, "%hhu ", color.r);
 			fprintf(file, "%hhu ", color.g);
 			fprintf(file, "%hhu ", color.b);
@@ -269,7 +269,7 @@ static void image_loader_save_pixels_p3(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_save_pixels_p5(image_t *image, FILE *file)
+static void image_loader_save_pixels_p5(s_image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
@@ -283,7 +283,7 @@ static void image_loader_save_pixels_p5(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_save_pixels_p6(image_t *image, FILE *file)
+static void image_loader_save_pixels_p6(s_image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
@@ -291,7 +291,7 @@ static void image_loader_save_pixels_p6(image_t *image, FILE *file)
 			coords.x = i;
 			coords.y = j;
 
-			color_t color = image_get_pixel(coords, image);
+			s_color_t color = image_get_pixel(coords, image);
 			fprintf(file, "%c", color.r);
 			fprintf(file, "%c", color.g);
 			fprintf(file, "%c", color.b);
@@ -299,7 +299,7 @@ static void image_loader_save_pixels_p6(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_save_pixels(image_t *image, FILE *file)
+static void image_loader_save_pixels(s_image_t *image, FILE *file)
 {
 	switch (image->image_data.format) {
 	case IFT_P2:

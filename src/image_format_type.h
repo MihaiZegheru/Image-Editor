@@ -7,6 +7,6 @@ typedef enum {
 	IFT_P3,
 	IFT_P5,
 	IFT_P6
-} image_format_type_t;
+} e_image_format_type_t;
 
 #endif // IMAGE_FORMAT_TYPE_H__
