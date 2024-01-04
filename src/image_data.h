@@ -1,6 +1,7 @@
 #ifndef IMAGE_DATA_H__
 #define IMAGE_DATA_H__
 
+#include <stddef.h>
 #include <linux/types.h>
 
 #include <image_format_type.h>

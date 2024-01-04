@@ -2,13 +2,13 @@
 #define COMMAND_DATA_H__
 
 #include <stddef.h>
+#include <linux/types.h>
+
 #include <command_type.h>
-#include <vector2.h>
-#include <inttypes.h>
+#include <command_status_type.h>
 #include <image_kernel_type.h>
 #include <image_format_type.h>
-#include <linux/types.h>
-#include <command_status_type.h>
+#include <vector2.h>
 
 typedef struct {
 	command_type_t command_type;
