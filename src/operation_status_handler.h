@@ -4,7 +4,7 @@
 #include <operation_status.h>
 #include <command_data.h>
 
-void operation_status_handler_forward(command_data_t command,
+void operation_status_handler_forward(u_command_data_t command,
 									  e_operation_status_t status);
 
 #endif // OPERATION_STATUS_HANDLER_H__

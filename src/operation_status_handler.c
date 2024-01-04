@@ -2,26 +2,26 @@
 
 #include <stdio.h>
 
-static void operation_status_handler_load_done(command_data_t command);
-static void operation_status_handler_load_failed(command_data_t command);
+static void operation_status_handler_load_done(u_command_data_t command);
+static void operation_status_handler_load_failed(u_command_data_t command);
 static void operation_status_handler_image_not_loaded(void);
-static void operation_status_handler_select_custom_done(command_data_t command);
+static void operation_status_handler_select_custom_done(u_command_data_t command);
 static void operation_status_handler_select_custom_failed(void);
 static void operation_status_handler_select_all_done(void);
-static void operation_status_handler_rotate_done(command_data_t command);
+static void operation_status_handler_rotate_done(u_command_data_t command);
 static void operation_status_handler_rotate_selection_invalid(void);
 static void operation_status_handler_rotate_angle_invalid(void);
 static void operation_status_handler_equalize_done(void);
 static void operation_status_handler_equalize_format_invalid(void);
 static void operation_status_handler_crop_done(void);
-static void operation_status_handler_apply_done(command_data_t command);
+static void operation_status_handler_apply_done(u_command_data_t command);
 static void operation_status_handler_apply_grayscale_image(void);
 static void operation_status_handler_apply_parameter_invalid(void);
-static void operation_status_handler_save_done(command_data_t command);
+static void operation_status_handler_save_done(u_command_data_t command);
 static void operation_status_handler_histogram_parameter_invalid(void);
 static void operation_status_handler_command_error(void);
 
-void operation_status_handler_forward(command_data_t command,
+void operation_status_handler_forward(u_command_data_t command,
 									  e_operation_status_t status)
 {
 	switch (status) {
@@ -85,12 +85,12 @@ void operation_status_handler_forward(command_data_t command,
 	}
 }
 
-static void operation_status_handler_load_done(command_data_t command)
+static void operation_status_handler_load_done(u_command_data_t command)
 {
 	printf("Loaded %s\n", command.load.file_path);
 }
 
-static void operation_status_handler_load_failed(command_data_t command)
+static void operation_status_handler_load_failed(u_command_data_t command)
 {
 	printf("Failed to load %s\n", command.load.file_path);
 }
@@ -100,7 +100,7 @@ static void operation_status_handler_image_not_loaded(void)
 	printf("No image loaded\n");
 }
 
-static void operation_status_handler_select_custom_done(command_data_t command)
+static void operation_status_handler_select_custom_done(u_command_data_t command)
 {
 	s_vector2_t point_a = command.select.point_a;
 	s_vector2_t point_b = command.select.point_b;
@@ -118,7 +118,7 @@ static void operation_status_handler_select_all_done(void)
 	printf("Selected ALL\n");
 }
 
-static void operation_status_handler_rotate_done(command_data_t command)
+static void operation_status_handler_rotate_done(u_command_data_t command)
 {
 	printf("Rotated %d\n", command.rotate.angle);
 }
@@ -148,7 +148,7 @@ static void operation_status_handler_crop_done(void)
 	printf("Image cropped\n");
 }
 
-static void operation_status_handler_apply_done(command_data_t command)
+static void operation_status_handler_apply_done(u_command_data_t command)
 {
 	image_kernel_type_t image_kernel_type = command.apply.image_kernel_type;
 
@@ -183,7 +183,7 @@ static void operation_status_handler_apply_parameter_invalid(void)
 	printf("APPLY parameter invalid\n");
 }
 
-static void operation_status_handler_save_done(command_data_t command)
+static void operation_status_handler_save_done(u_command_data_t command)
 {
 	printf("Saved %s\n", command.save.file_path);
 }

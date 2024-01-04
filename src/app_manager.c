@@ -15,25 +15,25 @@
 static __u8 app_manager_tick(image_workspace_t *image_workspace);
 
 static e_operation_status_t app_manager_load
-		(command_data_t command_data, image_workspace_t *image_workspace);
+		(u_command_data_t command_data, image_workspace_t *image_workspace);
 static e_operation_status_t app_manager_select
-		(command_data_t command_data, image_workspace_t *image_workspace);
+		(u_command_data_t command_data, image_workspace_t *image_workspace);
 static e_operation_status_t app_manager_select_all
-		(command_data_t command_data, image_workspace_t *image_workspace);
+		(u_command_data_t command_data, image_workspace_t *image_workspace);
 static e_operation_status_t app_manager_histogram
-		(command_data_t command_data, image_workspace_t *image_workspace);
+		(u_command_data_t command_data, image_workspace_t *image_workspace);
 static e_operation_status_t app_manager_equalize
-		(command_data_t command_data, image_workspace_t *image_workspace);
+		(u_command_data_t command_data, image_workspace_t *image_workspace);
 static e_operation_status_t app_manager_rotate
-		(command_data_t command_data, image_workspace_t *image_workspace);
+		(u_command_data_t command_data, image_workspace_t *image_workspace);
 static e_operation_status_t app_manager_crop
-		(command_data_t command_data, image_workspace_t *image_workspace);
+		(u_command_data_t command_data, image_workspace_t *image_workspace);
 static e_operation_status_t app_manager_apply
-		(command_data_t command_data,  image_workspace_t *image_workspace);
+		(u_command_data_t command_data,  image_workspace_t *image_workspace);
 static e_operation_status_t app_manager_save
-		(command_data_t command_data, image_workspace_t *image_workspace);
+		(u_command_data_t command_data, image_workspace_t *image_workspace);
 static e_operation_status_t app_manager_exit
-		(command_data_t command_data, image_workspace_t *image_workspace);
+		(u_command_data_t command_data, image_workspace_t *image_workspace);
 
 static void app_manager_rotate_90_degrees
 		(image_workspace_t *image_workspace);
@@ -61,7 +61,7 @@ __u8 app_manager_main_loop(void)
 
 static __u8 app_manager_tick(image_workspace_t *image_workspace)
 {
-	command_data_t command_data = input_handler_read_command_data();
+	u_command_data_t command_data = input_handler_read_command_data();
 
 	e_operation_status_t return_status;
 	switch (command_data.base.command_type) {
@@ -107,7 +107,7 @@ static __u8 app_manager_tick(image_workspace_t *image_workspace)
 	return 1;
 }
 
-static e_operation_status_t app_manager_load(command_data_t command_data,
+static e_operation_status_t app_manager_load(u_command_data_t command_data,
 									  image_workspace_t *image_workspace)
 {
 	if (command_data.load.command_type != CT_LOAD)
@@ -123,7 +123,7 @@ static e_operation_status_t app_manager_load(command_data_t command_data,
 	if (!image_workspace->image)
 		return OS_LOAD_FAILED;
 
-	command_data_t select_all_command;
+	u_command_data_t select_all_command;
 	select_all_command.select_all.command_type = CT_SELECT_ALL;
 	select_all_command.select_all.command_status = CST_VALID;
 	app_manager_select_all(select_all_command, image_workspace);
@@ -131,7 +131,7 @@ static e_operation_status_t app_manager_load(command_data_t command_data,
 	return OS_LOAD_DONE;
 }
 
-static e_operation_status_t app_manager_select(command_data_t command_data,
+static e_operation_status_t app_manager_select(u_command_data_t command_data,
 										image_workspace_t *image_workspace)
 {
 	if (command_data.select.command_type != CT_SELECT)
@@ -158,7 +158,7 @@ static e_operation_status_t app_manager_select(command_data_t command_data,
 	return OS_SELECT_CUSTOM_DONE;
 }
 
-static e_operation_status_t app_manager_select_all(command_data_t command_data,
+static e_operation_status_t app_manager_select_all(u_command_data_t command_data,
 											image_workspace_t *image_workspace)
 {
 	if (command_data.select_all.command_type != CT_SELECT_ALL)
@@ -180,7 +180,7 @@ static e_operation_status_t app_manager_select_all(command_data_t command_data,
 	return OS_SELECT_ALL_DONE;
 }
 
-static e_operation_status_t app_manager_histogram(command_data_t command_data,
+static e_operation_status_t app_manager_histogram(u_command_data_t command_data,
 										   image_workspace_t *image_workspace)
 {
 	if (command_data.histogram.command_type != CT_HISTOGRAM)
@@ -238,7 +238,7 @@ static e_operation_status_t app_manager_histogram(command_data_t command_data,
 	return OS_DEFAULT_DONE;
 }
 
-static e_operation_status_t app_manager_equalize(command_data_t command_data,
+static e_operation_status_t app_manager_equalize(u_command_data_t command_data,
 										  image_workspace_t *image_workspace)
 {
 	if (command_data.equalize.command_type != CT_EQUALIZE)
@@ -384,7 +384,7 @@ static void app_manager_rotate_90_degrees_image
 	image_delete(new_image);
 	image_workspace->image = image;
 
-	command_data_t select_all_command;
+	u_command_data_t select_all_command;
 	select_all_command.select_all.command_type = CT_SELECT_ALL;
 	select_all_command.select_all.command_status = CST_VALID;
 	app_manager_select_all(select_all_command, image_workspace);
@@ -404,7 +404,7 @@ static void app_manager_rotate_90_degrees(image_workspace_t *image_workspace)
 		app_manager_rotate_90_degrees_image(image_workspace);
 }
 
-static e_operation_status_t app_manager_rotate(command_data_t command_data,
+static e_operation_status_t app_manager_rotate(u_command_data_t command_data,
 										image_workspace_t *image_workspace)
 {
 	if (command_data.rotate.command_type != CT_ROTATE)
@@ -466,7 +466,7 @@ static e_operation_status_t app_manager_rotate(command_data_t command_data,
 	return OS_ROTATE_DONE;
 }
 
-static e_operation_status_t app_manager_crop(command_data_t command_data,
+static e_operation_status_t app_manager_crop(u_command_data_t command_data,
 									  image_workspace_t *image_workspace)
 {
 	if (command_data.crop.command_type != CT_CROP)
@@ -512,7 +512,7 @@ static e_operation_status_t app_manager_crop(command_data_t command_data,
 	image_delete(new_image);
 	image_workspace->image = image;
 
-	command_data_t select_all_command;
+	u_command_data_t select_all_command;
 	select_all_command.select_all.command_type = CT_SELECT_ALL;
 	select_all_command.select_all.command_status = CST_VALID;
 	app_manager_select_all(select_all_command, image_workspace);
@@ -602,7 +602,7 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 	image_delete(new_image);
 }
 
-static e_operation_status_t app_manager_apply(command_data_t command_data,
+static e_operation_status_t app_manager_apply(u_command_data_t command_data,
 									   image_workspace_t *image_workspace)
 {
 	if (command_data.apply.command_type != CT_APPLY)
@@ -648,7 +648,7 @@ static e_operation_status_t app_manager_apply(command_data_t command_data,
 	return OS_APPLY_DONE;
 }
 
-static e_operation_status_t app_manager_save(command_data_t command_data,
+static e_operation_status_t app_manager_save(u_command_data_t command_data,
 									  image_workspace_t *image_workspace)
 {
 	if (command_data.save.command_type != CT_SAVE)
@@ -677,7 +677,7 @@ static e_operation_status_t app_manager_save(command_data_t command_data,
 	return OS_SAVE_DONE;
 }
 
-static e_operation_status_t app_manager_exit(command_data_t command_data,
+static e_operation_status_t app_manager_exit(u_command_data_t command_data,
 									  image_workspace_t *image_workspace)
 {
 	if (command_data.exit.command_type != CT_EXIT)

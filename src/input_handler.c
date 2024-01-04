@@ -9,24 +9,24 @@
 
 static command_type_t input_handler_read_command(char *command_text);
 
-static command_data_t input_handler_read_load(char *command_text);
-static command_data_t input_handler_read_select(char *command_text);
-static command_data_t input_handler_read_histogram(char *command_text);
-static command_data_t input_handler_read_equalize(char *command_text);
-static command_data_t input_handler_read_rotate(char *command_text);
-static command_data_t input_handler_read_crop(char *command_text);
-static command_data_t input_handler_read_apply(char *command_text);
-static command_data_t input_handler_read_save(char *command_text);
-static command_data_t input_handler_read_exit(char *command_text);
+static u_command_data_t input_handler_read_load(char *command_text);
+static u_command_data_t input_handler_read_select(char *command_text);
+static u_command_data_t input_handler_read_histogram(char *command_text);
+static u_command_data_t input_handler_read_equalize(char *command_text);
+static u_command_data_t input_handler_read_rotate(char *command_text);
+static u_command_data_t input_handler_read_crop(char *command_text);
+static u_command_data_t input_handler_read_apply(char *command_text);
+static u_command_data_t input_handler_read_save(char *command_text);
+static u_command_data_t input_handler_read_exit(char *command_text);
 
-command_data_t input_handler_read_command_data(void)
+u_command_data_t input_handler_read_command_data(void)
 {
 	const size_t MAX_BUFFER = 255;
 	char command_text[MAX_BUFFER];
 	input_handler_read_line(command_text);
 	command_type_t command_type = input_handler_read_command(command_text);
 
-	command_data_t command_data;
+	u_command_data_t command_data;
 	command_data.base.command_type = CT_NONE;
 
 	switch (command_type) {
@@ -84,9 +84,9 @@ static command_type_t input_handler_read_command(char *command_text)
 	return command_type;
 }
 
-static command_data_t input_handler_read_load(char *command_text)
+static u_command_data_t input_handler_read_load(char *command_text)
 {
-	command_data_t command_data;
+	u_command_data_t command_data;
 	command_data.load.command_type = CT_LOAD;
 
 	command_data.apply.command_status = CST_INVALID;
@@ -98,9 +98,9 @@ static command_data_t input_handler_read_load(char *command_text)
 	return command_data;
 }
 
-static command_data_t input_handler_read_select(char *command_text)
+static u_command_data_t input_handler_read_select(char *command_text)
 {
-	command_data_t command_data;
+	u_command_data_t command_data;
 
 	char word[25];
 	utils_get_word_by_index(1, word, command_text);
@@ -149,9 +149,9 @@ static command_data_t input_handler_read_select(char *command_text)
 	return command_data;
 }
 
-static command_data_t input_handler_read_histogram(char *command_text)
+static u_command_data_t input_handler_read_histogram(char *command_text)
 {
-	command_data_t command_data;
+	u_command_data_t command_data;
 	command_data.histogram.command_type = CT_HISTOGRAM;
 
 	command_data.apply.command_status = CST_INVALID;
@@ -167,9 +167,9 @@ static command_data_t input_handler_read_histogram(char *command_text)
 	return command_data;
 }
 
-static command_data_t input_handler_read_equalize(char *command_text)
+static u_command_data_t input_handler_read_equalize(char *command_text)
 {
-	command_data_t command_data;
+	u_command_data_t command_data;
 	command_data.equalize.command_type = CT_EQUALIZE;
 
 	command_data.apply.command_status = CST_INVALID;
@@ -179,9 +179,9 @@ static command_data_t input_handler_read_equalize(char *command_text)
 	return command_data;
 }
 
-static command_data_t input_handler_read_rotate(char *command_text)
+static u_command_data_t input_handler_read_rotate(char *command_text)
 {
-	command_data_t command_data;
+	u_command_data_t command_data;
 	command_data.rotate.command_type = CT_ROTATE;
 
 	command_data.apply.command_status = CST_INVALID;
@@ -195,9 +195,9 @@ static command_data_t input_handler_read_rotate(char *command_text)
 	return command_data;
 }
 
-static command_data_t input_handler_read_crop(char *command_text)
+static u_command_data_t input_handler_read_crop(char *command_text)
 {
-	command_data_t command_data;
+	u_command_data_t command_data;
 	command_data.crop.command_type = CT_CROP;
 
 	command_data.apply.command_status = CST_INVALID;
@@ -207,9 +207,9 @@ static command_data_t input_handler_read_crop(char *command_text)
 	return command_data;
 }
 
-static command_data_t input_handler_read_apply(char *command_text)
+static u_command_data_t input_handler_read_apply(char *command_text)
 {
-	command_data_t command_data;
+	u_command_data_t command_data;
 	command_data.apply.command_type = CT_APPLY;
 
 	command_data.apply.command_status = CST_INVALID;
@@ -234,9 +234,9 @@ static command_data_t input_handler_read_apply(char *command_text)
 	return command_data;
 }
 
-static command_data_t input_handler_read_save(char *command_text)
+static u_command_data_t input_handler_read_save(char *command_text)
 {
-	command_data_t command_data;
+	u_command_data_t command_data;
 	command_data.save.command_type = CT_SAVE;
 
 	size_t word_count = utils_count_words(command_text);
@@ -255,9 +255,9 @@ static command_data_t input_handler_read_save(char *command_text)
 	return command_data;
 }
 
-static command_data_t input_handler_read_exit(char *command_text)
+static u_command_data_t input_handler_read_exit(char *command_text)
 {
-	command_data_t command_data;
+	u_command_data_t command_data;
 	command_data.exit.command_type = CT_EXIT;
 
 	command_data.apply.command_status = CST_INVALID;

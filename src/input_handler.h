@@ -8,7 +8,7 @@
 #include <command_data.h>
 #include <command_type.h>
 
-command_data_t input_handler_read_command_data(void);
+u_command_data_t input_handler_read_command_data(void);
 
 /**
  * @brief Read a line from stdin
