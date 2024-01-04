@@ -67,19 +67,23 @@ static void status_handler_crop_done(void)
 
 static void status_handler_apply_done(command_data_t command)
 {
-	// TO DO: Add a function that returns coresponding names for IKT
-	switch (command.apply.image_kernel_type) {
+	image_kernel_type_t image_kernel_type = command.apply.image_kernel_type;
+
+	char image_kernel_type_name[25];
+	image_kernel_type_get_name(image_kernel_type_name,image_kernel_type);
+
+	switch (image_kernel_type) {
 	case IKT_EDGE:
-		printf("APPLY EDGE done\n");
+		printf("APPLY %s done\n", image_kernel_type_name);
 		break;
 	case IKT_SHARPEN:
-		printf("APPLY SHARPEN done\n");
+		printf("APPLY %s done\n", image_kernel_type_name);
 		break;
 	case IKT_BOX_BLUR:
-		printf("APPLY BLUR done\n");
+		printf("APPLY %s done\n", image_kernel_type_name);
 		break;
 	case IKT_GAUSSIAN_BLUR:
-		printf("APPLY GAUSSIAN_BLUR done\n");
+		printf("APPLY %s done\n", image_kernel_type_name);
 		break;
 	default:
 		break;
