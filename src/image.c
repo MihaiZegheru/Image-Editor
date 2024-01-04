@@ -6,9 +6,9 @@
 s_image_t *image_new(s_image_data_t image_data)
 {
 	s_image_t *image = malloc(sizeof(s_image_t));
-	image->m_image_data = m_image_data;
+	image->m_image_data = image_data;
 
-	image->m_pixels = malloc(m_image_data.width * m_image_data.height *
+	image->m_pixels = malloc(image_data.width * image_data.height *
 						  sizeof(s_color_t));
 	assert(image->m_pixels);
 
