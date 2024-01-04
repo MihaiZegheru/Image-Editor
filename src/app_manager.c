@@ -1,5 +1,6 @@
 #include <app_manager.h>
 
+#include <stdio.h>
 #include <image_loader.h>
 #include <linux/types.h>
 #include <input_handler.h>

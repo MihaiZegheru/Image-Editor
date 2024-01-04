@@ -96,8 +96,8 @@ static image_data_t image_loader_load_image_data(FILE *file)
 			index++;
 			continue;
 		} else {
-			__u16 value = (uint16_t)utils_string_to_int64(line_buffer +
-														  index);
+			__u16 value = (__u16)utils_string_to_int64(line_buffer +
+													   index);
 
 			while (line_buffer[index] != ' ' && line_buffer[index] != '\n' &&
 				   line_buffer[index] != '\0')
