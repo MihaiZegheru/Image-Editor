@@ -70,7 +70,7 @@ static void status_handler_apply_done(command_data_t command)
 	image_kernel_type_t image_kernel_type = command.apply.image_kernel_type;
 
 	char image_kernel_type_name[25];
-	image_kernel_type_get_name(image_kernel_type_name,image_kernel_type);
+	image_kernel_type_get_name(image_kernel_type_name, image_kernel_type);
 
 	switch (image_kernel_type) {
 	case IKT_EDGE:
