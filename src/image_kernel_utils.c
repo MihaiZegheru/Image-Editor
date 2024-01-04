@@ -1,6 +1,6 @@
-#include <kernel_utils.h>
+#include <image_kernel_utils.h>
 
-void kernel_utils_edge(double *inverse_modifier, __s8 kernel[3][3])
+void image_kernel_utils_edge(double *inverse_modifier, __s8 kernel[3][3])
 {
 	*inverse_modifier = 1;
 	kernel[0][0] = -1;
@@ -14,7 +14,7 @@ void kernel_utils_edge(double *inverse_modifier, __s8 kernel[3][3])
 	kernel[2][2] = -1;
 }
 
-void kernel_utils_sharpen(double *inverse_modifier, __s8 kernel[3][3])
+void image_kernel_utils_sharpen(double *inverse_modifier, __s8 kernel[3][3])
 {
 	*inverse_modifier = 1;
 	kernel[0][0] = 0;
@@ -28,7 +28,7 @@ void kernel_utils_sharpen(double *inverse_modifier, __s8 kernel[3][3])
 	kernel[2][2] = 0;
 }
 
-void kernel_utils_box_blur(double *inverse_modifier, __s8 kernel[3][3])
+void image_kernel_utils_box_blur(double *inverse_modifier, __s8 kernel[3][3])
 {
 	*inverse_modifier = 9;
 	kernel[0][0] = 1;
@@ -42,7 +42,7 @@ void kernel_utils_box_blur(double *inverse_modifier, __s8 kernel[3][3])
 	kernel[2][2] = 1;
 }
 
-void kernel_utils_gaussian_blur(double *inverse_modifier, __s8 kernel[3][3])
+void image_kernel_utils_gaussian_blur(double *inverse_modifier, __s8 kernel[3][3])
 {
 	*inverse_modifier = 16;
 	kernel[0][0] = 1;

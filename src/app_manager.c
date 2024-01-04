@@ -9,7 +9,7 @@
 #include <image_workspace.h>
 #include <operation_status_handler.h>
 #include <input_handler.h>
-#include <kernel_utils.h>
+#include <image_kernel_utils.h>
 #include <utils.h>
 
 static __u8 app_manager_tick(image_workspace_t *image_workspace);
@@ -626,19 +626,19 @@ static e_operation_status_t app_manager_apply(command_data_t command_data,
 
 	switch (command_data.apply.image_kernel_type) {
 	case IKT_EDGE:
-		kernel_utils_edge(&inverse_modifier, kernel);
+		image_kernel_utils_edge(&inverse_modifier, kernel);
 		app_manager_apply_kernel(inverse_modifier, kernel, image_workspace);
 		break;
 	case IKT_SHARPEN:
-		kernel_utils_sharpen(&inverse_modifier, kernel);
+		image_kernel_utils_sharpen(&inverse_modifier, kernel);
 		app_manager_apply_kernel(inverse_modifier, kernel, image_workspace);
 		break;
 	case IKT_BOX_BLUR:
-		kernel_utils_box_blur(&inverse_modifier, kernel);
+		image_kernel_utils_box_blur(&inverse_modifier, kernel);
 		app_manager_apply_kernel(inverse_modifier, kernel, image_workspace);
 		break;
 	case IKT_GAUSSIAN_BLUR:
-		kernel_utils_gaussian_blur(&inverse_modifier, kernel);
+		image_kernel_utils_gaussian_blur(&inverse_modifier, kernel);
 		app_manager_apply_kernel(inverse_modifier, kernel, image_workspace);
 		break;
 	default:
