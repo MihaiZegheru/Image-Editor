@@ -17,6 +17,9 @@ status_type_t app_manager_load(command_data_t command_data,
 	if (command_data.load.command_type != CT_LOAD)
 		return ST_COMMAND_ERROR;
 
+	if (command_data.load.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
+
 	if (image_workspace->image)
 		image_delete(image_workspace->image);
 
@@ -26,6 +29,7 @@ status_type_t app_manager_load(command_data_t command_data,
 
 	command_data_t select_all_command;
 	select_all_command.select_all.command_type = CT_SELECT_ALL;
+	select_all_command.select_all.command_status = CST_VALID;
 	app_manager_select_all(select_all_command, image_workspace);
 
 	return ST_LOAD_DONE;
@@ -39,6 +43,9 @@ status_type_t app_manager_select(command_data_t command_data,
 
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
+
+	if (command_data.select.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
 
 	vector2_t point_a = command_data.select.point_a;
 	vector2_t point_b = command_data.select.point_b;
@@ -63,6 +70,9 @@ status_type_t app_manager_select_all(command_data_t command_data,
 
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
+
+	if (command_data.select_all.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
 
 	image_workspace->selection_point_a.x = 0;
 	image_workspace->selection_point_a.y = 0;
@@ -140,6 +150,9 @@ status_type_t app_manager_equalize(command_data_t command_data,
 
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
+
+	if (command_data.equalize.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
 
 	if (image_workspace->image->image_data.format != IFT_P2 &&
 		image_workspace->image->image_data.format != IFT_P5)
@@ -292,6 +305,7 @@ static void app_manager_rotate_90_degrees_image
 
 	command_data_t select_all_command;
 	select_all_command.select_all.command_type = CT_SELECT_ALL;
+	select_all_command.select_all.command_status = CST_VALID;
 	app_manager_select_all(select_all_command, image_workspace);
 }
 
@@ -317,6 +331,9 @@ status_type_t app_manager_rotate(command_data_t command_data,
 
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
+
+	if (command_data.rotate.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
 
 	image_t *image = image_workspace->image;
 	vector2_t point_a = image_workspace->selection_point_a;
@@ -377,6 +394,9 @@ status_type_t app_manager_crop(command_data_t command_data,
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
 
+	if (command_data.crop.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
+
 	image_t *image = image_workspace->image;
 	vector2_t point_a = image_workspace->selection_point_a;
 	vector2_t point_b = image_workspace->selection_point_b;
@@ -413,6 +433,7 @@ status_type_t app_manager_crop(command_data_t command_data,
 
 	command_data_t select_all_command;
 	select_all_command.select_all.command_type = CT_SELECT_ALL;
+	select_all_command.select_all.command_status = CST_VALID;
 	app_manager_select_all(select_all_command, image_workspace);
 
 	return ST_CROP_DONE;
@@ -554,6 +575,9 @@ status_type_t app_manager_save(command_data_t command_data,
 
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
+	
+	if (command_data.save.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
 
 	image_data_t *image_data = &image_workspace->image->image_data;
 	if (command_data.save.save_as_ascii) {
@@ -580,6 +604,9 @@ status_type_t app_manager_exit(command_data_t command_data,
 
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
+
+	if (command_data.exit.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
 
 	image_delete(image_workspace->image);
 	return ST_DEFAULT_DONE;

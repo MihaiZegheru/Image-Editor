@@ -5,6 +5,8 @@
 
 #include <utils.h>
 
+// TO DO: Add a word object as struct and migrate methods
+
 command_data_t input_handler_read_command_data(void)
 {
 	const size_t MAX_BUFFER = 255;
@@ -75,9 +77,10 @@ command_data_t input_handler_read_load(char *command_text)
 	command_data_t command_data;
 	command_data.load.command_type = CT_LOAD;
 
-	if (utils_count_words(command_text) != 2)
-		command_data.apply.command_type = CT_NONE;
-
+	command_data.apply.command_status = CST_INVALID;
+	if (utils_count_words(command_text) == 2)
+		command_data.apply.command_status = CST_VALID;
+		
 	utils_get_word_by_index(1, command_data.load.file_path, command_text);
 
 	return command_data;
@@ -87,7 +90,6 @@ command_data_t input_handler_read_select(char *command_text)
 {
 	command_data_t command_data;
 
-	// TO DO: Add a word object as struct and migrate methods
 	char word[25];
 	utils_get_word_by_index(1, word, command_text);
 
@@ -128,8 +130,9 @@ command_data_t input_handler_read_select(char *command_text)
 	}
 
 	size_t word_count = utils_count_words(command_text);
-	if (word_count != 2 && word_count != 5)
-		command_data.apply.command_type = CT_NONE;
+	command_data.apply.command_status = CST_INVALID;
+	if (word_count == 2 || word_count == 5)
+		command_data.apply.command_status = CST_VALID;
 
 	return command_data;
 }
@@ -139,9 +142,8 @@ command_data_t input_handler_read_histogram(char *command_text)
 	command_data_t command_data;
 	command_data.histogram.command_type = CT_HISTOGRAM;
 
-	if (utils_count_words(command_text) != 3)
-		command_data.apply.command_status = CST_INVALID;
-	else
+	command_data.apply.command_status = CST_INVALID;
+	if (utils_count_words(command_text) == 3)
 		command_data.apply.command_status = CST_VALID;
 
 	char word[25];
@@ -158,6 +160,10 @@ command_data_t input_handler_read_equalize(void)
 	command_data_t command_data;
 	command_data.equalize.command_type = CT_EQUALIZE;
 
+	command_data.apply.command_status = CST_INVALID;
+	if (utils_count_words(command_text) == 1)
+		command_data.apply.command_status = CST_VALID;
+
 	return command_data;
 }
 
@@ -166,8 +172,9 @@ command_data_t input_handler_read_rotate(char *command_text)
 	command_data_t command_data;
 	command_data.rotate.command_type = CT_ROTATE;
 
-	if (utils_count_words(command_text) != 2)
-		command_data.apply.command_type = CT_NONE;
+	command_data.apply.command_status = CST_INVALID;
+	if (utils_count_words(command_text) == 2)
+		command_data.apply.command_status = CST_VALID;
 
 	char word[25];
 	utils_get_word_by_index(1, word, command_text);
@@ -181,6 +188,10 @@ command_data_t input_handler_read_crop(void)
 	command_data_t command_data;
 	command_data.crop.command_type = CT_CROP;
 
+	command_data.apply.command_status = CST_INVALID;
+	if (utils_count_words(command_text) == 1)
+		command_data.apply.command_status = CST_VALID;
+
 	return command_data;
 }
 
@@ -189,8 +200,9 @@ command_data_t input_handler_read_apply(char *command_text)
 	command_data_t command_data;
 	command_data.apply.command_type = CT_APPLY;
 
-	// if (utils_count_words(command_text) != 2)
-	// 	command_data.apply.command_type = CT_NONE;
+	command_data.apply.command_status = CST_INVALID;
+	if (utils_count_words(command_text) == 2)
+		command_data.apply.command_status = CST_VALID;
 
 	char word[25];
 	word[0] = '\0';
@@ -204,8 +216,6 @@ command_data_t input_handler_read_apply(char *command_text)
 		command_data.apply.image_kernel_type = IKT_BOX_BLUR;
 	else if (!strcmp(word, "GAUSSIAN_BLUR"))
 		command_data.apply.image_kernel_type = IKT_GAUSSIAN_BLUR;
-	else if (!strcmp(word, ""))
-		command_data.apply.command_status = CST_INVALID;
 	else
 		command_data.apply.image_kernel_type = IKT_NONE;
 
@@ -218,8 +228,9 @@ command_data_t input_handler_read_save(char *command_text)
 	command_data.save.command_type = CT_SAVE;
 
 	size_t word_count = utils_count_words(command_text);
-	if (word_count != 2 && word_count != 3)
-		command_data.apply.command_type = CT_NONE;
+	command_data.apply.command_status = CST_INVALID;
+	if (word_count == 2 || word_count == 3)
+		command_data.apply.command_status = CST_VALID;
 
 	utils_get_word_by_index(1, command_data.save.file_path, command_text);
 
@@ -236,6 +247,10 @@ command_data_t input_handler_read_exit(void)
 {
 	command_data_t command_data;
 	command_data.exit.command_type = CT_EXIT;
+
+	command_data.apply.command_status = CST_INVALID;
+	if (utils_count_words(command_text) == 1)
+		command_data.apply.command_status = CST_VALID;
 
 	return command_data;
 }
