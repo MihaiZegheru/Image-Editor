@@ -7,6 +7,18 @@
 
 // TO DO: Add a word object as struct and migrate methods
 
+static command_type_t input_handler_read_command(char *command_text);
+
+static command_data_t input_handler_read_load(char *command_text);
+static command_data_t input_handler_read_select(char *command_text);
+static command_data_t input_handler_read_histogram(char *command_text);
+static command_data_t input_handler_read_equalize(char *command_text);
+static command_data_t input_handler_read_rotate(char *command_text);
+static command_data_t input_handler_read_crop(char *command_text);
+static command_data_t input_handler_read_apply(char *command_text);
+static command_data_t input_handler_read_save(char *command_text);
+static command_data_t input_handler_read_exit(char *command_text);
+
 command_data_t input_handler_read_command_data(void)
 {
 	const size_t MAX_BUFFER = 255;
@@ -41,7 +53,7 @@ command_data_t input_handler_read_command_data(void)
 	}
 }
 
-command_type_t input_handler_read_command(char *command_text)
+static command_type_t input_handler_read_command(char *command_text)
 {
 	const size_t MAX_BUFFER = 255;
 	char opperation[MAX_BUFFER];
@@ -72,7 +84,7 @@ command_type_t input_handler_read_command(char *command_text)
 	return command_type;
 }
 
-command_data_t input_handler_read_load(char *command_text)
+static command_data_t input_handler_read_load(char *command_text)
 {
 	command_data_t command_data;
 	command_data.load.command_type = CT_LOAD;
@@ -86,7 +98,7 @@ command_data_t input_handler_read_load(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_select(char *command_text)
+static command_data_t input_handler_read_select(char *command_text)
 {
 	command_data_t command_data;
 
@@ -137,7 +149,7 @@ command_data_t input_handler_read_select(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_histogram(char *command_text)
+static command_data_t input_handler_read_histogram(char *command_text)
 {
 	command_data_t command_data;
 	command_data.histogram.command_type = CT_HISTOGRAM;
@@ -155,7 +167,7 @@ command_data_t input_handler_read_histogram(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_equalize(char *command_text)
+static command_data_t input_handler_read_equalize(char *command_text)
 {
 	command_data_t command_data;
 	command_data.equalize.command_type = CT_EQUALIZE;
@@ -167,7 +179,7 @@ command_data_t input_handler_read_equalize(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_rotate(char *command_text)
+static command_data_t input_handler_read_rotate(char *command_text)
 {
 	command_data_t command_data;
 	command_data.rotate.command_type = CT_ROTATE;
@@ -183,7 +195,7 @@ command_data_t input_handler_read_rotate(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_crop(char *command_text)
+static command_data_t input_handler_read_crop(char *command_text)
 {
 	command_data_t command_data;
 	command_data.crop.command_type = CT_CROP;
@@ -195,7 +207,7 @@ command_data_t input_handler_read_crop(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_apply(char *command_text)
+static command_data_t input_handler_read_apply(char *command_text)
 {
 	command_data_t command_data;
 	command_data.apply.command_type = CT_APPLY;
@@ -222,7 +234,7 @@ command_data_t input_handler_read_apply(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_save(char *command_text)
+static command_data_t input_handler_read_save(char *command_text)
 {
 	command_data_t command_data;
 	command_data.save.command_type = CT_SAVE;
@@ -243,7 +255,7 @@ command_data_t input_handler_read_save(char *command_text)
 	return command_data;
 }
 
-command_data_t input_handler_read_exit(char *command_text)
+static command_data_t input_handler_read_exit(char *command_text)
 {
 	command_data_t command_data;
 	command_data.exit.command_type = CT_EXIT;
@@ -253,26 +265,6 @@ command_data_t input_handler_read_exit(char *command_text)
 		command_data.apply.command_status = CST_VALID;
 
 	return command_data;
-}
-
-void input_handler_read_string(char *str)
-{
-	scanf("%s[\n]", str);
-}
-
-void input_handler_read_vector2(vector2_t *coords)
-{
-	scanf("%lld%lld", &coords->x, &coords->y);
-}
-
-void input_handler_read_int64(__s64 *int64)
-{
-	scanf("%lld", int64);
-}
-
-void input_handler_read_size(size_t *size)
-{
-	scanf("%zu", size);
 }
 
 void input_handler_read_line(char *str)
