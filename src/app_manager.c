@@ -130,8 +130,8 @@ status_type_t app_manager_histogram(command_data_t command_data,
         histogram[i] = (int)(((double)histogram[i] / max_frequency) * histogram_resolution.x);
     }
 
-    for (size_t i = 0; i <  (size_t)histogram_resolution.x; i++) {
-        printf("%"SCNu64" |\t", histogram[i]);
+    for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++) {
+        printf("%"SCNu64"\t|\t", histogram[i]);
         for (size_t j = 0; j < histogram[i]; j++) {
             printf("*");
         }
