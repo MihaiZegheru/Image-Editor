@@ -89,7 +89,16 @@ status_type_t app_manager_histogram(command_data_t command_data,
         return ST_COMMAND_ERROR;
     }
 
+    if (!image_workspace->image) {
+        return ST_IMAGE_NOT_LOADED;
+    }
+
     vector2_t histogram_resolution = command_data.histogram.resolution;
+    if (histogram_resolution.y % 2 || histogram_resolution.y < 2 ||
+        histogram_resolution.y > 256) {
+        return ST_COMMAND_ERROR;
+    }
+
 
     if (image_workspace->image->image_data.format != IFT_P2 &&
         image_workspace->image->image_data.format != IFT_P5) {
