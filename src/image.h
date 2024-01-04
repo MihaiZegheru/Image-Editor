@@ -1,9 +1,9 @@
 #ifndef IMAGE_H__
 #define IMAGE_H__
 
+#include <linux/types.h>
 #include <stddef.h>
 
-#include <linux/types.h>
 #include <color.h>
 #include <image_data.h>
 #include <vector2.h>

@@ -44,8 +44,8 @@ size_t image_get_height(image_t *image)
 __s8 image_coords_in_bounds(vector2_t coords, image_t *image)
 {
 	if (coords.x >= (__s64)image->image_data.height ||
-		coords.y >= (__s64)image->image_data.width) {
+		coords.y >= (__s64)image->image_data.width)
 		return 0;
-	}
+
 	return 1;
 }

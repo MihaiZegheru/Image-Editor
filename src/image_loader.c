@@ -1,11 +1,51 @@
 #include <image_loader.h>
 
 #include <stdio.h>
-#include <linux/types.h>
-#include <string.h>
 #include <assert.h>
-#include <utils.h>
+#include <string.h>
+#include <linux/types.h>
+
 #include <vector2.h>
+#include <utils.h>
+
+static image_data_t image_loader_load_image_data(FILE *file);
+static void image_loader_load_pixels_p2(image_t *image, FILE *file);
+static void image_loader_load_pixels_p3(image_t *image, FILE *file);
+static void image_loader_load_pixels_p5(image_t *image, FILE *file);
+static void image_loader_load_pixels_p6(image_t *image, FILE *file);
+static void image_loader_load_pixels(image_t *image, FILE *file);
+
+static void image_loader_save_image_data(image_data_t image_data, FILE *file);
+static void image_loader_save_pixels_p2(image_t *image, FILE *file);
+static void image_loader_save_pixels_p3(image_t *image, FILE *file);
+static void image_loader_save_pixels_p5(image_t *image, FILE *file);
+static void image_loader_save_pixels_p6(image_t *image, FILE *file);
+static void image_loader_save_pixels(image_t *image, FILE *file);
+
+image_t *image_loader_load(char *file_path)
+{
+	FILE *file = fopen(file_path, "r");
+	if (!file)
+		return NULL;
+
+	image_data_t image_data = image_loader_load_image_data(file);
+	image_t *image = image_new(image_data);
+	image_loader_load_pixels(image, file);
+
+	fclose(file);
+
+	return image;
+}
+
+void image_loader_save(image_t *image, char *file_path)
+{
+	FILE *file = fopen(file_path, "w");
+
+	image_loader_save_image_data(image->image_data, file);
+	image_loader_save_pixels(image, file);
+
+	fclose(file);
+}
 
 static image_data_t image_loader_load_image_data(FILE *file)
 {
@@ -80,7 +120,7 @@ static image_data_t image_loader_load_image_data(FILE *file)
 	return image_data;
 }
 
-void image_loader_load_pixels_p2(image_t *image, FILE *file)
+static void image_loader_load_pixels_p2(image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
@@ -100,7 +140,7 @@ void image_loader_load_pixels_p2(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_set_pixels_p3(image_t *image, FILE *file)
+static void image_loader_load_pixels_p3(image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
@@ -117,7 +157,7 @@ static void image_loader_set_pixels_p3(image_t *image, FILE *file)
 	}
 }
 
-static void image_loader_set_pixels_p5(image_t *image, FILE *file)
+static void image_loader_load_pixels_p5(image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
@@ -161,10 +201,10 @@ static void image_loader_load_pixels(image_t *image, FILE *file)
 		image_loader_load_pixels_p2(image, file);
 		break;
 	case IFT_P3:
-		image_loader_set_pixels_p3(image, file);
+		image_loader_load_pixels_p3(image, file);
 		break;
 	case IFT_P5:
-		image_loader_set_pixels_p5(image, file);
+		image_loader_load_pixels_p5(image, file);
 		break;
 	case IFT_P6:
 		image_loader_load_pixels_p6(image, file);
@@ -174,22 +214,30 @@ static void image_loader_load_pixels(image_t *image, FILE *file)
 	}
 }
 
-image_t *image_loader_load(char *file_path)
+static void image_loader_save_image_data(image_data_t image_data, FILE *file)
 {
-	FILE *file = fopen(file_path, "r");
-	if (!file)
-		return NULL;
+	switch (image_data.format) {
+	case IFT_P2:
+		fprintf(file, "P2\n");
+		break;
+	case IFT_P3:
+		fprintf(file, "P3\n");
+		break;
+	case IFT_P5:
+		fprintf(file, "P5\n");
+		break;
+	case IFT_P6:
+		fprintf(file, "P6\n");
+		break;
+	default:
+		break;
+	}
 
-	image_data_t image_data = image_loader_load_image_data(file);
-	image_t *image = image_new(image_data);
-	image_loader_load_pixels(image, file);
-
-	fclose(file);
-
-	return image;
+	fprintf(file, "%zu %zu\n", image_data.width, image_data.height);
+	fprintf(file, "%u\n", image_data.max_pixel_value);
 }
 
-void image_loader_save_pixels_p2(image_t *image, FILE *file)
+static void image_loader_save_pixels_p2(image_t *image, FILE *file)
 {
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
@@ -269,37 +317,4 @@ static void image_loader_save_pixels(image_t *image, FILE *file)
 	default:
 		break;
 	}
-}
-
-static void image_loader_save_image_data(image_data_t image_data, FILE *file)
-{
-	switch (image_data.format) {
-	case IFT_P2:
-		fprintf(file, "P2\n");
-		break;
-	case IFT_P3:
-		fprintf(file, "P3\n");
-		break;
-	case IFT_P5:
-		fprintf(file, "P5\n");
-		break;
-	case IFT_P6:
-		fprintf(file, "P6\n");
-		break;
-	default:
-		break;
-	}
-
-	fprintf(file, "%zu %zu\n", image_data.width, image_data.height);
-	fprintf(file, "%u\n", image_data.max_pixel_value);
-}
-
-void image_loader_save(image_t *image, char *file_path)
-{
-	FILE *file = fopen(file_path, "w");
-
-	image_loader_save_image_data(image->image_data, file);
-	image_loader_save_pixels(image, file);
-
-	fclose(file);
 }
