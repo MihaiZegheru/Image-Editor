@@ -77,7 +77,7 @@ typedef union {
 	s_cd_default_t base;
 	s_cd_load_t load;
 	s_cd_select_t select;
-	cd_select_all_t select_all;
+	s_cd_select_all_t select_all;
 	s_cd_histogram_t histogram;
 	s_cd_equalize_t equalize;
 	s_cd_rotate_t rotate;
