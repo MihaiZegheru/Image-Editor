@@ -146,10 +146,10 @@ static e_operation_status_t app_manager_select(u_command_data_t command_data,
 	s_vector2_t point_a = command_data.select.point_a;
 	s_vector2_t point_b = command_data.select.point_b;
 
-	if ((size_t)point_b.x > image_get_height(image_workspace->image) ||
-		(size_t)point_b.y > image_get_width(image_workspace->image) ||
-		point_a.x < 0 || point_a.y < 0 ||
-		point_a.x >= point_b.x || point_a.y >= point_b.y)
+	if ((size_t)point_b.m_x > image_get_height(image_workspace->image) ||
+		(size_t)point_b.m_y > image_get_width(image_workspace->image) ||
+		point_a.m_x < 0 || point_a.m_y < 0 ||
+		point_a.m_x >= point_b.m_x || point_a.m_y >= point_b.m_y)
 		return OS_SELECT_CUSTOM_FAILED;
 
 	image_workspace->selection_point_a = point_a;
@@ -170,11 +170,11 @@ static e_operation_status_t app_manager_select_all(u_command_data_t command_data
 	if (command_data.select_all.command_status == CST_INVALID)
 		return OS_COMMAND_ERROR;
 
-	image_workspace->selection_point_a.x = 0;
-	image_workspace->selection_point_a.y = 0;
-	image_workspace->selection_point_b.x =
+	image_workspace->selection_point_a.m_x = 0;
+	image_workspace->selection_point_a.m_y = 0;
+	image_workspace->selection_point_b.m_x =
 			image_get_height(image_workspace->image);
-	image_workspace->selection_point_b.y =
+	image_workspace->selection_point_b.m_y =
 			image_get_width(image_workspace->image);
 
 	return OS_SELECT_ALL_DONE;
@@ -193,39 +193,39 @@ static e_operation_status_t app_manager_histogram(u_command_data_t command_data,
 		return OS_COMMAND_ERROR;
 
 	s_vector2_t histogram_resolution = command_data.histogram.resolution;
-	if (histogram_resolution.y % 2 || histogram_resolution.y < 2 ||
-		histogram_resolution.y > 256)
+	if (histogram_resolution.m_y % 2 || histogram_resolution.m_y < 2 ||
+		histogram_resolution.m_y > 256)
 		return OS_COMMAND_ERROR;
 
 	if (image_workspace->image->image_data.format != IFT_P2 &&
 		image_workspace->image->image_data.format != IFT_P5)
 		return OS_IMAGE_NOT_GRAYSCALE;
 
-	size_t *histogram = calloc(histogram_resolution.y, sizeof(size_t));
+	size_t *histogram = calloc(histogram_resolution.m_y, sizeof(size_t));
 	s_image_t *image = image_workspace->image;
 
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
 			s_vector2_t coords;
-			coords.x = i;
-			coords.y = j;
+			coords.m_x = i;
+			coords.m_y = j;
 
 			__u8 value =  image_get_pixel(coords, image).r;
 
-			__u8 bin_index = value / (256 / histogram_resolution.y);
+			__u8 bin_index = value / (256 / histogram_resolution.m_y);
 			histogram[bin_index]++;
 		}
 	}
 
 	size_t max_frequency = 0;
-	for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++)
+	for (size_t i = 0; i <  (size_t)histogram_resolution.m_y; i++)
 		max_frequency = utils_max_int64(max_frequency, histogram[i]);
 
-	for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++)
+	for (size_t i = 0; i <  (size_t)histogram_resolution.m_y; i++)
 		histogram[i] = (int)(((double)histogram[i] / max_frequency) *
-						histogram_resolution.x);
+						histogram_resolution.m_x);
 
-	for (size_t i = 0; i <  (size_t)histogram_resolution.y; i++) {
+	for (size_t i = 0; i <  (size_t)histogram_resolution.m_y; i++) {
 		printf("%lu\t|\t", histogram[i]);
 		for (size_t j = 0; j < histogram[i]; j++)
 			printf("*");
@@ -263,8 +263,8 @@ static e_operation_status_t app_manager_equalize(u_command_data_t command_data,
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
 			s_vector2_t coords;
-			coords.x = i;
-			coords.y = j;
+			coords.m_x = i;
+			coords.m_y = j;
 
 			__u8 value =  image_get_pixel(coords, image).r;
 			histogram[value]++;
@@ -284,8 +284,8 @@ static e_operation_status_t app_manager_equalize(u_command_data_t command_data,
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
 			s_vector2_t coords;
-			coords.x = i;
-			coords.y = j;
+			coords.m_x = i;
+			coords.m_y = j;
 
 			__u8 value =  image_get_pixel(coords, image).r;
 			__u8 new_value = equalized_values_link[value];
@@ -305,18 +305,18 @@ static void app_manager_rotate_90_compute_rotated
 		(s_vector2_t point_a, s_vector2_t point_b, s_image_t *out, s_image_t *image)
 {
 	size_t curr_i = 0;
-	for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
+	for (size_t i = point_a.m_x; i <  (size_t)point_b.m_x; i++) {
 		size_t curr_j = 0;
 
-		for (size_t j = point_a.y; j <  (size_t)point_b.y; j++) {
+		for (size_t j = point_a.m_y; j <  (size_t)point_b.m_y; j++) {
 			s_vector2_t coords;
-			coords.x = i;
-			coords.y = j;
+			coords.m_x = i;
+			coords.m_y = j;
 			s_color_t pixel = image_get_pixel(coords, image);
 
 			s_vector2_t curr_coords;
-			curr_coords.x = curr_j;
-			curr_coords.y = image_get_width(out) - curr_i - 1;
+			curr_coords.m_x = curr_j;
+			curr_coords.m_y = image_get_width(out) - curr_i - 1;
 			image_set_pixel(curr_coords, pixel, out);
 
 			curr_j++;
@@ -334,26 +334,26 @@ static void app_manager_rotate_90_degrees_square
 
 	s_image_data_t new_image_data;
 	new_image_data.format = image->image_data.format;
-	new_image_data.height = point_b.y - point_a.y;
-	new_image_data.width = point_b.x - point_a.x;
+	new_image_data.height = point_b.m_y - point_a.m_y;
+	new_image_data.width = point_b.m_x - point_a.m_x;
 	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
 
 	s_image_t *new_image = image_new(new_image_data);
 	app_manager_rotate_90_compute_rotated(point_a, point_b, new_image, image);
 
 	size_t curr_i = 0;
-	for (size_t i = point_a.x; i <  (size_t)point_b.x; i++) {
+	for (size_t i = point_a.m_x; i <  (size_t)point_b.m_x; i++) {
 		size_t curr_j = 0;
 
-		for (size_t j = point_a.y; j <  (size_t)point_b.y; j++) {
+		for (size_t j = point_a.m_y; j <  (size_t)point_b.m_y; j++) {
 			s_vector2_t curr_coords;
-			curr_coords.x = curr_i;
-			curr_coords.y = curr_j;
+			curr_coords.m_x = curr_i;
+			curr_coords.m_y = curr_j;
 			s_color_t pixel = image_get_pixel(curr_coords, new_image);
 
 			s_vector2_t coords;
-			coords.x = i;
-			coords.y = j;
+			coords.m_x = i;
+			coords.m_y = j;
 			image_set_pixel(coords, pixel, image);
 
 			curr_j++;
@@ -373,8 +373,8 @@ static void app_manager_rotate_90_degrees_image
 
 	s_image_data_t new_image_data;
 	new_image_data.format = image->image_data.format;
-	new_image_data.height = point_b.y - point_a.y;
-	new_image_data.width = point_b.x - point_a.x;
+	new_image_data.height = point_b.m_y - point_a.m_y;
+	new_image_data.width = point_b.m_x - point_a.m_x;
 	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
 
 	s_image_t *new_image = image_new(new_image_data);
@@ -395,8 +395,8 @@ static void app_manager_rotate_90_degrees(s_image_workspace_t *image_workspace)
 	s_vector2_t point_a = image_workspace->selection_point_a;
 	s_vector2_t point_b = image_workspace->selection_point_b;
 
-	size_t selection_height = point_b.x - point_a.x;
-	size_t selection_width = point_b.y - point_a.y;
+	size_t selection_height = point_b.m_x - point_a.m_x;
+	size_t selection_width = point_b.m_y - point_a.m_y;
 
 	if (selection_height == selection_width)
 		app_manager_rotate_90_degrees_square(image_workspace);
@@ -420,8 +420,8 @@ static e_operation_status_t app_manager_rotate(u_command_data_t command_data,
 	s_vector2_t point_a = image_workspace->selection_point_a;
 	s_vector2_t point_b = image_workspace->selection_point_b;
 
-	size_t selection_height = point_b.x - point_a.x;
-	size_t selection_width = point_b.y - point_a.y;
+	size_t selection_height = point_b.m_x - point_a.m_x;
+	size_t selection_width = point_b.m_y - point_a.m_y;
 
 	if ((selection_height != image_get_height(image) &&
 		 selection_width != image_get_width(image)) &&
@@ -484,24 +484,24 @@ static e_operation_status_t app_manager_crop(u_command_data_t command_data,
 
 	s_image_data_t new_image_data;
 	new_image_data.format = image->image_data.format;
-	new_image_data.height = point_b.x - point_a.x;
-	new_image_data.width = point_b.y - point_a.y;
+	new_image_data.height = point_b.m_x - point_a.m_x;
+	new_image_data.width = point_b.m_y - point_a.m_y;
 	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
 
 	s_image_t *new_image = image_new(new_image_data);
 
 	size_t curr_i = 0;
-	for (size_t i = point_a.x; i < (size_t)point_b.x; i++) {
+	for (size_t i = point_a.m_x; i < (size_t)point_b.m_x; i++) {
 		size_t curr_j = 0;
-		for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
+		for (size_t j = point_a.m_y; j < (size_t)point_b.m_y; j++) {
 			s_vector2_t coords;
-			coords.x = i;
-			coords.y = j;
+			coords.m_x = i;
+			coords.m_y = j;
 			s_color_t pixel = image_get_pixel(coords, image);
 
 			s_vector2_t curr_coords;
-			curr_coords.x = curr_i;
-			curr_coords.y = curr_j;
+			curr_coords.m_x = curr_i;
+			curr_coords.m_y = curr_j;
 			image_set_pixel(curr_coords, pixel, new_image);
 			curr_j++;
 		}
@@ -529,16 +529,16 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 
 	s_image_data_t new_image_data;
 	new_image_data.format = image->image_data.format;
-	new_image_data.height = point_b.x - point_a.x;
-	new_image_data.width = point_b.y - point_a.y;
+	new_image_data.height = point_b.m_x - point_a.m_x;
+	new_image_data.width = point_b.m_y - point_a.m_y;
 	new_image_data.max_pixel_value = image->image_data.max_pixel_value;
 
 	s_image_t *new_image = image_new(new_image_data);
 
 	size_t curr_i = 0;
-	for (size_t i = point_a.x; i < (size_t)point_b.x; i++) {
+	for (size_t i = point_a.m_x; i < (size_t)point_b.m_x; i++) {
 		size_t curr_j = 0;
-		for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
+		for (size_t j = point_a.m_y; j < (size_t)point_b.m_y; j++) {
 			if (i <= 0 || j <= 0 || i >= image_get_height(image) - 1 ||
 				j >= image_get_width(image) - 1)
 				continue;
@@ -549,8 +549,8 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 			for (__s8 k = -1; k <= 1; k++) {
 				for (__s8 l = -1; l <= 1; l++) {
 					s_vector2_t neighbour_coords;
-					neighbour_coords.x = i + k;
-					neighbour_coords.y = j + l;
+					neighbour_coords.m_x = i + k;
+					neighbour_coords.m_y = j + l;
 					if (!image_coords_in_bounds(neighbour_coords, image))
 						continue;
 
@@ -568,8 +568,8 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 			new_pixel.b = utils_clamp((double)sum_b / inverse_modifier, 0, 255);
 
 			s_vector2_t curr_coords;
-			curr_coords.x = curr_i;
-			curr_coords.y = curr_j;
+			curr_coords.m_x = curr_i;
+			curr_coords.m_y = curr_j;
 			image_set_pixel(curr_coords, new_pixel, new_image);
 			curr_j++;
 		}
@@ -577,21 +577,21 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 	}
 
 	curr_i = 0;
-	for (size_t i = point_a.x; i < (size_t)point_b.x; i++) {
+	for (size_t i = point_a.m_x; i < (size_t)point_b.m_x; i++) {
 		size_t curr_j = 0;
-		for (size_t j = point_a.y; j < (size_t)point_b.y; j++) {
+		for (size_t j = point_a.m_y; j < (size_t)point_b.m_y; j++) {
 			if (i <= 0 || j <= 0 || i >= image_get_height(image) - 1 ||
 				j >= image_get_width(image) - 1)
 				continue;
 
 			s_vector2_t curr_coords;
-			curr_coords.x = curr_i;
-			curr_coords.y = curr_j;
+			curr_coords.m_x = curr_i;
+			curr_coords.m_y = curr_j;
 			s_color_t new_pixel = image_get_pixel(curr_coords, new_image);
 
 			s_vector2_t coords;
-			coords.x = i;
-			coords.y = j;
+			coords.m_x = i;
+			coords.m_y = j;
 			image_set_pixel(coords, new_pixel, image);
 
 			curr_j++;

@@ -135,10 +135,10 @@ static u_command_data_t input_handler_read_select(char *command_text)
 		if (y1 > y2)
 			utils_swap_int64(&y1, &y2);
 
-		command_data.select.point_a.x = x1;
-		command_data.select.point_a.y = y1;
-		command_data.select.point_b.x = x2;
-		command_data.select.point_b.y = y2;
+		command_data.select.point_a.m_x = x1;
+		command_data.select.point_a.m_y = y1;
+		command_data.select.point_b.m_x = x2;
+		command_data.select.point_b.m_y = y2;
 	}
 
 	size_t word_count = utils_count_words(command_text);
@@ -160,9 +160,9 @@ static u_command_data_t input_handler_read_histogram(char *command_text)
 
 	char word[25];
 	utils_get_word_by_index(1, word, command_text);
-	utils_word_to_int64((__s64 *)&command_data.histogram.resolution.x, word);
+	utils_word_to_int64((__s64 *)&command_data.histogram.resolution.m_x, word);
 	utils_get_word_by_index(2, word, command_text);
-	utils_word_to_int64((__s64 *)&command_data.histogram.resolution.y, word);
+	utils_word_to_int64((__s64 *)&command_data.histogram.resolution.m_y, word);
 
 	return command_data;
 }

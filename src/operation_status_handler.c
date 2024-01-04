@@ -105,7 +105,7 @@ static void operation_status_handler_select_custom_done(u_command_data_t command
 	s_vector2_t point_a = command.select.point_a;
 	s_vector2_t point_b = command.select.point_b;
 	printf("Selected %lld %lld %lld %lld\n",
-		   point_a.y, point_a.x, point_b.y, point_b.x);
+		   point_a.m_y, point_a.m_x, point_b.m_y, point_b.m_x);
 }
 
 static void operation_status_handler_select_custom_failed(void)
