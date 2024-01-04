@@ -12,7 +12,7 @@
 #include <kernel_utils.h>
 #include <utils.h>
 
-static uint8_t app_manager_tick(image_workspace_t *image_workspace);
+static __u8 app_manager_tick(image_workspace_t *image_workspace);
 
 static status_type_t app_manager_load
 		(command_data_t command_data, image_workspace_t *image_workspace);
@@ -36,7 +36,7 @@ static status_type_t app_manager_exit
 		(command_data_t command_data, image_workspace_t *image_workspace);
 
 static void app_manager_rotate_90_degrees
-		(image_workspace_t *image_workspace);	
+		(image_workspace_t *image_workspace);
 static void app_manager_rotate_90_degrees_square
 		(image_workspace_t *image_workspace);
 static void app_manager_rotate_90_degrees_image
@@ -45,7 +45,7 @@ static void app_manager_apply_kernel
 		(double inverse_modifier, __s8 kernel[3][3],
 		 image_workspace_t *image_workspace);
 
-uint8_t app_manager_main_loop(void)
+__u8 app_manager_main_loop(void)
 {
 	image_workspace_t image_workspace;
 	image_workspace.image = NULL;
@@ -57,7 +57,7 @@ uint8_t app_manager_main_loop(void)
 	return 0;
 }
 
-static uint8_t app_manager_tick(image_workspace_t *image_workspace)
+static __u8 app_manager_tick(image_workspace_t *image_workspace)
 {
 	command_data_t command_data = input_handler_read_command_data();
 
@@ -106,7 +106,7 @@ static uint8_t app_manager_tick(image_workspace_t *image_workspace)
 }
 
 static status_type_t app_manager_load(command_data_t command_data,
-							   image_workspace_t *image_workspace)
+							   		  image_workspace_t *image_workspace)
 {
 	if (command_data.load.command_type != CT_LOAD)
 		return ST_COMMAND_ERROR;
@@ -130,7 +130,7 @@ static status_type_t app_manager_load(command_data_t command_data,
 }
 
 static status_type_t app_manager_select(command_data_t command_data,
-								 image_workspace_t *image_workspace)
+										image_workspace_t *image_workspace)
 {
 	if (command_data.select.command_type != CT_SELECT)
 		return ST_COMMAND_ERROR;
@@ -157,7 +157,7 @@ static status_type_t app_manager_select(command_data_t command_data,
 }
 
 static status_type_t app_manager_select_all(command_data_t command_data,
-									 image_workspace_t *image_workspace)
+									 		image_workspace_t *image_workspace)
 {
 	if (command_data.select_all.command_type != CT_SELECT_ALL)
 		return ST_COMMAND_ERROR;
@@ -179,7 +179,7 @@ static status_type_t app_manager_select_all(command_data_t command_data,
 }
 
 static status_type_t app_manager_histogram(command_data_t command_data,
-									image_workspace_t *image_workspace)
+										   image_workspace_t *image_workspace)
 {
 	if (command_data.histogram.command_type != CT_HISTOGRAM)
 		return ST_COMMAND_ERROR;
@@ -237,7 +237,7 @@ static status_type_t app_manager_histogram(command_data_t command_data,
 }
 
 static status_type_t app_manager_equalize(command_data_t command_data,
-								   image_workspace_t *image_workspace)
+								   		  image_workspace_t *image_workspace)
 {
 	if (command_data.equalize.command_type != CT_EQUALIZE)
 		return ST_COMMAND_ERROR;
@@ -252,7 +252,7 @@ static status_type_t app_manager_equalize(command_data_t command_data,
 		image_workspace->image->image_data.format != IFT_P5)
 		return ST_IMAGE_NOT_GRAYSCALE;
 
-	const size_t RANGE = UINT8_MAX + 1;
+	const size_t RANGE = 256;
 	size_t histogram[RANGE];
 	memset(histogram, 0, sizeof(histogram));
 
@@ -418,7 +418,7 @@ static void app_manager_rotate_90_degrees(image_workspace_t *image_workspace)
 }
 
 static status_type_t app_manager_rotate(command_data_t command_data,
-								 image_workspace_t *image_workspace)
+										image_workspace_t *image_workspace)
 {
 	if (command_data.rotate.command_type != CT_ROTATE)
 		return ST_COMMAND_ERROR;
@@ -480,7 +480,7 @@ static status_type_t app_manager_rotate(command_data_t command_data,
 }
 
 static status_type_t app_manager_crop(command_data_t command_data,
-							   image_workspace_t *image_workspace)
+							   		  image_workspace_t *image_workspace)
 {
 	if (command_data.crop.command_type != CT_CROP)
 		return ST_COMMAND_ERROR;
@@ -616,7 +616,7 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 }
 
 static status_type_t app_manager_apply(command_data_t command_data,
-								image_workspace_t *image_workspace)
+									   image_workspace_t *image_workspace)
 {
 	if (command_data.apply.command_type != CT_APPLY)
 		return ST_COMMAND_ERROR;
@@ -662,7 +662,7 @@ static status_type_t app_manager_apply(command_data_t command_data,
 }
 
 static status_type_t app_manager_save(command_data_t command_data,
-							   image_workspace_t *image_workspace)
+							   		  image_workspace_t *image_workspace)
 {
 	if (command_data.save.command_type != CT_SAVE)
 		return ST_COMMAND_ERROR;
@@ -691,7 +691,7 @@ static status_type_t app_manager_save(command_data_t command_data,
 }
 
 static status_type_t app_manager_exit(command_data_t command_data,
-							   image_workspace_t *image_workspace)
+							   		  image_workspace_t *image_workspace)
 {
 	if (command_data.exit.command_type != CT_EXIT)
 		return ST_COMMAND_ERROR;
