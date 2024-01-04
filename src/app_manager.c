@@ -83,6 +83,9 @@ status_type_t app_manager_histogram(command_data_t command_data,
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
 
+	if (command_data.histogram.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
+
 	vector2_t histogram_resolution = command_data.histogram.resolution;
 	if (histogram_resolution.y % 2 || histogram_resolution.y < 2 ||
 		histogram_resolution.y > 256)
@@ -505,6 +508,12 @@ status_type_t app_manager_apply(command_data_t command_data,
 
 	if (!image_workspace->image)
 		return ST_IMAGE_NOT_LOADED;
+
+	if (command_data.apply.command_status == CST_INVALID)
+		return ST_COMMAND_ERROR;
+
+	if (command_data.apply.image_kernel_type == IKT_NONE)
+		return ST_APPLY_PARAMETER_INVALID;
 
 	if (image_workspace->image->image_data.format == IFT_P2 ||
 		image_workspace->image->image_data.format == IFT_P5)

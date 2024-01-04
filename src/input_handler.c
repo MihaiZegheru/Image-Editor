@@ -140,7 +140,9 @@ command_data_t input_handler_read_histogram(char *command_text)
 	command_data.histogram.command_type = CT_HISTOGRAM;
 
 	if (utils_count_words(command_text) != 3)
-		command_data.apply.command_type = CT_NONE;
+		command_data.apply.command_status = CST_INVALID;
+	else
+		command_data.apply.command_status = CST_VALID;
 
 	char word[25];
 	utils_get_word_by_index(1, word, command_text);
@@ -187,10 +189,11 @@ command_data_t input_handler_read_apply(char *command_text)
 	command_data_t command_data;
 	command_data.apply.command_type = CT_APPLY;
 
-	if (utils_count_words(command_text) != 2)
-		command_data.apply.command_type = CT_NONE;
+	// if (utils_count_words(command_text) != 2)
+	// 	command_data.apply.command_type = CT_NONE;
 
 	char word[25];
+	word[0] = '\0';
 	utils_get_word_by_index(1, word, command_text);
 
 	if (!strcmp(word, "EDGE"))
@@ -201,6 +204,8 @@ command_data_t input_handler_read_apply(char *command_text)
 		command_data.apply.image_kernel_type = IKT_BOX_BLUR;
 	else if (!strcmp(word, "GAUSSIAN_BLUR"))
 		command_data.apply.image_kernel_type = IKT_GAUSSIAN_BLUR;
+	else if (!strcmp(word, ""))
+		command_data.apply.command_status = CST_INVALID;
 	else
 		command_data.apply.image_kernel_type = IKT_NONE;
 
