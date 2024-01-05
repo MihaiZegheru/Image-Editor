@@ -112,10 +112,10 @@ static s_image_data_t image_loader_load_image_data(FILE *file)
 		}
 	}
 
-	image_data.format = format;
-	image_data.width = width;
-	image_data.height = height;
-	image_data.max_pixel_value = max_pixel_value;
+	image_data.m_format = format;
+	image_data.m_width = width;
+	image_data.m_height = height;
+	image_data.m_max_pixel_value = max_pixel_value;
 
 	return image_data;
 }
@@ -196,7 +196,7 @@ static void image_loader_load_pixels_p6(s_image_t *image, FILE *file)
 
 static void image_loader_load_pixels(s_image_t *image, FILE *file)
 {
-	switch (image->m_image_data.format) {
+	switch (image->m_image_data.m_format) {
 	case IFT_P2:
 		image_loader_load_pixels_p2(image, file);
 		break;
@@ -216,7 +216,7 @@ static void image_loader_load_pixels(s_image_t *image, FILE *file)
 
 static void image_loader_save_image_data(s_image_data_t image_data, FILE *file)
 {
-	switch (image_data.format) {
+	switch (image_data.m_format) {
 	case IFT_P2:
 		fprintf(file, "P2\n");
 		break;
@@ -233,8 +233,8 @@ static void image_loader_save_image_data(s_image_data_t image_data, FILE *file)
 		break;
 	}
 
-	fprintf(file, "%zu %zu\n", image_data.width, image_data.height);
-	fprintf(file, "%u\n", image_data.max_pixel_value);
+	fprintf(file, "%zu %zu\n", image_data.m_width, image_data.m_height);
+	fprintf(file, "%u\n", image_data.m_max_pixel_value);
 }
 
 static void image_loader_save_pixels_p2(s_image_t *image, FILE *file)
@@ -301,7 +301,7 @@ static void image_loader_save_pixels_p6(s_image_t *image, FILE *file)
 
 static void image_loader_save_pixels(s_image_t *image, FILE *file)
 {
-	switch (image->m_image_data.format) {
+	switch (image->m_image_data.m_format) {
 	case IFT_P2:
 		image_loader_save_pixels_p2(image, file);
 		break;
