@@ -23,12 +23,14 @@ void image_delete(s_image_t *image)
 
 s_color_t image_get_pixel(s_vector2_t coords, s_image_t *image)
 {
-	return image->m_pixels[coords.m_x * image->m_image_data.m_width + coords.m_y];
+	return image->m_pixels[coords.m_x * image->m_image_data.m_width +
+						   coords.m_y];
 }
 
 void image_set_pixel(s_vector2_t coords, s_color_t pixel, s_image_t *image)
 {
-	image->m_pixels[coords.m_x * image->m_image_data.m_width + coords.m_y] = pixel;
+	image->m_pixels[coords.m_x * image->m_image_data.m_width +
+					coords.m_y] = pixel;
 }
 
 size_t image_get_width(s_image_t *image)

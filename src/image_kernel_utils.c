@@ -42,7 +42,8 @@ void image_kernel_utils_box_blur(double *inverse_modifier, __s8 kernel[3][3])
 	kernel[2][2] = 1;
 }
 
-void image_kernel_utils_gaussian_blur(double *inverse_modifier, __s8 kernel[3][3])
+void image_kernel_utils_gaussian_blur(double *inverse_modifier,
+									  __s8 kernel[3][3])
 {
 	*inverse_modifier = 16;
 	kernel[0][0] = 1;

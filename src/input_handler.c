@@ -158,9 +158,11 @@ static u_command_data_t input_handler_read_histogram(char *command_text)
 
 	char word[25];
 	utils_get_word_by_index(1, word, command_text);
-	utils_word_to_int64((__s64 *)&command_data.m_histogram.resolution.m_x, word);
+	utils_word_to_int64((__s64 *)&command_data.m_histogram.resolution.m_x,
+						word);
 	utils_get_word_by_index(2, word, command_text);
-	utils_word_to_int64((__s64 *)&command_data.m_histogram.resolution.m_y, word);
+	utils_word_to_int64((__s64 *)&command_data.m_histogram.resolution.m_y,
+						word);
 
 	return command_data;
 }

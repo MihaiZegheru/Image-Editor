@@ -5,7 +5,8 @@
 static void operation_status_handler_load_done(u_command_data_t command);
 static void operation_status_handler_load_failed(u_command_data_t command);
 static void operation_status_handler_image_not_loaded(void);
-static void operation_status_handler_select_custom_done(u_command_data_t command);
+static void operation_status_handler_select_custom_done
+		(u_command_data_t command);
 static void operation_status_handler_select_custom_failed(void);
 static void operation_status_handler_select_all_done(void);
 static void operation_status_handler_rotate_done(u_command_data_t command);
@@ -100,7 +101,8 @@ static void operation_status_handler_image_not_loaded(void)
 	printf("No image loaded\n");
 }
 
-static void operation_status_handler_select_custom_done(u_command_data_t command)
+static void operation_status_handler_select_custom_done
+		(u_command_data_t command)
 {
 	s_vector2_t point_a = command.m_select.m_point_a;
 	s_vector2_t point_b = command.m_select.m_point_b;
