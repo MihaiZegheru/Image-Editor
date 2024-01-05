@@ -618,7 +618,7 @@ static e_operation_status_t app_manager_apply(u_command_data_t command_data,
 		return OS_APPLY_PARAMETER_INVALID;
 
 	if (image_workspace->m_image->m_image_data.format == IFT_P2 ||
-		image_workspace->image->m_image_data.format == IFT_P5)
+		image_workspace->m_image->m_image_data.format == IFT_P5)
 		return OS_APPLY_GRAYSCALE_IMAGE;
 
 	__s8 kernel[3][3];
