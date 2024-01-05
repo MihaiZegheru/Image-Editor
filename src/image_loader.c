@@ -128,9 +128,9 @@ static void image_loader_load_pixels_p2(s_image_t *image, FILE *file)
 			fscanf(file, "%hhu", &value);
 
 			s_color_t color;
-			color.r = value;
-			color.g = value;
-			color.b = value;
+			color.m_r = value;
+			color.m_g = value;
+			color.m_b = value;
 
 			s_vector2_t coords;
 			coords.m_x = i;
@@ -145,9 +145,9 @@ static void image_loader_load_pixels_p3(s_image_t *image, FILE *file)
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
 			s_color_t color;
-			fscanf(file, "%hhu", &color.r);
-			fscanf(file, "%hhu", &color.g);
-			fscanf(file, "%hhu", &color.b);
+			fscanf(file, "%hhu", &color.m_r);
+			fscanf(file, "%hhu", &color.m_g);
+			fscanf(file, "%hhu", &color.m_b);
 
 			s_vector2_t coords;
 			coords.m_x = i;
@@ -165,9 +165,9 @@ static void image_loader_load_pixels_p5(s_image_t *image, FILE *file)
 			fscanf(file, "%c", &value);
 
 			s_color_t color;
-			color.r = value;
-			color.g = value;
-			color.b = value;
+			color.m_r = value;
+			color.m_g = value;
+			color.m_b = value;
 
 			s_vector2_t coords;
 			coords.m_x = i;
@@ -182,9 +182,9 @@ static void image_loader_load_pixels_p6(s_image_t *image, FILE *file)
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
 			s_color_t color;
-			fscanf(file, "%c", &color.r);
-			fscanf(file, "%c", &color.g);
-			fscanf(file, "%c", &color.b);
+			fscanf(file, "%c", &color.m_r);
+			fscanf(file, "%c", &color.m_g);
+			fscanf(file, "%c", &color.m_b);
 
 			s_vector2_t coords;
 			coords.m_x = i;
@@ -245,7 +245,7 @@ static void image_loader_save_pixels_p2(s_image_t *image, FILE *file)
 			coords.m_x = i;
 			coords.m_y = j;
 
-			__u8 value = image_get_pixel(coords, image).r;
+			__u8 value = image_get_pixel(coords, image).m_r;
 			fprintf(file, "%hhu ", value);
 		}
 		fprintf(file, "\n");
@@ -261,9 +261,9 @@ static void image_loader_save_pixels_p3(s_image_t *image, FILE *file)
 			coords.m_y = j;
 
 			s_color_t color = image_get_pixel(coords, image);
-			fprintf(file, "%hhu ", color.r);
-			fprintf(file, "%hhu ", color.g);
-			fprintf(file, "%hhu ", color.b);
+			fprintf(file, "%hhu ", color.m_r);
+			fprintf(file, "%hhu ", color.m_g);
+			fprintf(file, "%hhu ", color.m_b);
 		}
 		fprintf(file, "\n");
 	}
@@ -277,7 +277,7 @@ static void image_loader_save_pixels_p5(s_image_t *image, FILE *file)
 			coords.m_x = i;
 			coords.m_y = j;
 
-			__u8 value = image_get_pixel(coords, image).r;
+			__u8 value = image_get_pixel(coords, image).m_r;
 			fprintf(file, "%c", value);
 		}
 	}
@@ -292,9 +292,9 @@ static void image_loader_save_pixels_p6(s_image_t *image, FILE *file)
 			coords.m_y = j;
 
 			s_color_t color = image_get_pixel(coords, image);
-			fprintf(file, "%c", color.r);
-			fprintf(file, "%c", color.g);
-			fprintf(file, "%c", color.b);
+			fprintf(file, "%c", color.m_r);
+			fprintf(file, "%c", color.m_g);
+			fprintf(file, "%c", color.m_b);
 		}
 	}
 }

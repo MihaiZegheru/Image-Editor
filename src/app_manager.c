@@ -210,7 +210,7 @@ static e_operation_status_t app_manager_histogram(u_command_data_t command_data,
 			coords.m_x = i;
 			coords.m_y = j;
 
-			__u8 value =  image_get_pixel(coords, image).r;
+			__u8 value =  image_get_pixel(coords, image).m_r;
 
 			__u8 bin_index = value / (256 / histogram_resolution.m_y);
 			histogram[bin_index]++;
@@ -266,7 +266,7 @@ static e_operation_status_t app_manager_equalize(u_command_data_t command_data,
 			coords.m_x = i;
 			coords.m_y = j;
 
-			__u8 value =  image_get_pixel(coords, image).r;
+			__u8 value =  image_get_pixel(coords, image).m_r;
 			histogram[value]++;
 		}
 	}
@@ -287,13 +287,13 @@ static e_operation_status_t app_manager_equalize(u_command_data_t command_data,
 			coords.m_x = i;
 			coords.m_y = j;
 
-			__u8 value =  image_get_pixel(coords, image).r;
+			__u8 value =  image_get_pixel(coords, image).m_r;
 			__u8 new_value = equalized_values_link[value];
 
 			s_color_t new_color;
-			new_color.r = new_value;
-			new_color.g = new_value;
-			new_color.b = new_value;
+			new_color.m_r = new_value;
+			new_color.m_g = new_value;
+			new_color.m_b = new_value;
 			image_set_pixel(coords, new_color, image);
 		}
 	}
@@ -556,16 +556,16 @@ static void app_manager_apply_kernel(double inverse_modifier, __s8 kernel[3][3],
 
 					s_color_t neighbour_pixel = image_get_pixel(neighbour_coords,
 															  image);
-					sum_r += kernel[k + 1][l + 1] * neighbour_pixel.r;
-					sum_g += kernel[k + 1][l + 1] * neighbour_pixel.g;
-					sum_b += kernel[k + 1][l + 1] * neighbour_pixel.b;
+					sum_r += kernel[k + 1][l + 1] * neighbour_pixel.m_r;
+					sum_g += kernel[k + 1][l + 1] * neighbour_pixel.m_g;
+					sum_b += kernel[k + 1][l + 1] * neighbour_pixel.m_b;
 				}
 			}
 
 			s_color_t new_pixel;
-			new_pixel.r = utils_clamp((double)sum_r / inverse_modifier, 0, 255);
-			new_pixel.g = utils_clamp((double)sum_g / inverse_modifier, 0, 255);
-			new_pixel.b = utils_clamp((double)sum_b / inverse_modifier, 0, 255);
+			new_pixel.m_r = utils_clamp((double)sum_r / inverse_modifier, 0, 255);
+			new_pixel.m_g = utils_clamp((double)sum_g / inverse_modifier, 0, 255);
+			new_pixel.m_b = utils_clamp((double)sum_b / inverse_modifier, 0, 255);
 
 			s_vector2_t curr_coords;
 			curr_coords.m_x = curr_i;
