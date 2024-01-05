@@ -254,7 +254,7 @@ static e_operation_status_t app_manager_equalize(u_command_data_t command_data,
 		image_workspace->m_image->m_image_data.m_format != IFT_P5)
 		return OS_IMAGE_NOT_GRAYSCALE;
 
-	size_t histogram[HISTOGRAM_MAX_TONES];
+	size_t histogram[IMAGE_MAX_PIXEL_VALUE];
 	memset(histogram, 0, sizeof(histogram));
 
 	s_image_t *image = image_workspace->m_image;
@@ -271,10 +271,10 @@ static e_operation_status_t app_manager_equalize(u_command_data_t command_data,
 	}
 
 	size_t area = image_get_height(image) * image_get_width(image);
-	__u8 equalized_values_link[RANGE];
+	__u8 equalized_values_link[IMAGE_MAX_PIXEL_VALUE];
 	__u32 frv_sum = 0;
 
-	for (size_t i = 0; i < RANGE; i++) {
+	for (size_t i = 0; i < IMAGE_MAX_PIXEL_VALUE; i++) {
 		frv_sum += histogram[i];
 		equalized_values_link[i] =
 				utils_clamp(round(255 * ((double)frv_sum / area)), 0, 255);

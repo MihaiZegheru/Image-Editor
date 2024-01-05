@@ -6,6 +6,8 @@
 
 #include <image_format_type.h>
 
+#define IMAGE_MAX_PIXEL_VALUE 256
+
 typedef struct {
 	size_t m_width;
 	size_t m_height;
