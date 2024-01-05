@@ -254,8 +254,7 @@ static e_operation_status_t app_manager_equalize(u_command_data_t command_data,
 		image_workspace->m_image->m_image_data.m_format != IFT_P5)
 		return OS_IMAGE_NOT_GRAYSCALE;
 
-	const size_t RANGE = 256;
-	size_t histogram[RANGE];
+	size_t histogram[HISTOGRAM_MAX_TONES];
 	memset(histogram, 0, sizeof(histogram));
 
 	s_image_t *image = image_workspace->m_image;

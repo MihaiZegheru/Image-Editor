@@ -56,10 +56,9 @@ static s_image_data_t image_loader_load_image_data(FILE *file)
 	__u16 height = 0;
 	__u16 max_pixel_value = 0;
 
-	const __u8 MAX_BUFFER = 255;
-	char line_buffer[MAX_BUFFER];
+	char line_buffer[LINE_MAX_BUFFER];
 
-	fgets(line_buffer, MAX_BUFFER, file);
+	fgets(line_buffer, LINE_MAX_BUFFER, file);
 	size_t index = 0;
 
 	while (!max_pixel_value) {
@@ -69,7 +68,7 @@ static s_image_data_t image_loader_load_image_data(FILE *file)
 		}
 
 		if (line_buffer[index] == '\n') {
-			fgets(line_buffer, MAX_BUFFER, file);
+			fgets(line_buffer, LINE_MAX_BUFFER, file);
 			index = 0;
 			continue;
 		}

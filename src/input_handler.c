@@ -21,8 +21,7 @@ static u_command_data_t input_handler_read_exit(char *command_text);
 
 u_command_data_t input_handler_read_command_data(void)
 {
-	const size_t MAX_BUFFER = 255;
-	char command_text[MAX_BUFFER];
+	char command_text[COMMAND_MAX_BUFFER];
 	input_handler_read_line(command_text);
 	e_command_type_t command_type = input_handler_read_command(command_text);
 
@@ -55,8 +54,7 @@ u_command_data_t input_handler_read_command_data(void)
 
 static e_command_type_t input_handler_read_command(char *command_text)
 {
-	const size_t MAX_BUFFER = 255;
-	char opperation[MAX_BUFFER];
+	char opperation[COMMAND_MAX_BUFFER];
 	utils_get_word_by_index(0, opperation, command_text);
 
 	e_command_type_t command_type;
