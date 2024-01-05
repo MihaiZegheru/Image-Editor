@@ -12,38 +12,171 @@
 #include <image_kernel_utils.h>
 #include <utils.h>
 
+/**
+ * @brief App tick
+ *
+ * @param image_workspace
+ * @return __u8
+ */
 static __u8 app_manager_tick(s_image_workspace_t *image_workspace);
 
+/**
+ * @brief Perform LOAD operation on current image_workspace context using
+ * 		  given command_data
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_load
 		(u_command_data_t command_data, s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Perform SELECT operation on current image_workspace context using
+ * 		  given command_data
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_select
 		(u_command_data_t command_data, s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Perform SELECT ALL operation on current image_workspace context using
+ * 		  given command_data
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_select_all
 		(u_command_data_t command_data, s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Perform HISTOGRAM operation on current image_workspace context using
+ * 		  given command_data
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_histogram
 		(u_command_data_t command_data, s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Perform EQUALIZE operation on current image_workspace context using
+ * 		  given command_data
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_equalize
 		(u_command_data_t command_data, s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Perform ROTATE operation on current image_workspace context using
+ * 		  given command_data
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_rotate
 		(u_command_data_t command_data, s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Perform CROP operation on current image_workspace context using
+ * 		  given command_data
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_crop
 		(u_command_data_t command_data, s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Perform APPLY operation on current image_workspace context using
+ * 		  given command_data
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_apply
 		(u_command_data_t command_data,  s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Perform SAVE operation on current image_workspace context using
+ * 		  given command_data
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_save
 		(u_command_data_t command_data, s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Perform EXIT operation and frees any allocated memory for images
+ *
+ * @param command_data
+ * @param image_workspace
+ * @return e_operation_status_t
+ */
 static e_operation_status_t app_manager_exit
 		(u_command_data_t command_data, s_image_workspace_t *image_workspace);
 
+/**
+ * @brief Decide wether the selection is square or whole image and calls
+ * 		  respective rotate function
+ *
+ * @param image_workspace
+ */
 static void app_manager_rotate_90_degrees
 		(s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Rotate the selected square from the current image_workspace context by
+ * 		  90 degrees to the right
+ *
+ * @param image_workspace
+ */
 static void app_manager_rotate_90_degrees_square
 		(s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Rotate the current image_workspace context image by 90 degrees to the
+ * 		  right
+ *
+ * @param image_workspace
+ */
 static void app_manager_rotate_90_degrees_image
 		(s_image_workspace_t *image_workspace);
+
+/**
+ * @brief Computes the rotated image and returns it through out parameter
+ *
+ * @param point_a
+ * @param point_b
+ * @param out
+ * @param image
+ */
 static void app_manager_rotate_90_compute_rotated
 		(s_vector2_t point_a, s_vector2_t point_b, s_image_t *out,
 		 s_image_t *image);
+
+/**
+ * @brief Applies a kernel on the image for achieving effects like BLUR or EDGE.
+ *
+ * @param inverse_modifier
+ * @param kernel
+ * @param image_workspace
+ * @note This function ignores pixels that do not have enough neighbours for
+ * 		 determining their new value. This will result in images with a rim.
+ */
 static void app_manager_apply_kernel
 		(double inverse_modifier, __s8 kernel[3][3],
 		 s_image_workspace_t *image_workspace);

@@ -2,25 +2,120 @@
 
 #include <stdio.h>
 
-
+/**
+ * @brief Handle operation status OS_LOAD_DONE
+ *
+ * @param command
+ */
 static void operation_status_handler_load_done(u_command_data_t command);
+
+/**
+ * @brief Handle operation status OS_LOAD_FAILED
+ *
+ * @param command
+ */
 static void operation_status_handler_load_failed(u_command_data_t command);
+
+/**
+ * @brief Handle operation status OS_IMAGE_NOT_LOADED
+ *
+ */
 static void operation_status_handler_image_not_loaded(void);
+
+/**
+ * @brief Handle operation status OS_SELECT_CUSTOM_DONE
+ *
+ * @param command
+ */
 static void operation_status_handler_select_custom_done
 		(u_command_data_t command);
+
+/**
+ * @brief Handle operation status OS_SELECT_CUSTOM_FAILED
+ *
+ */
 static void operation_status_handler_select_custom_failed(void);
+
+/**
+ * @brief Handle operation status OS_SELECT_ALL_DONE
+ *
+ */
 static void operation_status_handler_select_all_done(void);
+
+/**
+ * @brief Handle operation status OS_ROTATE_DONE
+ *
+ * @param command
+ */
 static void operation_status_handler_rotate_done(u_command_data_t command);
+
+/**
+ * @brief Handle operation status OS_ROTATE_SELECTION_INVALID
+ *
+ */
 static void operation_status_handler_rotate_selection_invalid(void);
+
+/**
+ * @brief Handle operation status OS_ROTATE_ANGLE_INVALID
+ *
+ */
 static void operation_status_handler_rotate_angle_invalid(void);
+
+/**
+ * @brief Handle operation status OS_EQUALIZE_DONE
+ *
+ */
 static void operation_status_handler_equalize_done(void);
-static void operation_status_handler_equalize_format_invalid(void);
+
+/**
+ * @brief Handle operation status OS_IMAGE_NOT_GRAYSCALE
+ *
+ */
+static void operation_status_handler_image_not_grayscale(void);
+
+/**
+ * @brief Handle operation status OS_CROP_DONE
+ *
+ */
 static void operation_status_handler_crop_done(void);
+
+/**
+ * @brief Handle operation status OS_APPLY_DONE
+ *
+ * @param command
+ */
 static void operation_status_handler_apply_done(u_command_data_t command);
+
+/**
+ * @brief Handle operation status OS_APPLY_GRAYSCALE_IMAGE
+ *
+ */
+
 static void operation_status_handler_apply_grayscale_image(void);
+
+/**
+ * @brief Handle operation status OS_APPLY_PARAMETER_INVALID
+ *
+ */
 static void operation_status_handler_apply_parameter_invalid(void);
+
+/**
+ * @brief Handle operation status OS_SAVE_DONE
+ *
+ * @param command
+ */
 static void operation_status_handler_save_done(u_command_data_t command);
+
+/**
+ * @brief Handle operation status OS_HISTOGRAM_PARAMETER_INVALID
+ *
+ */
 static void operation_status_handler_histogram_parameter_invalid(void);
+
+/**
+ * @brief Handle operation status OS_COMMAND_ERROR
+ *
+ */
 static void operation_status_handler_command_error(void);
 
 void operation_status_handler_forward(u_command_data_t command,
@@ -33,7 +128,7 @@ void operation_status_handler_forward(u_command_data_t command,
 		operation_status_handler_image_not_loaded();
 		break;
 	case OS_IMAGE_NOT_GRAYSCALE:
-		operation_status_handler_equalize_format_invalid();
+		operation_status_handler_image_not_grayscale();
 		break;
 	case OS_LOAD_DONE:
 		operation_status_handler_load_done(command);
@@ -141,7 +236,7 @@ static void operation_status_handler_equalize_done(void)
 	printf("Equalize done\n");
 }
 
-static void operation_status_handler_equalize_format_invalid(void)
+static void operation_status_handler_image_not_grayscale(void)
 {
 	printf("Black and white image needed\n");
 }

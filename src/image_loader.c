@@ -8,18 +8,102 @@
 #include <vector2.h>
 #include <utils.h>
 
+/**
+ * @brief Load image_data from given FILE
+ *
+ * @param file
+ * @return s_image_data_t
+ */
 static s_image_data_t image_loader_load_image_data(FILE * file);
+
+/**
+ * @brief Load pixels for IFT_P2 from FILE into image
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_load_pixels_p2(s_image_t *image, FILE *file);
+
+/**
+ * @brief Load pixels for IFT_P3 from FILE into image
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_load_pixels_p3(s_image_t *image, FILE *file);
+
+/**
+ * @brief Load pixels for IFT_P5 from FILE into image
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_load_pixels_p5(s_image_t *image, FILE *file);
+
+/**
+ * @brief Load pixels for IFT_P6 from FILE into image
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_load_pixels_p6(s_image_t *image, FILE *file);
+
+/**
+ * @brief Decide on how to load pixels for an image_format_type from FILE into
+ * 		  image and calls the respective function
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_load_pixels(s_image_t *image, FILE *file);
 
+/**
+ * @brief Save image_data to given FILE
+ *
+ * @param image_data
+ * @param file
+ */
 static void image_loader_save_image_data(s_image_data_t image_data, FILE *file);
+
+/**
+ * @brief Save pixels for IFT_P2 from image to FILE
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_save_pixels_p2(s_image_t *image, FILE *file);
+
+/**
+ * @brief Save pixels for IFT_P3 from image to FILE
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_save_pixels_p3(s_image_t *image, FILE *file);
+
+/**
+ * @brief Save pixels for IFT_P5 from image to FILE
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_save_pixels_p5(s_image_t *image, FILE *file);
+
+/**
+ * @brief Save pixels for IFT_P6 from image to FILE
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_save_pixels_p6(s_image_t *image, FILE *file);
+
+/**
+ * @brief Decide on how to save pixels for an image_format_type from image into
+ * 		  FILE and calls the respective function
+ *
+ * @param image
+ * @param file
+ */
 static void image_loader_save_pixels(s_image_t *image, FILE *file);
 
 s_image_t *image_loader_load(char *file_path)

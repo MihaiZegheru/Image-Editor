@@ -10,16 +10,84 @@
 // TO DO: Add a system to substitude hardcoded values. Create a data asset
 //		  object to store the values and initialise them in main
 
+/**
+ * @brief Get a command_type based on a given command text
+ *
+ * @param command_text
+ * @return e_command_type_t
+ */
 static e_command_type_t input_handler_read_command(char *command_text);
 
+/**
+ * @brief Computes the parameters of command_type CT_LOAD
+ *
+ * @param command_text
+ * @return u_command_data_t
+ */
 static u_command_data_t input_handler_read_load(char *command_text);
+
+/**
+ * @brief Computes the parameters of command_type CT_SELECT
+ *
+ * @param command_text
+ * @return u_command_data_t
+ */
 static u_command_data_t input_handler_read_select(char *command_text);
+
+/**
+ * @brief Computes the parameters of command_type CT_HISTOGRAM
+ *
+ * @param command_text
+ * @return u_command_data_t
+ */
 static u_command_data_t input_handler_read_histogram(char *command_text);
+
+/**
+ * @brief Computes the parameters of command_type CT_EQUALIZE
+ *
+ * @param command_text
+ * @return u_command_data_t
+ */
 static u_command_data_t input_handler_read_equalize(char *command_text);
+
+/**
+ * @brief Computes the parameters of command_type CT_ROTATE
+ *
+ * @param command_text
+ * @return u_command_data_t
+ */
 static u_command_data_t input_handler_read_rotate(char *command_text);
+
+/**
+ * @brief Computes the parameters of command_type CT_CROP
+ *
+ * @param command_text
+ * @return u_command_data_t
+ */
 static u_command_data_t input_handler_read_crop(char *command_text);
+
+/**
+ * @brief Computes the parameters of command_type CT_APPLY
+ *
+ * @param command_text
+ * @return u_command_data_t
+ */
 static u_command_data_t input_handler_read_apply(char *command_text);
+
+/**
+ * @brief Computes the parameters of command_type CT_SAVE
+ *
+ * @param command_text
+ * @return u_command_data_t
+ */
 static u_command_data_t input_handler_read_save(char *command_text);
+
+/**
+ * @brief Computes the parameters of command_type CT_EXIT
+ *
+ * @param command_text
+ * @return u_command_data_t
+ */
 static u_command_data_t input_handler_read_exit(char *command_text);
 
 u_command_data_t input_handler_read_command_data(void)
