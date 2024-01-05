@@ -3,7 +3,7 @@
 
 /**
  * @brief The operation_status defines a status that resembles how an operation
- * 		  went, if there are any errors or if it was successful
+ *		  went, if there are any errors or if it was successful
  *
  */
 typedef enum {

@@ -50,7 +50,7 @@ static void image_loader_load_pixels_p6(s_image_t *image, FILE *file);
 
 /**
  * @brief Decide on how to load pixels for an image_format_type from FILE into
- * 		  image and calls the respective function
+ *		  image and calls the respective function
  *
  * @param image
  * @param file
@@ -99,7 +99,7 @@ static void image_loader_save_pixels_p6(s_image_t *image, FILE *file);
 
 /**
  * @brief Decide on how to save pixels for an image_format_type from image into
- * 		  FILE and calls the respective function
+ *		  FILE and calls the respective function
  *
  * @param image
  * @param file

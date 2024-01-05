@@ -75,10 +75,10 @@ typedef struct {
 
 /**
  * @brief The command_data defines the data of a command within an union so that
- * 		  all commands cand have a base object type that they can be stored in.
+ *		  all commands cand have a base object type that they can be stored in.
  *
- * 		  Later, they will be differentiated upon the command_type from base,
- * 		  that is common to all members.
+ *		  Later, they will be differentiated upon the command_type from base,
+ *		  that is common to all members.
  *
  */
 typedef union {

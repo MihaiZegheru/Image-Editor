@@ -64,7 +64,7 @@ void utils_get_word_by_index(size_t index, char *out, char *str);
  * @return __s64
  * @note Performs no check
  * @note DEVELOPMENT: This should migrate from the project into
- * 					  utils_word_to_int64 and it is considered deprecated
+ *					  utils_word_to_int64 and it is considered deprecated
  */
 __s64 utils_string_to_int64(char *str);
 

@@ -16,7 +16,7 @@ typedef enum {
 
 /**
  * @brief Interface for associating an image_kernel_type with its coresponding
- * 		  name as string
+ *		  name as string
  *
  * @param out_name
  * @param image_kernel_type

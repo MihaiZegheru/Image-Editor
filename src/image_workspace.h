@@ -6,7 +6,7 @@
 
 /**
  * @brief The image_workspace defines the currently operating image and its
- * 		  active selection
+ *		  active selection
  *
  */
 typedef struct {

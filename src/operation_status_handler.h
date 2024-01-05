@@ -6,7 +6,7 @@
 
 /**
  * @brief Feed an operation_status for a command_data for it to get interpreted
- * 		  and prints on stdout the coresponding response
+ *		  and prints on stdout the coresponding response
  *
  * @param command
  * @param status

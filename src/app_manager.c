@@ -22,7 +22,7 @@ static __u8 app_manager_tick(s_image_workspace_t *image_workspace);
 
 /**
  * @brief Perform LOAD operation on current image_workspace context using
- * 		  given command_data
+ *		  given command_data
  *
  * @param command_data
  * @param image_workspace
@@ -33,7 +33,7 @@ static e_operation_status_t app_manager_load
 
 /**
  * @brief Perform SELECT operation on current image_workspace context using
- * 		  given command_data
+ *		  given command_data
  *
  * @param command_data
  * @param image_workspace
@@ -44,7 +44,7 @@ static e_operation_status_t app_manager_select
 
 /**
  * @brief Perform SELECT ALL operation on current image_workspace context using
- * 		  given command_data
+ *		  given command_data
  *
  * @param command_data
  * @param image_workspace
@@ -55,7 +55,7 @@ static e_operation_status_t app_manager_select_all
 
 /**
  * @brief Perform HISTOGRAM operation on current image_workspace context using
- * 		  given command_data
+ *		  given command_data
  *
  * @param command_data
  * @param image_workspace
@@ -66,7 +66,7 @@ static e_operation_status_t app_manager_histogram
 
 /**
  * @brief Perform EQUALIZE operation on current image_workspace context using
- * 		  given command_data
+ *		  given command_data
  *
  * @param command_data
  * @param image_workspace
@@ -77,7 +77,7 @@ static e_operation_status_t app_manager_equalize
 
 /**
  * @brief Perform ROTATE operation on current image_workspace context using
- * 		  given command_data
+ *		  given command_data
  *
  * @param command_data
  * @param image_workspace
@@ -88,7 +88,7 @@ static e_operation_status_t app_manager_rotate
 
 /**
  * @brief Perform CROP operation on current image_workspace context using
- * 		  given command_data
+ *		  given command_data
  *
  * @param command_data
  * @param image_workspace
@@ -99,7 +99,7 @@ static e_operation_status_t app_manager_crop
 
 /**
  * @brief Perform APPLY operation on current image_workspace context using
- * 		  given command_data
+ *		  given command_data
  *
  * @param command_data
  * @param image_workspace
@@ -110,7 +110,7 @@ static e_operation_status_t app_manager_apply
 
 /**
  * @brief Perform SAVE operation on current image_workspace context using
- * 		  given command_data
+ *		  given command_data
  *
  * @param command_data
  * @param image_workspace
@@ -131,7 +131,7 @@ static e_operation_status_t app_manager_exit
 
 /**
  * @brief Decide wether the selection is square or whole image and calls
- * 		  respective rotate function
+ *		  respective rotate function
  *
  * @param image_workspace
  */
@@ -140,7 +140,7 @@ static void app_manager_rotate_90_degrees
 
 /**
  * @brief Rotate the selected square from the current image_workspace context by
- * 		  90 degrees to the right
+ *		  90 degrees to the right
  *
  * @param image_workspace
  */
@@ -149,7 +149,7 @@ static void app_manager_rotate_90_degrees_square
 
 /**
  * @brief Rotate the current image_workspace context image by 90 degrees to the
- * 		  right
+ *		  right
  *
  * @param image_workspace
  */
@@ -175,7 +175,7 @@ static void app_manager_rotate_90_compute_rotated
  * @param kernel
  * @param image_workspace
  * @note This function ignores pixels that do not have enough neighbours for
- * 		 determining their new value. This will result in images with a rim.
+ *		 determining their new value. This will result in images with a rim.
  */
 static void app_manager_apply_kernel
 		(double inverse_modifier, __s8 kernel[3][3],

@@ -76,7 +76,7 @@ size_t image_get_height(s_image_t *image);
 
 /**
  * @brief Perform a check on coords and decides wether they are in bounds of the
- * 		  image or not
+ *		  image or not
  *
  * @param coords
  * @param image
