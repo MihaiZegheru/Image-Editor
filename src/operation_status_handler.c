@@ -87,12 +87,12 @@ void operation_status_handler_forward(u_command_data_t command,
 
 static void operation_status_handler_load_done(u_command_data_t command)
 {
-	printf("Loaded %s\n", command.load.file_path);
+	printf("Loaded %s\n", command.m_load.m_file_path);
 }
 
 static void operation_status_handler_load_failed(u_command_data_t command)
 {
-	printf("Failed to load %s\n", command.load.file_path);
+	printf("Failed to load %s\n", command.m_load.m_file_path);
 }
 
 static void operation_status_handler_image_not_loaded(void)
@@ -102,8 +102,8 @@ static void operation_status_handler_image_not_loaded(void)
 
 static void operation_status_handler_select_custom_done(u_command_data_t command)
 {
-	s_vector2_t point_a = command.select.point_a;
-	s_vector2_t point_b = command.select.point_b;
+	s_vector2_t point_a = command.m_select.m_point_a;
+	s_vector2_t point_b = command.m_select.m_point_b;
 	printf("Selected %lld %lld %lld %lld\n",
 		   point_a.m_y, point_a.m_x, point_b.m_y, point_b.m_x);
 }
@@ -120,7 +120,7 @@ static void operation_status_handler_select_all_done(void)
 
 static void operation_status_handler_rotate_done(u_command_data_t command)
 {
-	printf("Rotated %d\n", command.rotate.angle);
+	printf("Rotated %d\n", command.m_rotate.angle);
 }
 
 static void operation_status_handler_rotate_selection_invalid(void)
@@ -150,7 +150,7 @@ static void operation_status_handler_crop_done(void)
 
 static void operation_status_handler_apply_done(u_command_data_t command)
 {
-	e_image_kernel_type_t image_kernel_type = command.apply.image_kernel_type;
+	e_image_kernel_type_t image_kernel_type = command.m_apply.image_kernel_type;
 
 	char image_kernel_type_name[25];
 	image_kernel_type_get_name(image_kernel_type_name, image_kernel_type);
@@ -185,7 +185,7 @@ static void operation_status_handler_apply_parameter_invalid(void)
 
 static void operation_status_handler_save_done(u_command_data_t command)
 {
-	printf("Saved %s\n", command.save.file_path);
+	printf("Saved %s\n", command.m_save.m_file_path);
 }
 
 static void operation_status_handler_histogram_parameter_invalid(void)
