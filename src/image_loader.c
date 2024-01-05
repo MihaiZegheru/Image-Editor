@@ -151,7 +151,7 @@ static s_image_data_t image_loader_load_image_data(FILE *file)
 			continue;
 		}
 
-		if (line_buffer[index] == '\n') {
+		if (line_buffer[index] == '\n' || line_buffer[index] == '#') {
 			fgets(line_buffer, LINE_MAX_BUFFER, file);
 			index = 0;
 			continue;
@@ -179,11 +179,9 @@ static s_image_data_t image_loader_load_image_data(FILE *file)
 			index++;
 			continue;
 		} else {
-			__u16 value = (__u16)utils_string_to_int64(line_buffer +
-													   index);
+			__u16 value = (__u16)utils_string_to_int64(line_buffer + index);
 
-			while (line_buffer[index] != ' ' && line_buffer[index] != '\n' &&
-				   line_buffer[index] != '\0')
+			while (str[index] >= '0' && str[index] <= '9')
 				index++;
 
 			if (!width)

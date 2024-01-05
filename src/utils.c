@@ -69,7 +69,7 @@ __s64 utils_string_to_int64(char *str)
 	__s64 value = 0;
 	size_t index = 0;
 
-	while (str[index] != ' ' && str[index] != '\n' && str[index] != '\0') {
+	while (str[index] >= '0' && str[index] <= '9') {
 		value *= 10;
 		value += str[index] - '0';
 		index++;
