@@ -1,6 +1,10 @@
 #ifndef IMAGE_FORMAT_TYPE_H__
 #define IMAGE_FORMAT_TYPE_H__
 
+/**
+ * @brief The image_format_type defines the format of an image
+ *
+ */
 typedef enum {
 	IFT_NONE,
 	IFT_P2,

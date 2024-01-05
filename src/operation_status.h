@@ -1,6 +1,11 @@
 #ifndef OPERATION_STATUS_H__
 #define OPERATION_STATUS_H__
 
+/**
+ * @brief The operation_status defines a status that resembles how an operation
+ * 		  went, if there are any errors or if it was successful
+ *
+ */
 typedef enum {
 	OS_NONE,
 	OS_DEFAULT_DONE,

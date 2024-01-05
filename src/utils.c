@@ -44,7 +44,7 @@ size_t utils_count_words(char *str)
 	return count;
 }
 
-void utils_get_word_by_index(size_t index, char *word, char *str)
+void utils_get_word_by_index(size_t index, char *out, char *str)
 {
 	size_t count = 0;
 	size_t str_index = 0;
@@ -56,45 +56,31 @@ void utils_get_word_by_index(size_t index, char *word, char *str)
 		}
 
 		if (str[str_index] != ' ' && count - 1 == index)
-			word[word_index++] = str[str_index];
+			out[word_index++] = str[str_index];
 
 		str_index++;
 	}
 
-	word[word_index] = '\0';
+	out[word_index] = '\0';
 }
 
-__s64 utils_string_to_int64(char *str)
-{
-	__s64 value = 0;
-	size_t index = 0;
-
-	while (str[index] != ' ' && str[index] != '\n' && str[index] != '\0') {
-		value *= 10;
-		value += str[index] - '0';
-		index++;
-	}
-
-	return value;
-}
-
-__s8 utils_word_to_int64(__s64 *out, char *str)
+__s8 utils_word_to_int64(__s64 *out, char *word)
 {
 	*out = 0;
 	size_t index = 0;
 
 	__s8 is_negative = 0;
-	if (str[index] == '-') {
+	if (word[index] == '-') {
 		is_negative = 1;
 		index++;
 	}
 
-	while (str[index] != '\0') {
-		if (str[index] > '9' || str[index] < '0')
+	while (word[index] != '\0') {
+		if (word[index] > '9' || word[index] < '0')
 			return 0;
 
 		*out *= 10;
-		*out += str[index++] - '0';
+		*out += word[index++] - '0';
 	}
 
 	if (is_negative)

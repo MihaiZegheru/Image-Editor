@@ -73,6 +73,14 @@ typedef struct {
 	e_command_status_t m_command_status;
 } s_cd_exit_t;
 
+/**
+ * @brief The command_data defines the data of a command within an union so that
+ * 		  all commands cand have a base object type that they can be stored in.
+ *
+ * 		  Later, they will be differentiated upon the command_type from base,
+ * 		  that is common to all members.
+ *
+ */
 typedef union {
 	s_cd_default_t m_base;
 	s_cd_load_t m_load;

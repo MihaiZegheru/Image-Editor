@@ -7,6 +7,9 @@
 
 // TO DO: Add a word object as struct and migrate methods
 
+// TO DO: Add a system to substitude hardcoded values. Create a data asset
+//		  object to store the values and initialise them in main
+
 static e_command_type_t input_handler_read_command(char *command_text);
 
 static u_command_data_t input_handler_read_load(char *command_text);

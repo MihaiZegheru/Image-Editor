@@ -1,6 +1,10 @@
 #ifndef COMMAND_TYPE_H__
 #define COMMAND_TYPE_H__
 
+/**
+ * @brief The command_type defines the command that can be applied on an image
+ *
+ */
 typedef enum {
 	CT_NONE,
 	CT_LOAD,

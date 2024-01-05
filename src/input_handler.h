@@ -10,12 +10,18 @@
 
 #define COMMAND_MAX_BUFFER 255
 
+/**
+ * @brief Read command data from stdin
+ *
+ * @return u_command_data_t
+ */
 u_command_data_t input_handler_read_command_data(void);
 
 /**
  * @brief Read a line from stdin
- * @note Performs no checks for overflow
+ *
  * @param str
+ * @note Performs no checks for overflow
  */
 void input_handler_read_line(char *str);
 
