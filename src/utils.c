@@ -64,6 +64,20 @@ void utils_get_word_by_index(size_t index, char *out, char *str)
 	out[word_index] = '\0';
 }
 
+__s64 utils_string_to_int64(char *str)
+{
+	__s64 value = 0;
+	size_t index = 0;
+
+	while (str[index] != ' ' && str[index] != '\n' && str[index] != '\0') {
+		value *= 10;
+		value += str[index] - '0';
+		index++;
+	}
+
+	return value;
+}
+
 __s8 utils_word_to_int64(__s64 *out, char *word)
 {
 	*out = 0;
