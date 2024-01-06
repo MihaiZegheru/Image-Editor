@@ -85,3 +85,4 @@ image_check
 *.rs
 .check.grade
 image_editor
+my_tests/*

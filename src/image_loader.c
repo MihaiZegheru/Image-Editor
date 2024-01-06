@@ -181,7 +181,7 @@ static s_image_data_t image_loader_load_image_data(FILE *file)
 		} else {
 			__u16 value = (__u16)utils_string_to_int64(line_buffer + index);
 
-			while (str[index] >= '0' && str[index] <= '9')
+			while (line_buffer[index] >= '0' && line_buffer[index] <= '9')
 				index++;
 
 			if (!width)
