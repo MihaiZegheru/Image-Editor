@@ -1,3 +1,7 @@
+/**
+ *	Copyright (c) 2023-2024 | Mihai Zegheru | 312CAb
+*/
+
 #include <utils.h>
 
 __s64 utils_max_int64(__s64 a, __s64 b)

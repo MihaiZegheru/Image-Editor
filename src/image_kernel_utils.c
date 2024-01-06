@@ -1,3 +1,7 @@
+/**
+ *	Copyright (c) 2023-2024 | Mihai Zegheru | 312CAb
+*/
+
 #include <image_kernel_utils.h>
 
 void image_kernel_utils_edge(double *inverse_modifier, __s8 kernel[3][3])

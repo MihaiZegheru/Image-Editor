@@ -1,3 +1,7 @@
+<!--  -->
+<!-- Copyright (c) 2023-2024 | Mihai Zegheru | 312CAb -->
+<!--  -->
+
 # Image Editor
 
 This is a C project for my PCLP course homework, designed to edit images in the

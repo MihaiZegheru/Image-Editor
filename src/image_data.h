@@ -1,3 +1,7 @@
+/**
+ *	Copyright (c) 2023-2024 | Mihai Zegheru | 312CAb
+*/
+
 #ifndef IMAGE_DATA_H__
 #define IMAGE_DATA_H__
 

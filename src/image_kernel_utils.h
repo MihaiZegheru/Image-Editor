@@ -1,3 +1,7 @@
+/**
+ *	Copyright (c) 2023-2024 | Mihai Zegheru | 312CAb
+*/
+
 #ifndef KERNEL_UTILS_H__
 #define KERNEL_UTILS_H__
 

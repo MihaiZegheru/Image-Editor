@@ -1,3 +1,7 @@
+/**
+ *	Copyright (c) 2023-2024 | Mihai Zegheru | 312CAb
+*/
+
 #ifndef INPUT_HANDLER_H__
 #define INPUT_HANDLER_H__
 

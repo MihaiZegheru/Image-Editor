@@ -1,3 +1,7 @@
+/**
+ *	Copyright (c) 2023-2024 | Mihai Zegheru | 312CAb
+*/
+
 #ifndef OPERATION_STATUS_H__
 #define OPERATION_STATUS_H__
 
