@@ -12,6 +12,9 @@
 #include <image_kernel_utils.h>
 #include <utils.h>
 
+// TO DO: Move the actual image manipulation operations to image_workspace and
+//		  call the from here
+
 /**
  * @brief App tick
  *
@@ -340,6 +343,7 @@ static e_operation_status_t app_manager_histogram
 	size_t *histogram = calloc(histogram_resolution.m_y, sizeof(size_t));
 	s_image_t *image = image_workspace->m_image;
 
+	// uild the bin array with all the pixels from the image
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
 			s_vector2_t coords;
@@ -353,10 +357,12 @@ static e_operation_status_t app_manager_histogram
 		}
 	}
 
+	// select the max frequency from the bin array
 	size_t max_frequency = 0;
 	for (size_t i = 0; i <  (size_t)histogram_resolution.m_y; i++)
 		max_frequency = utils_max_int64(max_frequency, histogram[i]);
 
+	// calculate the histogram
 	for (size_t i = 0; i <  (size_t)histogram_resolution.m_y; i++)
 		histogram[i] = (int)(((double)histogram[i] / max_frequency) *
 						histogram_resolution.m_x);
@@ -395,6 +401,7 @@ static e_operation_status_t app_manager_equalize
 
 	s_image_t *image = image_workspace->m_image;
 
+	// build the frequency array
 	for (size_t i = 0; i < image_get_height(image); i++) {
 		for (size_t j = 0; j < image_get_width(image); j++) {
 			s_vector2_t coords;
@@ -410,6 +417,7 @@ static e_operation_status_t app_manager_equalize
 	__u8 equalized_values_link[IMAGE_MAX_PIXEL_VALUE];
 	__u32 frv_sum = 0;
 
+	// calculate the new coresponding values for the old values
 	for (size_t i = 0; i < IMAGE_MAX_PIXEL_VALUE; i++) {
 		frv_sum += histogram[i];
 		equalized_values_link[i] =

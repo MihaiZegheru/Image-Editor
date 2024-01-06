@@ -223,3 +223,58 @@ EXIT
 
 ## Possible ouputs
 
+- `Loaded <file_path>` : Loading was successful
+
+- `Failed to load <file_path` : Loading failed (file not found?)
+
+- `No image loaded` : No image was loaded for the operation to take place
+
+- `Selected <x1 y1 x2 y2>` : Custom selection was successful
+
+- `Invalid set of coordinates` : You have entered wrong coordinates
+
+- `Selected ALL` : Selecting all was successful
+
+- `Rotated <angle>` : Rotating was successful
+
+- `The selection must be sqaure` : Custom selection of the image must be square
+for rotating
+
+- `Unsupported roatation angle` : Rotation angle must be divisible by 90
+
+- `Equalize done` : Equalization was successful
+
+- `Black and white image needed` : The operation needs a black and white image
+(P2 or P5)
+
+- `Image cropped` : Crop was successful
+
+- `Apply <filter> done` : Filter was applied
+
+- `Easy, Chrlie Chaplin` : Image is black and white (no filter was applied)
+
+- `APPLY parameter invalid` : That filter does not exist
+
+- `Saved <file_path>` : Saving was successful
+
+- `Invalid set of parameters` : The operation parameters were invalid
+
+- `Invalid command` : The operation/command does not exist
+
+## What I have learnt
+For developing this project I wanted to make it as scalable and modularised as
+I could. There are a lot of improvements that could be done, some of which I
+marked down in TO DO's throughout the project.
+
+Developing this project, I came to realise more about how I should write a cli
+interpretor, about structuring my sources and headers and about how I should use
+returning values, as error codes or as actual values i.e. getters. I am still
+not happy that they are a bit mixed up, but this project has had enough
+attention given to.
+
+I also felt that making this project in C required a lot more naming conventions
+than making it in C++, because things can get convoluted, but I think that I
+found the ones that suit me best.
+
+To sum up, I think that this project combined everything that I have learnt this
+semester pretty nicely and it is great because it has visual feedback.
